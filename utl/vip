@@ -1,0 +1,76 @@
+#!/bin/sh
+#
+# chkconfig: - 92 34
+# description: Starts and stops the VIP.
+
+### BEGIN INIT INFO
+# Provides: canias
+# Required-Start: vncserver
+# Required-Stop: vncserver
+# Default-Start:
+# Default-Stop: 0 1 2 3 4 5 6
+# Short-Description: start|stop|restart|reload|status canias_start_stop.sh
+# Description: Start and Stop Canias ERP System
+### END INIT INFO
+
+# Source function library.
+if [ -f /etc/init.d/functions ] ; then
+  . /etc/init.d/functions
+elif [ -f /etc/rc.d/init.d/functions ] ; then
+  . /etc/rc.d/init.d/functions
+else
+  exit 1
+fi
+
+interface="bond0:1"
+vip="192.168.1.224"
+
+start() 
+{
+  echo -n "Start VIP $vip on interface $interface: "
+  ifconfig $interface $vip
+  echo
+}
+
+stop() 
+{
+  echo -n "Stop VIP $vip: "
+  ifconfig $interface down
+  echo
+}
+
+status()
+{
+  cnt=$(ifconfig $interface | grep $vip | wc -l)
+  if [[ $cnt -gt 0 ]] ; then
+    echo "VIP $vip is up..."
+    exit 0
+  else
+    echo "VIP $vip is down"
+    exit 1
+  fi
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart|reload)
+    stop
+    sleep 1
+    start
+    ;;
+  status)
+    status
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|reload|status}"
+    exit 1
+esac
+
+# Always return 0 because we do not want to have a cluster starting
+# failure just because of Canias!
+exit 0

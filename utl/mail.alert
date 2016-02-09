@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+#
+# mail.alert - Mail alert for mon
+#
+# Call it like this:
+#
+# echo -e "Mail body\nNew line" | mail.alert -f contact@fromdual.com -s 'Test Subject' remote-dba@fromdual.com
+#
+
+use strict;
+use warnings;
+use Getopt::Std;
+
+my %Options;
+getopt('f:s:', \%Options);
+
+my $lMailAddresses = join (' ', @ARGV);
+
+open (MAIL, "| mailx -a 'From:  " . $Options{'f'} . "' -s '" . $Options{'s'} . "' $lMailAddresses") || die "could not open pipe to mail: $!\n";
+while (<STDIN>) {
+  print MAIL;
+}
+close (MAIL);
+
+exit(0);

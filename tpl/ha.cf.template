@@ -1,0 +1,34 @@
+#
+# /etc/ha.d/ha.cf
+#
+
+node node1
+node node2
+
+auto_failback off
+
+# You should have 2 of them!
+bcast eth0 bond0
+
+logfacility local0
+logfile /var/log/ha-log
+debugfile /var/log/ha-debug
+
+keepalive 500ms
+warntime 5
+deadtime 10
+initdead 120
+
+# Mgmt console as external reference
+ping 192.168.231.1
+respawn hacluster /usr/lib/heartbeat/ipfail
+apiauth ipfail gid=haclient uid=hacluster
+deadping 15
+
+mcast eth0 225.0.0.1 694 2 0
+mcast bond0 225.0.0.2 694 1 0
+
+respawn hacluster /usr/lib/heartbeat/dopd
+apiauth dopd gid=haclient uid=hacluster
+
+crm off

@@ -1,0 +1,12 @@
+#
+# etc/crontab.txt
+#
+SHELL=/bin/bash
+PATH=/sbin:/bin/:/usr/sbin/:/usr/bin
+MAILTO=root,admin
+HOME=/
+#
+# Defragement the Query Cache from time to time
+#
+42 * * * *  cd /home/mysql/myenv ; bin/flush_query_cache.sh --user=root --host=127.0.0.1 --port=3524 >>log/flush_query_cache.log 2>&1
+43 * * * *  cd /home/mysql/myenv ; bin/flush_query_cache.sh --user=root --host=127.0.0.1 --port=35241 >>log/flush_query_cache.log 2>&1

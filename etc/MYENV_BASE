@@ -1,0 +1,4 @@
+#
+# /etc/myenv/MYENV_BASE
+#
+# export MYENV_BASE=/home/mysql/product/myenv

@@ -1,0 +1,102 @@
+#!/usr/bin/perl -w
+
+use strict;
+use warnings;
+
+use DBI;
+use Getopt::Long;
+use POSIX;
+
+my $lFailedFile = '/var/lib/mon/node_ping.failed';
+my $lFailedCount = 0;
+my $lLogFile = '/var/lib/mon/log.d/node.monitor.log';
+
+$lFailedFile = '/tmp/node_ping.failed';
+$lLogFile = '/tmp/node.monitor.log';
+
+# ----------------------------------------------------------------------
+
+sub getFailedCount(@) {
+
+  my ($lFailedFile) = @_;
+  my $lFailedCount = 0;
+
+  if (-e $lFailedFile) {
+    $lFailedCount = `cat $lFailedFile`;
+    $lFailedCount =~ s/\s//g;
+  }
+  else {
+    $lFailedCount=0;
+  }
+  return $lFailedCount;
+}
+
+sub incFailedCount(@) {
+  
+  my ($failedFile) = @_;
+
+  my $failedCount = getFailedCount($failedFile) + 1;
+  `echo "$failedCount" > $failedFile`;
+  return $failedCount;
+}
+
+sub resetFailedCount(@) {
+  
+  my ($failedFile) = @_;
+
+  `echo "0" > $failedFile`;
+}
+
+sub logMessage(@) {
+
+  my ($logFile) = $_[0];
+  my ($msg) = $_[1];
+
+  open LOG, ">>$logFile" or die $!;
+  print LOG strftime("%Y-%m-%d %H:%M:%S", localtime) . " - $msg\n";
+  close(LOG);
+}
+
+# ----------------------------------------------------------------------
+
+my $rc = 0;
+
+my %options = (
+  'maxfail'  => 3
+);
+GetOptions( \%options, "maxfail=i");
+
+my $cnt = 0;
+# todo: This looks odd and thus wrong!
+foreach ( @ARGV ) {
+#for ( my $i=0; $i <= 2; $i++) {
+
+  `ping -c 1 -w 5 $_ >/dev/null`;
+  if ( $? != 0 ) {
+    logMessage($lLogFile, "Error: Could not ping node " . $_);
+  }
+  else {
+    $cnt++;
+  }
+}
+
+# We could not reach ONE node!
+if ( $cnt == 0 ) {
+
+  logMessage($lLogFile, "We could not reach ONE node!");
+  $lFailedCount = incFailedCount($lFailedFile);
+  if ( $lFailedCount > $options{'maxfail'} ) {
+    $rc = 381;
+  }
+  logMessage($lLogFile, "Number of failed checks: " . $lFailedCount . ", return code = " . $rc);
+  exit($rc);
+}
+
+# We found enough nodes
+$lFailedCount = getFailedCount($lFailedFile);
+if ( $lFailedCount != 0 ) {
+  logMessage($lLogFile, "Reset failed count.");
+}
+resetFailedCount($lFailedFile);
+
+exit(0);

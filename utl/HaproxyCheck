@@ -1,0 +1,74 @@
+#!/bin/sh
+#
+# This script is a resource for checking HAproxy and initiating a failover.
+#
+# usage: $0 {start|stop|status}
+#
+
+usage() {
+  cat << EOF
+usage: $0 timeout {start|stop|status}
+EOF
+  exit 1
+}
+
+. /etc/ha.d/shellfuncs
+
+VARLIB='/var/lib/heartbeat'
+HEARTBEAT='/usr/share/heartbeat'
+timeout="$1"
+op="$2"
+
+HaproxyCheck_stat() {
+  cnt=$(pgrep -c haproxy)
+  return $cnt
+}
+
+HaproxyCheck_Status() {
+  HaproxyCheck_stat
+  if [ $? -gt 0 ] ; then
+    echo "HAproxy is running OK"
+    exit 0
+  else
+    echo "HAproxy is not operational"
+    exit 1
+  fi
+}
+
+HaproxyCheck_Start() {
+  cnt=$(pgrep -c HaproxyCheck)
+
+  if [ $cnt -gt 1 ] ; then
+    echo "HaproxyCheck is already running"
+    return 1
+  else
+    (
+		while [ 1 ] ; do
+		  HaproxyCheck_stat
+			if [ $? -eq 0 ] ; then
+				$HEARTBEAT/hb_standby
+				exit
+			fi
+			sleep $timeout
+    done
+    ) &
+  fi
+}
+
+HaproxyCheck_Stop() {
+  cmd="killall --older-than=3s -9 HaproxyCheck"
+  eval $cmd
+}
+
+case $op in
+  start)   HaproxyCheck_Start
+           ;;
+  stop)    HaproxyCheck_Stop
+           ;;
+  status)  HaproxyCheck_Status
+           ;;
+  *)       usage
+           exit 1
+           ;;
+esac
+exit $?

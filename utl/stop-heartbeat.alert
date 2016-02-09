@@ -1,0 +1,5 @@
+#!/bin/bash
+#
+# /usr/lib/mon/alert.d/stop-heartbeat.alert
+#
+/etc/init.d/heartbeat stop

@@ -1,0 +1,24 @@
+#
+# /etc/myenv/variables.conf
+#
+
+#
+# Some examples. These can be replaced by your own!
+#
+
+export INFODIR=" . addDirectoryToPath($_ENV['INFODIR'], $aDatabaseParameter['basedir'] . "/docs", $aDatabaseParameter['basedir'] . "/docs") . "
+export INFOPATH=" . addDirectoryToPath($_ENV['INFOPATH'], $aDatabaseParameter['basedir'] . "/docs", $aDatabaseParameter['basedir'] . "/docs") . "
+export LD_LIBRARY_PATH=" . addDirectoryToPath($_ENV['LD_LIBRARY_PATH'], $aDatabaseParameter['basedir'] . "/lib", $aDatabaseParameter['basedir'] . "/lib") . "
+export LD_LIBRARY_PATH=" . addDirectoryToPath($_ENV['LD_LIBRARY_PATH'], $aDatabaseParameter['basedir'] . "/lib/mysql", $aDatabaseParameter['basedir'] . "/lib/mysql") . "
+export MYSQL_HOME=" . $aDatabaseParameter['datadir'] . "
+export MYSQL_TCP_PORT=" . $aDatabaseParameter['port'] . "
+export MYSQL_UNIX_PORT=" . $aDatabaseParameter['socket'] . "
+export MYSQL_PS1='\u@" . $lDbName . " [\d] SQL> '
+export MYENV_DATABASE=" . $lDbName . "
+export MYENV_DATADIR=" . $aDatabaseParameter['datadir'] . "
+
+#
+# Add your own variables here
+# Please be carefull to quote correctly. Otherwise it will not work.
+# You have to use PHP syntax NOT shell syntax!!!
+#

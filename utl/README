@@ -1,0 +1,46 @@
+
+All tools are under GPL v2: http://www.gnu.org/licenses/gpl-2.0.html
+
+filesystem_table.php
+  Shows you when MySQL files are last read and written.
+  Usage: --help
+
+row_extractor.pl
+  Extracts (recursively) from corrupted InnoDB tables.
+  Usage: hard coded in the script header!
+
+alter_engine.sh
+  Changes the Storage Engine of many tables.
+  Prompts for all inputs and writes a .sql file to execute.
+
+channel_failover.pl
+  Starts, stops and failovers MySQL Cluster repliation channels.
+  Usage: channel_failover.pl -h
+
+flush_query_cache.sh
+  Flushes the Query Cache to defragment it.
+  Usage: flush_query_cache.sh --user=root --password=secret \
+         --host=127.0.0.1 --port=3306
+
+insert_test.sh
+  Very simple test to simulate traffic on a database. Can be used to
+  test failovers in HA-Setups. Needs the table from sql/test_table.sql
+  Usage: insert_test.sh
+
+compare.php
+  Compares MySQL configuration from 2 servers or
+  compares output of SHOW GLOBAL STATUS between serveral runs.
+  Usage: compare.php --help
+
+rotate_log.sh
+  Rotates all or a specific MySQL logfile. Used to rotate binary logs,
+  error logs, slow query logs, etc.
+  Usage: rotate_log.sh [ BINARY | ENGINE | ERROR | GENERAL | RELAY | SLOW ]
+
+backslashG2table.pl
+  Converts an output generated with \G into one-liners with several columns.
+  Usage: backslashG2table.pl --help
+
+oem_agent.php
+  Shows status, stops and starts OEM Agent. Can/should be copied into
+  ./plg/showMyEnvStatus/ and will be autodetected there.

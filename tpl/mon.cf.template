@@ -1,0 +1,25 @@
+#
+# /etc/mon/mon.cf
+#
+
+monerrfile = /var/log/mon.log
+mondir     = /usr/lib/mon/mon.d
+alertdir   = /usr/lib/mon/alert.d
+
+maxprocs   = 20
+histlength = 100
+randstart  = 2s
+
+hostgroup check 192.168.231.150
+
+watch check
+  service mysql
+    interval 5s
+    monitor mysql.monitor --maxfail=3 --user=check_db --password=check_db --database=check_db --host=192.168.231.150
+    period wd {Mon-Sun} hr {0am-11pm}
+      alertafter 3
+      alertevery 15m
+      alert mail.alert support@fromdual.com
+      alert stop-heartbeat.alert --maxfail=3
+      alert file.alert /var/log/ping_check.log
+

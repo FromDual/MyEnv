@@ -1,0 +1,30 @@
+#
+# /etc/haproxy/haproxy.cfg
+#
+
+global
+  daemon
+  user haproxy
+  group haproxy
+  log 127.0.0.1 local0
+  log global
+  option dontlognull
+
+listen mysql *:3306
+  mode    tcp
+  maxconn 430
+  timeout connect 10s
+  timeout client 60s
+  timeout server 60s
+  balance roundrobin
+  server galera1 10.98.95.9:3306 maxconn 145 check
+  server galera2 10.98.95.10:3306 maxconn 145 check
+  server galera3 10.98.95.11:3306 maxconn 145 check
+
+listen admin 10.98.95.23:80
+  mode http
+  timeout connect 10s
+  timeout client 1m
+  timeout server 1m
+  stats uri /
+

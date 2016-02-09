@@ -1,0 +1,26 @@
+#
+# /etc/myenv/aliases.conf
+#
+
+#
+# Some examples. These can be replaced by your own!
+#
+
+alias cdh='cd " . $aDatabaseParameter['basedir'] . "'
+alias cdb='cd " . $aDatabaseParameter['basedir'] . "'
+alias cdd='cd " . $aDatabaseParameter['datadir'] . "'
+alias cde='cd " . $basedir . "'
+alias cdl='cd " . $basedir . '/log' . "'
+
+alias ll='ls -l'
+alias la='ls -la'
+
+# RedHat style is not a bad idea!
+alias rm='rm -i'
+alias mv='mv -i'
+
+#
+# Add your own aliases here
+# Please be carefull to quote correctly. Otherwise it will not work.
+# You have to use PHP syntax NOT shell syntax!!!
+#

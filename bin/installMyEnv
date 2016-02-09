@@ -1,0 +1,51 @@
+#!/bin/bash
+
+#
+# installMyEnv
+#
+
+os=$(uname -s)
+if [ "$os" == 'Linux' ] ; then
+	PHPINSTALLER=$(dirname $(readlink -f $0))"/installMyEnv.php"
+elif [ "$os" == 'Darwin' ] ; then
+	rc=3
+	echo "Error: O/S $os is not supported."
+	exit $rc
+	PHPINSTALLER=$(dirname $(readlink -f $0))"/installMyEnv.php"
+else
+	rc=3
+	echo "Error: O/S $os is not supported."
+	exit $rc
+fi
+export MYENV_BASE=$(dirname $(dirname $PHPINSTALLER))
+
+PHP=$(which php)
+ret=$?
+
+if [ $ret -ne 0 ] ; then
+	rc=1
+	echo "ERROR: Cannot find PHP."
+	echo "Please install PHP as follows:"
+	echo
+	echo "RedHat/CentOS: shell> sudo yum install php-cli php-posix php-pcntl php-mysqli redhat-lsb-core";
+	echo "SLES/OpenSuSE: shell> sudo zypper install php5 php5-posix php5-pcntl php5-mysql lsb-release";
+	echo "Ubuntu/Debian: shell> sudo apt-get install php5-cli php5 php5-mysql lsb-release";
+	exit $rc
+fi
+
+if [ "$MYENV_DEBUG" != '' ] ; then
+	echo "PHP is installed on $PHP"
+	echo "Starting MyEnv installer: $PHPINSTALLER"
+fi
+
+cmd="$PHP -f $PHPINSTALLER -- $@"
+if [ "$MYENV_DEBUG" != '' ] ; then
+	echo $cmd
+fi
+eval $cmd
+rc=$?
+
+if [ "$MYENV_DEBUG" != '' ] ; then
+	echo $rc
+fi
+exit $rc

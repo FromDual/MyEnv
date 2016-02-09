@@ -1,0 +1,55 @@
+[default]
+user     = ...
+password = ...
+
+[channel_group_1]
+
+type     = channel_group
+ch1      = channel:master1:slave2
+ch2      = channel:master2:slave3
+
+[channel_group_2]
+
+type     = channel_group
+ch3      = channel:master3:slave6
+ch4      = channel:master4:slave7
+
+[master1]
+
+type     = mysqld
+host     = ...
+port     = ...
+
+[slave2]
+
+type     = mysqld
+host     = 127.0.0.1
+port     = 37216
+user     = root
+password = 
+
+[master2]
+
+[slave3]
+
+type     = mysqld
+host     = 127.0.0.1
+port     = 37316
+user     = root
+password = 
+
+[slave6]
+
+type     = mysqld
+host     = 127.0.0.1
+port     = 37616
+user     = root
+password = 
+
+[slave7]
+
+type     = mysqld
+host     = 127.0.0.1
+port     = 37716
+user     = root
+password = 

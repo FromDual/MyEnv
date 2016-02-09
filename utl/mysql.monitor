@@ -1,0 +1,163 @@
+#!/usr/bin/perl -w
+
+use strict;
+use warnings;
+
+use DBI;
+use Getopt::Long;
+use POSIX;
+
+my $lFailedFile = '/var/lib/mon/mysql.failed';
+my $lFailedCount = 0;
+my $lLogFile = '/var/lib/mon/log.d/mysql.monitor.log';
+
+# ----------------------------------------------------------------------
+
+sub getFailedCount(@) {
+
+  my ($lFailedFile) = @_;
+  my $lFailedCount = 0;
+
+  if (-e $lFailedFile) {
+    $lFailedCount = `cat $lFailedFile`;
+    $lFailedCount =~ s/\s//g;
+  }
+  else {
+    $lFailedCount=0;
+  }
+  return $lFailedCount;
+}
+
+sub incFailedCount(@) {
+  
+  my ($failedFile) = @_;
+
+  my $failedCount = getFailedCount($failedFile) + 1;
+  `echo "$failedCount" > $failedFile`;
+  return $failedCount;
+}
+
+sub resetFailedCount(@) {
+  
+  my ($failedFile) = @_;
+
+  `echo "0" > $failedFile`;
+}
+
+sub logMessage(@) {
+
+  my ($logFile) = $_[0];
+  my ($msg) = $_[1];
+
+  open LOG, ">>$logFile" or die $!;
+  print LOG strftime("%Y-%m-%d %H:%M:%S", localtime) . " - $msg\n";
+  close(LOG);
+}
+
+# ----------------------------------------------------------------------
+
+my $rc = 0;
+
+my %options = (
+  'maxfail'  => 3
+, 'user'     => 'root'
+, 'password' => ''
+, 'host'     => '127.0.0.1'
+, 'port'     => 3306
+, 'database' => 'check_db'
+);
+GetOptions( \%options, "maxfail=i", "port=i", "user=s", "password=s", "database=s", "host=s" );
+
+#
+# Get MySQL Server Status
+#
+
+# CREATE TABLE heartbeat (
+#   id  INT UNSIGNED NOT NULL AUTO_INCREMENT
+# , ts  timestamp
+# , val INT UNSIGNED NOT NULL
+# , PRIMARY KEY (id)
+# ) ENGINE = InnoDB;
+#
+# GRANT ALL ON check_db.heartbeat TO 'check_db'@'%' IDENTIFIED BY 'check_db';
+
+my $dsn = "DBI:mysql:database=" . $options{'database'} . ";host=" . $options{'host'} . ";port=" . $options{'port'};
+my $dbh  = DBI->connect($dsn, $options{'user'}, $options{'password'}, {'RaiseError' => 0, 'PrintError' => 0});
+
+if ( ! $dbh ) {
+  logMessage($lLogFile, "Error: " . $DBI::err . ". MySQL connect failed: " . $DBI::errstr);
+  $lFailedCount = incFailedCount($lFailedFile);
+  if ( $lFailedCount > $options{'maxfail'} ) {
+    $rc = 300;
+  }
+  logMessage($lLogFile, "Number of failed checks: " . $lFailedCount . ", return code = " . $rc);
+  exit($rc);
+}
+
+my $unix_time = time();
+my $sql = "";
+my $rand = int(rand(42));
+
+$sql = sprintf("INSERT INTO heartbeat (id, ts, val) VALUES (NULL, NULL, %d)", $rand);
+if ( ! $dbh->do($sql) ) {
+  logMessage($lLogFile, "Error: " . $dbh->err . ". INSERT failed: " . $DBI::errstr);
+  $lFailedCount = incFailedCount($lFailedFile);
+  if ( $lFailedCount > $options{'maxfail'} ) {
+    $rc = 301;
+  }
+  logMessage($lLogFile, "Number of failed checks: " . $lFailedCount . ", return code = " . $rc);
+  exit($rc);
+}
+
+my $lId = $dbh->last_insert_id(undef, undef, undef, undef);
+
+$sql = sprintf("SELECT * FROM heartbeat WHERE id = %d", $lId);
+my $sth = $dbh->prepare($sql);
+if ( $sth->execute() ) {
+
+  if ( my $ref = $sth->fetchrow_hashref() ) {
+
+    if ( $ref->{'val'} != $rand ) {
+      logMessage($lLogFile, "Error: Inserted number does NOT match random number!");
+      $lFailedCount = incFailedCount($lFailedFile);
+      if ( $lFailedCount > $options{'maxfail'} ) {
+        $rc = 304;
+      }
+      logMessage($lLogFile, "Number of failed checks: " . $lFailedCount . ", return code = " . $rc);
+      exit($rc);
+    }
+    else {
+      $lFailedCount = getFailedCount($lFailedFile);
+      if ( $lFailedCount != 0 ) {
+        logMessage($lLogFile, "Reset failed count.");
+      }
+      resetFailedCount($lFailedFile);
+    }
+  }
+  else {
+    logMessage($lLogFile, "Error: Something went wrong! No row row fetched.");
+    $lFailedCount = incFailedCount($lFailedFile);
+    if ( $lFailedCount > $options{'maxfail'} ) {
+      $rc = 312;
+    }
+    logMessage($lLogFile, "Number of failed checks: " . $lFailedCount . ", return code = " . $rc);
+    exit($rc);
+  }
+  $sth->finish();
+}
+else {
+  logMessage($lLogFile, "Error: " . $dbh->err . ". SELECT failed: " . $DBI::errstr);
+  $lFailedCount = incFailedCount($lFailedFile);
+  if ( $lFailedCount > $options{'maxfail'} ) {
+    $rc = 313;
+  }
+  logMessage($lLogFile, "Number of failed checks: " . $lFailedCount . ", return code = " . $rc);
+  exit($rc);
+}
+
+$sql = "TRUNCATE TABLE heartbeat";
+$dbh->do($sql);
+
+$dbh->disconnect();
+
+exit($rc);

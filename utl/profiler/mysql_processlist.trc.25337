@@ -1,0 +1,1879 @@
+1151489771.52986#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489771.58265#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489771.63458#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489771.68652#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489771.73854#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489771.79049#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489771.8594#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489771.91153#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489771.96352#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.01551#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.06774#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.11952#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.17151#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.22362#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.27551#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.32753#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.37948#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.55395#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.60641#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.65837#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.71034#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.76239#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.8143#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.86628#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.91828#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489772.97041#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.02266#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.07533#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.12728#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.17924#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.23127#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.28324#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.3352#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.38725#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.43959#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.49219#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.54415#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.59619#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.64819#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.70016#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.75215#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.82609#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.87811#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.93015#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489773.98215#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.03415#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.08619#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.13809#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.19008#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.24206#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.29412#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.34612#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.34612#2#root#localhost#test#Query#0#Waiting on cond#drop table if exists t1,t2,t3
+1151489774.53263#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.53263#2#root#localhost#test#Query#0#creating table#create table t1 (a int not null)
+1151489774.58507#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.58507#2#root#localhost#test#Query#0#creating table#create table t1 (a int not null)
+1151489774.63703#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.63703#2#root#localhost#test#Query#0#creating table#create table t1 (id int not null auto_increment primary key, username varchar(32) not null, unique (username))
+1151489774.68917#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.68917#2#root#localhost#test#Query#0#creating table#create table t1 (id int not null auto_increment primary key, username varchar(32) not null, unique (username))
+1151489774.74106#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.74106#2#root#localhost#test#Query#0#creating table#create table t1 (a int not null auto_increment, primary key (a), t timestamp, c char(10) default "hello", i int)
+1151489774.79297#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.79297#2#root#localhost#test#Query#0#creating table#create table t1 (a int not null auto_increment, primary key (a), t timestamp, c char(10) default "hello", i int)
+1151489774.84518#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.84518#2#root#localhost#test#Query#0#creating table#create table t1 (sid char(20), id int(2) NOT NULL auto_increment, key(sid, id))
+1151489774.89706#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.89706#2#root#localhost#test#Query#0#creating table#create table t1 (id int NOT NULL DEFAULT 8)
+1151489774.94898#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489774.94898#2#root#localhost#test#Query#0#creating table#create table t1 (id int NOT NULL DEFAULT 8)
+1151489775.00099#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.00099#2#root#localhost#test#Query#1#creating table#create table t1 (email varchar(50))
+1151489775.05288#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.05288#2#root#localhost#test#Query#0#NULL#create table t2(id int not null auto_increment primary key, t2 varchar(50), unique(t2))
+1151489775.10507#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.10507#2#root#localhost#test#Query#0#creating table#create table t2(id int not null auto_increment primary key, t2 varchar(50), unique(t2))
+1151489775.15689#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.15689#2#root#localhost#test#Query#0#NULL#insert delayed into t2 (t2) select distinct substring(email, locate('@', email)+1) from t1
+1151489775.20895#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.20895#2#root#localhost#mysqltest#Query#0#creating table#create table t1 (c int)
+1151489775.26082#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.26082#2#root#localhost#test#Query#0#NULL#create table t1(number int auto_increment primary key, original_value varchar(50), f_double double, f_float float, f_double_7_2 double(7,2), f_float_4_3 float (4,3), f_double_u double unsigned, f_float_u float unsigned, f_double_15_1_u double(15,1) unsigned, f_float_3_1_u float (3,1) unsigned)
+1151489775.31291#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.31291#2#root#localhost#test#Query#0#creating table#create table t1(number int auto_increment primary key, original_value varchar(50), f_double double, f_float float, f_double_7_2 double(7,2), f_float_4_3 float (4,3), f_double_u double unsigned, f_float_u float unsigned, f_double_15_1_u double(15,1) unsigned, f_float_3_1_u float (3,1) unsigned)
+1151489775.36561#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.36561#2#root#localhost#test#Query#0#NULL#create table t1(id1 int not null auto_increment primary key, t char(12))
+1151489775.41791#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.41791#2#root#localhost#test#Query#0#creating table#create table t1(id1 int not null auto_increment primary key, t char(12))
+1151489775.46989#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.46989#2#root#localhost#test#Query#0#creating table#create table t2(id2 int not null, t char(12))
+1151489775.52189#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.52189#2#root#localhost#test#Query#0#creating table#create table t3(id3 int not null, t char(12), index(id3))
+1151489775.57386#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.57386#2#root#localhost#test#Query#0#creating table#create table t3(id3 int not null, t char(12), index(id3))
+1151489775.62585#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.62585#2#root#localhost#test#Query#0#update#insert into t3(id3,t) values (98,'3')
+1151489775.67773#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.67773#2#root#localhost#test#Query#0#update#insert into t3(id3,t) values (93,'5')
+1151489775.72972#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.72972#2#root#localhost#test#Query#0#update#insert into t3(id3,t) values (89,'2')
+1151489775.78173#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.78173#2#root#localhost#test#Query#0#Writing to net#insert into t3(id3,t) values (84,'4')
+1151489775.8337#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.8337#2#root#localhost#test#Query#0#update#insert into t3(id3,t) values (80,'1')
+1151489775.88573#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.88573#2#root#localhost#test#Query#0#update#insert into t3(id3,t) values (75,'2')
+1151489775.95724#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489775.95724#2#root#localhost#test#Query#0#Writing to net#insert into t3(id3,t) values (71,'5')
+1151489776.0099#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.0099#2#root#localhost#test#Query#0#Writing to net#insert into t3(id3,t) values (67,'1')
+1151489776.0617#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.0617#2#root#localhost#test#Query#0#closing tables#insert into t3(id3,t) values (62,'2')
+1151489776.11367#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.11367#2#root#localhost#test#Query#0#Writing to net#insert into t3(id3,t) values (57,'3')
+1151489776.16565#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.16565#2#root#localhost#test#Query#0#NULL#NULL
+1151489776.21763#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.21763#2#root#localhost#test#Query#0#update#insert into t3(id3,t) values (47,'4')
+1151489776.26962#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.26962#2#root#localhost#test#Query#0#update#insert into t1(t) values ('42')
+1151489776.32163#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.32163#2#root#localhost#test#Sleep#0##NULL
+1151489776.37362#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.37362#2#root#localhost#test#Query#0#Writing to net#insert into t2(id2,t) values (33,'2')
+1151489776.42559#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.42559#2#root#localhost#test#Query#0#update#insert into t3(id3,t) values (28,'5')
+1151489776.47769#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.47769#2#root#localhost#test#Query#0#NULL#insert into t3(id3,t) values (24,'2')
+1151489776.5296#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.5296#2#root#localhost#test#Query#0#NULL#insert into t3(id3,t) values (19,'3')
+1151489776.58162#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.58162#2#root#localhost#test#Query#0#Writing to net#insert into t3(id3,t) values (14,'4')
+1151489776.63356#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.63356#2#root#localhost#test#Query#0#update#insert into t3(id3,t) values (9,'5')
+1151489776.68556#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.68556#2#root#localhost#test#Query#0#Writing to net#insert into t3(id3,t) values (5,'3')
+1151489776.73764#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.73764#2#root#localhost#test#Query#0#Creating tmp table#insert into  t2 select t1.* from t1, t2 t, t3 where  t1.id1 = t.id2 and t.id2 = t3.id3
+1151489776.78979#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.78979#2#root#localhost#test#Query#0#Sending data#insert into  t2 select t1.* from t1, t2 t, t3 where  t1.id1 = t.id2 and t.id2 = t3.id3
+1151489776.84206#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.84206#2#root#localhost#test#Query#0#creating table#create table t1 (n int)
+1151489776.89458#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.89458#2#root#localhost#test#Query#0#creating table#create table t1 (n int)
+1151489776.94667#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.94667#2#root#localhost#test#Query#0#creating table#create table t1 (n int)
+1151489776.99856#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489776.99856#2#root#localhost#test#Query#0#waiting for handler open#insert delayed into v1 values (1)
+1151489776.99856#3#DELAYED##test#Delayed insert#0#Opening table#
+1151489777.05073#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489777.1026#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489777.15459#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489777.15459#4#root#localhost#test#Query#0#creating table#create table t1(a int, unique(a))
+1151489777.20657#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489777.20657#4#root#localhost#test#Query#0#creating table#create table t1(a int, unique(a))
+1151489777.25856#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489777.25856#4#root#localhost#test#Query#0#creating table#create table t2(a int)
+1151489777.31053#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489777.31053#4#root#localhost#test#Query#0#creating table#create table t2(a int)
+1151489778.01136#1#root#master.rebenweg:33299#NULL#Query#1#NULL#SHOW FULL PROCESSLIST
+1151489778.01136#4#root#localhost#test#Query#1#NULL#reset master
+1151489778.06338#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.06338#4#root#localhost#test#Query#0#creating table#create table t1(a int)
+1151489778.26419#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.26419#4#root#localhost#test#Query#0#NULL#reset master
+1151489778.31637#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.31637#4#root#localhost#test#Query#0#creating table#create table t2(unique(a)) select a from t1
+1151489778.36838#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.42035#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.47227#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.47227#5#root#localhost#test#Query#0#Waiting on cond#drop table if exists t1,t2,t3
+1151489778.52423#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.52423#5#root#localhost#test#Query#0#NULL#create table t1 (bandID MEDIUMINT UNSIGNED NOT NULL PRIMARY KEY, payoutID SMALLINT UNSIGNED NOT NULL)
+1151489778.57633#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.57633#5#root#localhost#test#Query#0#creating table#create table t1 (bandID MEDIUMINT UNSIGNED NOT NULL PRIMARY KEY, payoutID SMALLINT UNSIGNED NOT NULL)
+1151489778.6282#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.6282#5#root#localhost#test#Query#0#NULL#create table t2 (payoutID SMALLINT UNSIGNED NOT NULL PRIMARY KEY)
+1151489778.6803#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.6803#5#root#localhost#test#Query#0#creating table#create table t2 (payoutID SMALLINT UNSIGNED NOT NULL PRIMARY KEY)
+1151489778.73222#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.73222#5#root#localhost#test#Query#0#NULL#CREATE TABLE `t1` (
+`numeropost` bigint(20) unsigned NOT NULL default '0',
+`icone` tinyint(4) unsigned NOT NULL default '0',
+`numreponse` bigint(20) unsigned NOT NULL auto_increment,
+`contenu` text NOT NULL,
+`pseudo` varchar(50) NOT NULL default '',
+`date` datetime NOT NULL default '0000-00-00 00:00:00',
+`ip` bigint(11) NOT NULL default '0',
+`signature` tinyint(1) unsigned NOT NULL default '0',
+PRIMARY KEY  (`numeropost`,`numreponse`)
+,KEY `ip` (`ip`),
+KEY `date` (`date`),
+KEY `pseudo` (`pseudo`),
+KEY `numreponse` (`numreponse`)
+) ENGINE=MyISAM
+1151489778.78426#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.78426#5#root#localhost#test#Query#0#creating table#CREATE TABLE `t1` (
+`numeropost` bigint(20) unsigned NOT NULL default '0',
+`icone` tinyint(4) unsigned NOT NULL default '0',
+`numreponse` bigint(20) unsigned NOT NULL auto_increment,
+`contenu` text NOT NULL,
+`pseudo` varchar(50) NOT NULL default '',
+`date` datetime NOT NULL default '0000-00-00 00:00:00',
+`ip` bigint(11) NOT NULL default '0',
+`signature` tinyint(1) unsigned NOT NULL default '0',
+PRIMARY KEY  (`numeropost`,`numreponse`)
+,KEY `ip` (`ip`),
+KEY `date` (`date`),
+KEY `pseudo` (`pseudo`),
+KEY `numreponse` (`numreponse`)
+) ENGINE=MyISAM
+1151489778.83636#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.83636#5#root#localhost#test#Query#0#creating table#CREATE TABLE `t2` (
+`numeropost` bigint(20) unsigned NOT NULL default '0',
+`icone` tinyint(4) unsigned NOT NULL default '0',
+`numreponse` bigint(20) unsigned NOT NULL auto_increment,
+`contenu` text NOT NULL,
+`pseudo` varchar(50) NOT NULL default '',
+`date` datetime NOT NULL default '0000-00-00 00:00:00',
+`ip` bigint(11) NOT NULL default '0',
+`signature` tinyint(1) unsigned NOT NULL default '0',
+PRIMARY KEY  (`numeropost`,`numreponse`),
+KEY `ip` (`ip`),
+KEY `date` (`date`),
+KEY `pseudo` (`pseudo`),
+KEY `numreponse` (`numreponse`)
+) ENGINE=MyISAM
+1151489778.88819#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.88819#5#root#localhost#test#Query#0#creating table#CREATE TABLE `t2` (
+`numeropost` bigint(20) unsigned NOT NULL default '0',
+`icone` tinyint(4) unsigned NOT NULL default '0',
+`numreponse` bigint(20) unsigned NOT NULL auto_increment,
+`contenu` text NOT NULL,
+`pseudo` varchar(50) NOT NULL default '',
+`date` datetime NOT NULL default '0000-00-00 00:00:00',
+`ip` bigint(11) NOT NULL default '0',
+`signature` tinyint(1) unsigned NOT NULL default '0',
+PRIMARY KEY  (`numeropost`,`numreponse`),
+KEY `ip` (`ip`),
+KEY `date` (`date`),
+KEY `pseudo` (`pseudo`),
+KEY `numreponse` (`numreponse`)
+) ENGINE=MyISAM
+1151489778.94024#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.94024#5#root#localhost#test#Query#0#creating table#create table t1 (a int not null)
+1151489778.99274#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489778.99274#5#root#localhost#test#Query#0#creating table#create table t2 (a int not null)
+1151489779.04522#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.04522#5#root#localhost#test#Query#1#creating table#create table t2 (a int not null)
+1151489779.09718#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.09718#5#root#localhost#test#Query#1#creating table#create table t2 (a int not null)
+1151489779.14919#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.14919#5#root#localhost#test#Query#1#creating table#create table t2 (a int not null)
+1151489779.23943#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.23943#5#root#localhost#test#Query#0#creating table#create table t1 (a int not null primary key, b char(10))
+1151489779.29212#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.29212#5#root#localhost#test#Query#0#creating table#create table t1 (a int not null primary key, b char(10))
+1151489779.34414#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.34414#5#root#localhost#test#Query#0#creating table#create table t2 (a int not null, b char(10))
+1151489779.39625#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.39625#5#root#localhost#test#Query#0#NULL#CREATE TABLE t1 ( USID INTEGER UNSIGNED, ServerID TINYINT UNSIGNED, State ENUM ('unknown', 'Access-Granted', 'Session-Active', 'Session-Closed' ) NOT NULL DEFAULT 'unknown', SessionID CHAR(32), User CHAR(32) NOT NULL DEFAULT '<UNKNOWN>', NASAddr INTEGER UNSIGNED, NASPort INTEGER UNSIGNED, NASPortType INTEGER UNSIGNED, ConnectSpeed INTEGER UNSIGNED, CarrierType CHAR(32), CallingStationID CHAR(32), CalledStationID CHAR(32), AssignedAddr INTEGER UNSIGNED, SessionTime INTEGER UNSIGNED, PacketsIn INTEGER UNSIGNED, OctetsIn INTEGER UNSIGNED, PacketsOut INTEGER UNSIGNED, OctetsOut INTEGER UNSIGNED, TerminateCause INTEGER UNSIGNED, UnauthTime TINYINT UNSIGNED, AccessRequestTime DATETIME, AcctStartTime DATETIME, AcctLastTime DATETIME, LastModification TIMESTAMP NOT NULL)
+1151489779.44816#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.44816#5#root#localhost#test#Query#0#creating table#CREATE TABLE t1 ( USID INTEGER UNSIGNED, ServerID TINYINT UNSIGNED, State ENUM ('unknown', 'Access-Granted', 'Session-Active', 'Session-Closed' ) NOT NULL DEFAULT 'unknown', SessionID CHAR(32), User CHAR(32) NOT NULL DEFAULT '<UNKNOWN>', NASAddr INTEGER UNSIGNED, NASPort INTEGER UNSIGNED, NASPortType INTEGER UNSIGNED, ConnectSpeed INTEGER UNSIGNED, CarrierType CHAR(32), CallingStationID CHAR(32), CalledStationID CHAR(32), AssignedAddr INTEGER UNSIGNED, SessionTime INTEGER UNSIGNED, PacketsIn INTEGER UNSIGNED, OctetsIn INTEGER UNSIGNED, PacketsOut INTEGER UNSIGNED, OctetsOut INTEGER UNSIGNED, TerminateCause INTEGER UNSIGNED, UnauthTime TINYINT UNSIGNED, AccessRequestTime DATETIME, AcctStartTime DATETIME, AcctLastTime DATETIME, LastModification TIMESTAMP NOT NULL)
+1151489779.5002#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.5002#5#root#localhost#test#Query#0#creating table#CREATE TABLE t2 ( USID INTEGER UNSIGNED AUTO_INCREMENT, ServerID TINYINT UNSIGNED, State ENUM ('unknown', 'Access-Granted', 'Session-Active', 'Session-Closed' ) NOT NULL DEFAULT 'unknown', SessionID CHAR(32), User TEXT NOT NULL, NASAddr INTEGER UNSIGNED, NASPort INTEGER UNSIGNED, NASPortType INTEGER UNSIGNED, ConnectSpeed INTEGER UNSIGNED, CarrierType CHAR(32), CallingStationID CHAR(32), CalledStationID CHAR(32), AssignedAddr INTEGER UNSIGNED, SessionTime INTEGER UNSIGNED, PacketsIn INTEGER UNSIGNED, OctetsIn INTEGER UNSIGNED, PacketsOut INTEGER UNSIGNED, OctetsOut INTEGER UNSIGNED, TerminateCause INTEGER UNSIGNED, UnauthTime TINYINT UNSIGNED, AccessRequestTime DATETIME, AcctStartTime DATETIME, AcctLastTime DATETIME, LastModification TIMESTAMP NOT NULL, INDEX(USID,ServerID,NASAddr,SessionID), INDEX(AssignedAddr))
+1151489779.55225#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.55225#5#root#localhost#test#Query#0#creating table#CREATE TABLE t1(
+Month date NOT NULL,
+Type tinyint(3) unsigned NOT NULL auto_increment,
+Field int(10) unsigned NOT NULL,
+Count int(10) unsigned NOT NULL,
+UNIQUE KEY Month (Month,Type,Field)
+)
+1151489779.60509#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.60509#5#root#localhost#test#Query#0#creating table#CREATE TABLE t1(
+Month date NOT NULL,
+Type tinyint(3) unsigned NOT NULL auto_increment,
+Field int(10) unsigned NOT NULL,
+Count int(10) unsigned NOT NULL,
+UNIQUE KEY Month (Month,Type,Field)
+)
+1151489779.65711#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.65711#5#root#localhost#test#Query#0#creating table#create table t2(No int not null, Field int not null, Count int not null)
+1151489779.70905#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.70905#5#root#localhost#test#Query#0#creating table#create table t2(No int not null, Field int not null, Count int not null)
+1151489779.76127#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.76127#5#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+ID           int(11) NOT NULL auto_increment,
+NO           int(11) NOT NULL default '0',
+SEQ          int(11) NOT NULL default '0',
+PRIMARY KEY  (ID),
+KEY t1$NO    (SEQ,NO)
+) ENGINE=MyISAM
+1151489779.81301#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.81301#5#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+ID           int(11) NOT NULL auto_increment,
+NO           int(11) NOT NULL default '0',
+SEQ          int(11) NOT NULL default '0',
+PRIMARY KEY  (ID),
+KEY t1$NO    (SEQ,NO)
+) ENGINE=MyISAM
+1151489779.86504#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.86504#5#root#localhost#test#Query#0#creating table#create table t1 (f1 int)
+1151489779.91696#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.91696#5#root#localhost#test#Query#0#NULL#create table t2 (ff1 int unique, ff2 int default 1)
+1151489779.96905#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489779.96905#5#root#localhost#test#Query#0#creating table#create table t2 (ff1 int unique, ff2 int default 1)
+1151489780.02167#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.02167#5#root#localhost#test#Query#0#NULL#create table t1 (a int unique)
+1151489780.07403#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.07403#5#root#localhost#test#Query#0#creating table#create table t1 (a int unique)
+1151489780.12607#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.12607#5#root#localhost#test#Query#0#creating table#create table t2 (a int, b int)
+1151489780.178#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.178#5#root#localhost#test#Query#0#creating table#create table t3 (c int, d int)
+1151489780.23009#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.23009#5#root#localhost#test#Query#0#creating table#create table t3 (c int, d int)
+1151489780.282#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.282#5#root#localhost#test#Query#0#creating table#create table t1(f1 varchar(5) key)
+1151489780.33391#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.33391#5#root#localhost#test#Query#0#creating table#create table t1(f1 varchar(5) key)
+1151489780.38609#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.38609#5#root#localhost#test#Query#0#creating table#create table t1(x int, y int)
+1151489780.43789#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.43789#5#root#localhost#test#Query#0#NULL#create table t2(x int, z int)
+1151489780.48997#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.48997#5#root#localhost#test#Query#0#creating table#create table t2(x int, z int)
+1151489780.54193#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.59392#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.64595#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.64595#6#root#localhost#test#Sleep#0##NULL
+1151489780.6978#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.6978#6#root#localhost#test#Query#0#NULL#CREATE TABLE t1 (a INT, b INT, c INT, UNIQUE (A), UNIQUE(B))
+1151489780.74993#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.74993#6#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (a INT, b INT, c INT, UNIQUE (A), UNIQUE(B))
+1151489780.80183#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.80183#6#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (a INT, b INT, c INT, UNIQUE (A), UNIQUE(B))
+1151489780.85386#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.85386#6#root#localhost#test#Query#0#creating table#create table t1(a int primary key, b int)
+1151489780.9367#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.9367#6#root#localhost#test#Query#0#NULL#CREATE TABLE t1 (a INT, b INT, c INT, UNIQUE (A), UNIQUE(B))
+1151489780.98905#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489780.98905#6#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (a INT, b INT, c INT, UNIQUE (A), UNIQUE(B))
+1151489781.0408#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.0408#6#root#localhost#test#Query#0#NULL#CREATE TABLE t2 (a INT, b INT, c INT, d INT)
+1151489781.09283#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.09283#6#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (a INT, b INT, c INT, d INT)
+1151489781.14484#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.14484#6#root#localhost#test#Query#0#creating table#create table t1 (a int not null unique) engine=myisam
+1151489781.19702#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.19702#6#root#localhost#test#Query#0#creating table#create table t1 (a int not null unique) engine=myisam
+1151489781.24883#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.24883#6#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+a BIGINT(20) NOT NULL DEFAULT 0,
+PRIMARY KEY  (a)
+) ENGINE=MyISAM
+1151489781.35091#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.40273#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.40273#7#root#localhost#test#Sleep#0##NULL
+1151489781.45473#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.45473#7#root#localhost#test#Sleep#0##NULL
+1151489781.50672#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.50672#7#root#localhost#test#Query#0#Waiting on cond#drop table if exists t1,t2,t3
+1151489781.55876#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.55876#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (S1 INT)
+1151489781.6107#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.6107#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (S1 INT)
+1151489781.66275#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.66275#7#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (S1 INT)
+1151489781.7149#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.7149#7#root#localhost#test#Sleep#0##NULL
+1151489781.76669#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.76669#7#root#localhost#test#Query#0#creating table#create table t1 (id int primary key)
+1151489781.81875#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.81875#7#root#localhost#test#Query#0#creating table#create table t2 (id int)
+1151489781.87075#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.87075#7#root#localhost#test#Query#0#creating table#create table t2 (id int)
+1151489781.92385#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.92385#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+id int(11) NOT NULL auto_increment,
+token varchar(100) DEFAULT '' NOT NULL,
+count int(11) DEFAULT '0' NOT NULL,
+qty int(11),
+phone char(1) DEFAULT '' NOT NULL,
+timestamp datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+PRIMARY KEY (id),
+KEY token (token(15)),
+KEY timestamp (timestamp),
+UNIQUE token_2 (token(75),count,phone)
+)
+1151489781.97571#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489781.97571#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+id int(11) NOT NULL auto_increment,
+token varchar(100) DEFAULT '' NOT NULL,
+count int(11) DEFAULT '0' NOT NULL,
+qty int(11),
+phone char(1) DEFAULT '' NOT NULL,
+timestamp datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+PRIMARY KEY (id),
+KEY token (token(15)),
+KEY timestamp (timestamp),
+UNIQUE token_2 (token(75),count,phone)
+)
+1151489782.02767#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.02767#7#root#localhost#test#Query#1#creating table#CREATE TABLE t2 (
+id int(11) NOT NULL auto_increment,
+category int(11) DEFAULT '0' NOT NULL,
+county int(11) DEFAULT '0' NOT NULL,
+state int(11) DEFAULT '0' NOT NULL,
+phones int(11) DEFAULT '0' NOT NULL,
+nophones int(11) DEFAULT '0' NOT NULL,
+PRIMARY KEY (id),
+KEY category (category,county,state)
+)
+1151489782.07975#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.07975#7#root#localhost#test#Query#1#creating table#CREATE TABLE t2 (
+id int(11) NOT NULL auto_increment,
+category int(11) DEFAULT '0' NOT NULL,
+county int(11) DEFAULT '0' NOT NULL,
+state int(11) DEFAULT '0' NOT NULL,
+phones int(11) DEFAULT '0' NOT NULL,
+nophones int(11) DEFAULT '0' NOT NULL,
+PRIMARY KEY (id),
+KEY category (category,county,state)
+)
+1151489782.13162#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.13162#7#root#localhost#test#Query#0#creating table#create table t1 (a int primary key)
+1151489782.18372#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.18372#7#root#localhost#test#Query#0#Opening tables#select t1.a from t1 as t1 left join t1 as t2 using (a) left join t1 as t3 using (a) left join t1 as t4 using (a) left join t1 as t5 using (a) left join t1 as t6 using (a) left join t1 as t7 using (a) left join t1 as t8 using (a) left join t1 as t9 using (a) left join t1 as t10 using (a) left join t1 as t11 using (a) left join t1 as t12 using (a) left join t1 as t13 using (a) left join t1 as t14 using (a) left join t1 as t15 using (a) left join t1 as t16 using (a) left join t1 as t17 using (a) left join t1 as t18 using (a) left join t1 as t19 using (a) left join t1 as t20 using (a) left join t1 as t21 using (a) left join t1 as t22 using (a) left join t1 as t23 using (a) left join t1 as t24 using (a) left join t1 as t25 using (a) left join t1 as t26 using (a) left join t1 as t27 using (a) left join t1 as t28 using (a) left join t1 as t29 using (a) left join t1 as t30 using (a) left join t1 as t31 using (a) left join t1 as t32 using (a) left join t1 as t33 using (a) left join t1 as t34 using (a) left join t1 as t35 using (a) left join t1 as t36 using (a) left join t1 as t37 using (a) left join t1 as t38 using (a) left join t1 as t39 using (a) left join t1 as t40 using (a) left join t1 as t41 using (a) left join t1 as t42 using (a) left join t1 as t43 using (a) left join t1 as t44 using (a) left join t1 as t45 using (a) left join t1 as t46 using (a) left join t1 as t47 using (a) left join t1 as t48 using (a) left join t1 as t49 using (a) left join t1 as t50 using (a) left join t1 as t51 using (a) left join t1 as t52 using (a) left join t1 as t53 using (a) left join t1 as t54 using (a) left join t1 as t55 using (a) left join t1 as t56 using (a) left join t1 as t57 using (a) left join t1 as t58 using (a) left join t1 as t59 using (a) left join t1 as t60 using (a) left join t1 as t61 using (a) left join t1 as t62 using (a) left join t1 as t63 using (a) left join t1 as t64 using (a) left join t1 as t65 using (a)
+1151489782.2474#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.2474#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+a int(11) NOT NULL,
+b int(11) NOT NULL,
+PRIMARY KEY  (a,b)
+) ENGINE=MyISAM
+1151489782.29953#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.29953#7#root#localhost#test#Query#0#NULL#CREATE TABLE t2 (
+a int(11) default NULL
+) ENGINE=MyISAM
+1151489782.35202#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.35202#7#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+a int(11) default NULL
+) ENGINE=MyISAM
+1151489782.40464#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.40464#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (d DATE NOT NULL)
+1151489782.45658#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.45658#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (d DATE NOT NULL)
+1151489782.50858#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.50858#7#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (d DATE NOT NULL)
+1151489782.56057#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.56057#7#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (d DATE NOT NULL)
+1151489782.61306#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.61306#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+Document_ID varchar(50) NOT NULL default '',
+Contractor_ID varchar(6) NOT NULL default '',
+Language_ID char(3) NOT NULL default '',
+Expiration_Date datetime default NULL,
+Publishing_Date datetime default NULL,
+Title text,
+Column_ID varchar(50) NOT NULL default '',
+PRIMARY KEY  (Language_ID,Document_ID,Contractor_ID)
+)
+1151489782.66553#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.66553#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+Document_ID varchar(50) NOT NULL default '',
+Contractor_ID varchar(6) NOT NULL default '',
+Language_ID char(3) NOT NULL default '',
+Expiration_Date datetime default NULL,
+Publishing_Date datetime default NULL,
+Title text,
+Column_ID varchar(50) NOT NULL default '',
+PRIMARY KEY  (Language_ID,Document_ID,Contractor_ID)
+)
+1151489782.71746#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.71746#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+Document_ID varchar(50) NOT NULL default '',
+Contractor_ID varchar(6) NOT NULL default '',
+Language_ID char(3) NOT NULL default '',
+Expiration_Date datetime default NULL,
+Publishing_Date datetime default NULL,
+Title text,
+Column_ID varchar(50) NOT NULL default '',
+PRIMARY KEY  (Language_ID,Document_ID,Contractor_ID)
+)
+1151489782.76945#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.76945#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+Document_ID varchar(50) NOT NULL default '',
+Contractor_ID varchar(6) NOT NULL default '',
+Language_ID char(3) NOT NULL default '',
+Expiration_Date datetime default NULL,
+Publishing_Date datetime default NULL,
+Title text,
+Column_ID varchar(50) NOT NULL default '',
+PRIMARY KEY  (Language_ID,Document_ID,Contractor_ID)
+)
+1151489782.82166#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.82166#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+Document_ID varchar(50) NOT NULL default '',
+Contractor_ID varchar(6) NOT NULL default '',
+Language_ID char(3) NOT NULL default '',
+Expiration_Date datetime default NULL,
+Publishing_Date datetime default NULL,
+Title text,
+Column_ID varchar(50) NOT NULL default '',
+PRIMARY KEY  (Language_ID,Document_ID,Contractor_ID)
+)
+1151489782.87345#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.87345#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+Document_ID varchar(50) NOT NULL default '',
+Contractor_ID varchar(6) NOT NULL default '',
+Language_ID char(3) NOT NULL default '',
+Expiration_Date datetime default NULL,
+Publishing_Date datetime default NULL,
+Title text,
+Column_ID varchar(50) NOT NULL default '',
+PRIMARY KEY  (Language_ID,Document_ID,Contractor_ID)
+)
+1151489782.9255#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.9255#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+Document_ID varchar(50) NOT NULL default '',
+Contractor_ID varchar(6) NOT NULL default '',
+Language_ID char(3) NOT NULL default '',
+Expiration_Date datetime default NULL,
+Publishing_Date datetime default NULL,
+Title text,
+Column_ID varchar(50) NOT NULL default '',
+PRIMARY KEY  (Language_ID,Document_ID,Contractor_ID)
+)
+1151489782.97747#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489782.97747#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+Document_ID varchar(50) NOT NULL default '',
+Contractor_ID varchar(6) NOT NULL default '',
+Language_ID char(3) NOT NULL default '',
+Expiration_Date datetime default NULL,
+Publishing_Date datetime default NULL,
+Title text,
+Column_ID varchar(50) NOT NULL default '',
+PRIMARY KEY  (Language_ID,Document_ID,Contractor_ID)
+)
+1151489783.0306#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.0306#7#root#localhost#test#Sleep#0##NULL
+1151489783.08846#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.08846#7#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+Contractor_ID char(6) NOT NULL default '',
+Language_ID char(3) NOT NULL default '',
+Document_ID char(50) NOT NULL default '',
+CanRead char(1) default NULL,
+Customer_ID int(11) NOT NULL default '0',
+PRIMARY KEY  (Contractor_ID,Language_ID,Document_ID,Customer_ID)
+)
+1151489783.14045#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.14045#7#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+Contractor_ID char(6) NOT NULL default '',
+Language_ID char(3) NOT NULL default '',
+Document_ID char(50) NOT NULL default '',
+CanRead char(1) default NULL,
+Customer_ID int(11) NOT NULL default '0',
+PRIMARY KEY  (Contractor_ID,Language_ID,Document_ID,Customer_ID)
+)
+1151489783.19239#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.19239#7#root#localhost#test#Query#0#NULL#CREATE TABLE t3 (
+Language_ID char(3) NOT NULL default '',
+Column_ID char(50) NOT NULL default '',
+Contractor_ID char(6) NOT NULL default '',
+CanRead char(1) default NULL,
+Active char(1) default NULL,
+PRIMARY KEY  (Language_ID,Column_ID,Contractor_ID)
+)
+1151489783.24443#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.24443#7#root#localhost#test#Query#0#creating table#CREATE TABLE t3 (
+Language_ID char(3) NOT NULL default '',
+Column_ID char(50) NOT NULL default '',
+Contractor_ID char(6) NOT NULL default '',
+CanRead char(1) default NULL,
+Active char(1) default NULL,
+PRIMARY KEY  (Language_ID,Column_ID,Contractor_ID)
+)
+1151489783.29637#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.29637#7#root#localhost#test#Query#0#NULL#CREATE TABLE t1 (
+t1_id int(11) default NULL,
+t2_id int(11) default NULL,
+type enum('Cost','Percent') default NULL,
+cost_unit enum('Cost','Unit') default NULL,
+min_value double default NULL,
+max_value double default NULL,
+t3_id int(11) default NULL,
+item_id int(11) default NULL
+) ENGINE=MyISAM
+1151489783.34844#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.34844#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+t1_id int(11) default NULL,
+t2_id int(11) default NULL,
+type enum('Cost','Percent') default NULL,
+cost_unit enum('Cost','Unit') default NULL,
+min_value double default NULL,
+max_value double default NULL,
+t3_id int(11) default NULL,
+item_id int(11) default NULL
+) ENGINE=MyISAM
+1151489783.40044#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.40044#7#root#localhost#test#Query#0#NULL#CREATE TABLE t2 (
+id int(10) unsigned NOT NULL auto_increment,
+name varchar(255) default NULL,
+PRIMARY KEY  (id)
+) ENGINE=MyISAM
+1151489783.45236#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.45236#7#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+id int(10) unsigned NOT NULL auto_increment,
+name varchar(255) default NULL,
+PRIMARY KEY  (id)
+) ENGINE=MyISAM
+1151489783.50432#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.50432#7#root#localhost#test#Query#0#NULL#CREATE TABLE t1 (
+siteid varchar(25) NOT NULL default '',
+emp_id varchar(30) NOT NULL default '',
+rate_code varchar(10) default NULL,
+UNIQUE KEY site_emp (siteid,emp_id),
+KEY siteid (siteid)
+) ENGINE=MyISAM
+1151489783.55641#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.55641#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+siteid varchar(25) NOT NULL default '',
+emp_id varchar(30) NOT NULL default '',
+rate_code varchar(10) default NULL,
+UNIQUE KEY site_emp (siteid,emp_id),
+KEY siteid (siteid)
+) ENGINE=MyISAM
+1151489783.69992#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.69992#7#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+siteid varchar(25) NOT NULL default '',
+rate_code varchar(10) NOT NULL default '',
+base_rate float NOT NULL default '0',
+PRIMARY KEY  (siteid,rate_code),
+FULLTEXT KEY rate_code (rate_code)
+) ENGINE=MyISAM
+1151489783.75233#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.75233#7#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+siteid varchar(25) NOT NULL default '',
+rate_code varchar(10) NOT NULL default '',
+base_rate float NOT NULL default '0',
+PRIMARY KEY  (siteid,rate_code),
+FULLTEXT KEY rate_code (rate_code)
+) ENGINE=MyISAM
+1151489783.80433#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.80433#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (ID INTEGER NOT NULL PRIMARY KEY, Value1 VARCHAR(255))
+1151489783.85628#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.85628#7#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (ID INTEGER NOT NULL PRIMARY KEY, Value1 VARCHAR(255))
+1151489783.90832#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.90832#7#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (ID INTEGER NOT NULL PRIMARY KEY, Value2 VARCHAR(255))
+1151489783.96031#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489783.96031#7#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (ID INTEGER NOT NULL PRIMARY KEY, Value2 VARCHAR(255))
+1151489784.01241#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.01241#7#root#localhost#test#Query#1#creating table#CREATE TABLE t1 (a int)
+1151489784.06419#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.06419#7#root#localhost#test#Query#0#NULL#CREATE TABLE t2 (b int)
+1151489784.11625#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.11625#7#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (b int)
+1151489784.16831#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.16831#7#root#localhost#test#Query#0#creating table#CREATE TABLE t3 (c int)
+1151489784.22021#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.22021#7#root#localhost#test#Query#0#creating table#CREATE TABLE t3 (c int)
+1151489784.27226#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.27226#7#root#localhost#test#Query#0#creating table#create table t1 (i int)
+1151489784.32416#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.32416#7#root#localhost#test#Query#0#NULL#create table t2 (i int)
+1151489784.3762#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.3762#7#root#localhost#test#Query#0#creating table#create table t2 (i int)
+1151489784.42823#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.42823#7#root#localhost#test#Query#0#creating table#create table t3 (i int)
+1151489784.4802#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.4802#7#root#localhost#test#Query#0#creating table#create table t3 (i int)
+1151489784.53216#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.53216#7#root#localhost#test#Query#0#creating table#create table t1 (c int, b int)
+1151489784.58418#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.58418#7#root#localhost#test#Query#0#creating table#create table t1 (c int, b int)
+1151489784.63614#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.63614#7#root#localhost#test#Query#0#creating table#create table t2 (a int, b int)
+1151489784.68813#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.68813#7#root#localhost#test#Query#0#creating table#create table t2 (a int, b int)
+1151489784.74013#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.74013#7#root#localhost#test#Query#0#creating table#create table t3 (b int, c int)
+1151489784.79207#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.79207#7#root#localhost#test#Query#0#NULL#create table t4 (y int, c int)
+1151489784.84412#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.84412#7#root#localhost#test#Query#0#creating table#create table t4 (y int, c int)
+1151489784.89614#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.89614#7#root#localhost#test#Query#0#creating table#create table t5 (y int, z int)
+1151489784.948#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489784.948#7#root#localhost#test#Query#0#NULL#create table t6 (a int, c int)
+1151489785.00017#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.00017#7#root#localhost#test#Query#0#creating table#create table t6 (a int, c int)
+1151489785.05205#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.05205#7#root#localhost#test#Query#0#statistics#select * from  ((t1 natural join t2),  (t3 natural join t4)) natural join t5
+1151489785.11728#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.11728#7#root#localhost#test#Query#0#NULL#select * from information_schema.statistics join information_schema.columns
+using(table_name,column_name) where table_name='user'
+1151489785.17#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.17#7#root#localhost#test#Query#0#NULL#create table t1 (a1 int, a2 int)
+1151489785.22216#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.22216#7#root#localhost#test#Query#0#creating table#create table t1 (a1 int, a2 int)
+1151489785.27407#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.27407#7#root#localhost#test#Query#0#creating table#create table t2 (a1 int, b int)
+1151489785.32593#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.32593#7#root#localhost#test#Query#0#NULL#create table t3 (c1 int, c2 int)
+1151489785.37804#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.37804#7#root#localhost#test#Query#0#creating table#create table t3 (c1 int, c2 int)
+1151489785.43001#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.43001#7#root#localhost#test#Query#0#NULL#create table t4 (c2 int)
+1151489785.48209#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.48209#7#root#localhost#test#Query#0#creating table#create table t4 (c2 int)
+1151489785.53409#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.58598#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.63792#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.63792#8#root#localhost#test#Query#0#Waiting on cond#DROP TABLE IF EXISTS t1,t2,t3,t4
+1151489785.68994#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.68994#8#root#localhost#test#Query#0#Waiting on cond#DROP TABLE IF EXISTS t1,t2,t3,t4
+1151489785.74224#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.74224#8#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+project_id int(11) NOT NULL auto_increment,
+project_row_lock int(11) NOT NULL default '0',
+project_name varchar(80) NOT NULL default '',
+client_ptr int(11) NOT NULL default '0',
+project_contact_ptr int(11) default NULL,
+client_contact_ptr int(11) default NULL,
+billing_contact_ptr int(11) default NULL,
+comments mediumtext,
+PRIMARY KEY  (project_id),
+UNIQUE KEY project (client_ptr,project_name)
+) ENGINE=MyISAM PACK_KEYS=1
+1151489785.79492#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.79492#8#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+project_id int(11) NOT NULL auto_increment,
+project_row_lock int(11) NOT NULL default '0',
+project_name varchar(80) NOT NULL default '',
+client_ptr int(11) NOT NULL default '0',
+project_contact_ptr int(11) default NULL,
+client_contact_ptr int(11) default NULL,
+billing_contact_ptr int(11) default NULL,
+comments mediumtext,
+PRIMARY KEY  (project_id),
+UNIQUE KEY project (client_ptr,project_name)
+) ENGINE=MyISAM PACK_KEYS=1
+1151489785.84691#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.84691#8#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+project_id int(11) NOT NULL auto_increment,
+project_row_lock int(11) NOT NULL default '0',
+project_name varchar(80) NOT NULL default '',
+client_ptr int(11) NOT NULL default '0',
+project_contact_ptr int(11) default NULL,
+client_contact_ptr int(11) default NULL,
+billing_contact_ptr int(11) default NULL,
+comments mediumtext,
+PRIMARY KEY  (project_id),
+UNIQUE KEY project (client_ptr,project_name)
+) ENGINE=MyISAM PACK_KEYS=1
+1151489785.89893#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.89893#8#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+period_id int(11) NOT NULL auto_increment,
+period_type enum('user_table','client_table','role_table','member_table','project_table') default NULL,
+period_key int(11) default NULL,
+start_date datetime default NULL,
+end_date datetime default NULL,
+work_load int(11) default NULL,
+PRIMARY KEY  (period_id),
+KEY period_index (period_type,period_key),
+KEY date_index (start_date,end_date)
+) ENGINE=MyISAM PACK_KEYS=1
+1151489785.95155#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489785.95155#8#root#localhost#test#Query#0#NULL#INSERT INTO t2 VALUES (156,'role_table',2,'2000-01-01 00:00:00',NULL,NULL)
+1151489786.05743#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.05743#8#root#localhost#test#Query#1#creating table#CREATE TABLE t3 (
+budget_id int(11) NOT NULL auto_increment,
+project_ptr int(11) NOT NULL default '0',
+po_number varchar(20) NOT NULL default '',
+status enum('open','closed') default NULL,
+date_received datetime default NULL,
+amount_received float(10,2) default NULL,
+adjustment float(10,2) default NULL,
+PRIMARY KEY  (budget_id),
+UNIQUE KEY po (project_ptr,po_number)
+) ENGINE=MyISAM PACK_KEYS=1
+1151489786.1099#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.1099#8#root#localhost#test#Query#1#creating table#CREATE TABLE t3 (
+budget_id int(11) NOT NULL auto_increment,
+project_ptr int(11) NOT NULL default '0',
+po_number varchar(20) NOT NULL default '',
+status enum('open','closed') default NULL,
+date_received datetime default NULL,
+amount_received float(10,2) default NULL,
+adjustment float(10,2) default NULL,
+PRIMARY KEY  (budget_id),
+UNIQUE KEY po (project_ptr,po_number)
+) ENGINE=MyISAM PACK_KEYS=1
+1151489786.16227#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.16227#8#root#localhost#test#Query#0#creating table#CREATE TABLE t4 (
+client_id int(11) NOT NULL auto_increment,
+client_row_lock int(11) NOT NULL default '0',
+client_name varchar(80) NOT NULL default '',
+contact_ptr int(11) default NULL,
+comments mediumtext,
+PRIMARY KEY  (client_id),
+UNIQUE KEY client_name (client_name)
+) ENGINE=MyISAM PACK_KEYS=1
+1151489786.21485#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.21485#8#root#localhost#test#Query#0#creating table#CREATE TABLE t4 (
+client_id int(11) NOT NULL auto_increment,
+client_row_lock int(11) NOT NULL default '0',
+client_name varchar(80) NOT NULL default '',
+contact_ptr int(11) default NULL,
+comments mediumtext,
+PRIMARY KEY  (client_id),
+UNIQUE KEY client_name (client_name)
+) ENGINE=MyISAM PACK_KEYS=1
+1151489786.2668#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.2668#8#root#localhost#test#Sleep#0##NULL
+1151489786.31888#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.37094#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.37094#9#root#localhost#test#Query#0#Waiting on cond#DROP TABLE IF EXISTS t0,t1,t2,t3,t4,t5,t6,t7,t8,t9
+1151489786.42392#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.42392#9#root#localhost#test#Query#0#Waiting on cond#DROP TABLE IF EXISTS t0,t1,t2,t3,t4,t5,t6,t7,t8,t9
+1151489786.47616#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.47616#9#root#localhost#test#Query#0#Waiting on cond#DROP TABLE IF EXISTS t0,t1,t2,t3,t4,t5,t6,t7,t8,t9
+1151489786.52875#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.52875#9#root#localhost#test#Query#0#Waiting on cond#DROP TABLE IF EXISTS t0,t1,t2,t3,t4,t5,t6,t7,t8,t9
+1151489786.58084#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.58084#9#root#localhost#test#Query#0#creating table#CREATE TABLE t0 (a int, b int, c int)
+1151489786.63276#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.63276#9#root#localhost#test#Query#0#creating table#CREATE TABLE t0 (a int, b int, c int)
+1151489786.6852#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.6852#9#root#localhost#test#Sleep#0##NULL
+1151489786.73779#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.73779#9#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (a int, b int, c int)
+1151489786.78978#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.78978#9#root#localhost#test#Query#0#NULL#CREATE TABLE t2 (a int, b int, c int)
+1151489786.84178#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.84178#9#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (a int, b int, c int)
+1151489786.89369#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.89369#9#root#localhost#test#Query#0#NULL#CREATE TABLE t3 (a int, b int, c int)
+1151489786.94597#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.94597#9#root#localhost#test#Query#0#creating table#CREATE TABLE t3 (a int, b int, c int)
+1151489786.99774#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489786.99774#9#root#localhost#test#Query#0#creating table#CREATE TABLE t4 (a int, b int, c int)
+1151489787.04981#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.04981#9#root#localhost#test#Query#1#creating table#CREATE TABLE t4 (a int, b int, c int)
+1151489787.10169#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.10169#9#root#localhost#test#Query#0#creating table#CREATE TABLE t5 (a int, b int, c int)
+1151489787.17646#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.17646#9#root#localhost#test#Sleep#0##NULL
+1151489787.22877#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.22877#9#root#localhost#test#Query#0#creating table#CREATE TABLE t6 (a int, b int, c int)
+1151489787.28058#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.28058#9#root#localhost#test#Query#0#NULL#CREATE TABLE t7 (a int, b int, c int)
+1151489787.33265#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.33265#9#root#localhost#test#Query#0#creating table#CREATE TABLE t7 (a int, b int, c int)
+1151489787.38461#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.38461#9#root#localhost#test#Query#0#NULL#CREATE TABLE t8 (a int, b int, c int)
+1151489787.43666#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.43666#9#root#localhost#test#Query#0#creating table#CREATE TABLE t8 (a int, b int, c int)
+1151489787.48905#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.48905#9#root#localhost#test#Query#0#creating table#CREATE TABLE t9 (a int, b int, c int)
+1151489787.54165#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.54165#9#root#localhost#test#Query#0#creating table#CREATE TABLE t9 (a int, b int, c int)
+1151489787.59357#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.59357#9#root#localhost#test#Query#0#setup#CREATE INDEX idx_b ON t2(b)
+1151489787.64563#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.64563#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_b ON t2(b)
+1151489787.69958#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.69958#9#root#localhost#test#Sleep#0##NULL
+1151489787.75161#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.75161#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_b ON t4(b)
+1151489787.80357#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.80357#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_b ON t4(b)
+1151489787.85553#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.85553#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_b ON t4(b)
+1151489787.90749#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.90749#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_b ON t4(b)
+1151489787.95953#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489787.95953#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_b ON t4(b)
+1151489788.01155#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.01155#9#root#localhost#test#Query#1#creating table#CREATE INDEX idx_b ON t4(b)
+1151489788.06353#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.06353#9#root#localhost#test#Query#1#creating table#CREATE INDEX idx_b ON t4(b)
+1151489788.11543#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.11543#9#root#localhost#test#Query#0#setup#CREATE INDEX idx_b ON t5(b)
+1151489788.16753#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.16753#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_b ON t5(b)
+1151489788.22004#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.22004#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_b ON t8(b)
+1151489788.27247#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.27247#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_b ON t8(b)
+1151489788.32457#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.32457#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_b ON t1(b)
+1151489788.37644#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.37644#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_b ON t1(b)
+1151489788.42873#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.42873#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_b ON t1(b)
+1151489788.48361#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.48361#9#root#localhost#test#Sleep#0##NULL
+1151489788.53543#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.53543#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_a ON t0(a)
+1151489788.58741#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.58741#9#root#localhost#test#Query#0#creating table#CREATE INDEX idx_a ON t0(a)
+1151489788.63957#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.63957#9#root#localhost#test#Query#0#creating table#ALTER TABLE t3
+CHANGE COLUMN a a1 int,
+CHANGE COLUMN c c1 int
+1151489788.69135#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.69135#9#root#localhost#test#Query#0#creating table#ALTER TABLE t3
+CHANGE COLUMN a a1 int,
+CHANGE COLUMN c c1 int
+1151489788.74348#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.74348#9#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (a int)
+1151489788.79536#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.79536#9#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (a int)
+1151489788.8474#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.8474#9#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (a int)
+1151489788.89933#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.89933#9#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (a int)
+1151489788.9519#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489788.9519#9#root#localhost#test#Query#0#creating table#CREATE TABLE t3 (a int)
+1151489789.00426#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.00426#9#root#localhost#test#Query#0#NULL#CREATE TABLE t1(a int, key (a))
+1151489789.05646#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.05646#9#root#localhost#test#Query#0#creating table#CREATE TABLE t1(a int, key (a))
+1151489789.10826#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.10826#9#root#localhost#test#Query#0#NULL#CREATE TABLE t2(b int, key (b))
+1151489789.16045#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.16045#9#root#localhost#test#Query#0#creating table#CREATE TABLE t2(b int, key (b))
+1151489789.21233#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.21233#9#root#localhost#test#Query#0#creating table#CREATE TABLE t3(c int, key (c))
+1151489789.26424#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.26424#9#root#localhost#test#Query#0#Opening tables#INSERT INTO t2 VALUES (NULL), (0), (1), (2), (3), (4), (5), (6), (7), (8), (9),
+(10), (11), (12), (13), (14), (15), (16), (17), (18), (19)
+1151489789.31634#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.31634#9#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (c11 int)
+1151489789.36824#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.36824#9#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (c11 int)
+1151489789.4205#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.4205#9#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (c21 int)
+1151489789.4724#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.4724#9#root#localhost#test#Sleep#0##NULL
+1151489789.52424#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.52424#9#root#localhost#test#Query#0#creating table#CREATE TABLE t3 (c31 int)
+1151489789.57618#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.57618#9#root#localhost#test#Query#0#NULL#CREATE TABLE t1 (goods int(12) NOT NULL, price varchar(128) NOT NULL)
+1151489789.62823#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.62823#9#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (goods int(12) NOT NULL, price varchar(128) NOT NULL)
+1151489789.68046#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.68046#9#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (goods int(12), name varchar(50), shop char(2))
+1151489789.73317#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.73317#9#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (goods int(12), name varchar(50), shop char(2))
+1151489789.78523#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.78523#9#root#localhost#test#Query#0#creating table#create table t3 (groupid int(12) NOT NULL, goodsid int(12) NOT NULL)
+1151489789.83716#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.83716#9#root#localhost#test#Query#0#creating table#create table t3 (groupid int(12) NOT NULL, goodsid int(12) NOT NULL)
+1151489789.88944#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.88944#9#root#localhost#test#Query#0#creating table#CREATE TABLE t4 (groupid int(12))
+1151489789.94227#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489789.94227#9#root#localhost#test#Query#0#creating table#CREATE TABLE t4 (groupid int(12))
+1151489790.01056#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.01056#9#root#localhost#test#Query#1#creating table#CREATE TABLE t1(a int)
+1151489790.06318#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.06318#9#root#localhost#test#Query#1#creating table#CREATE TABLE t1(a int)
+1151489790.11512#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.11512#9#root#localhost#test#Query#0#creating table#CREATE TABLE t2(b int)
+1151489790.16705#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.16705#9#root#localhost#test#Query#0#NULL#CREATE TABLE t3(c int, d int)
+1151489790.21914#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.21914#9#root#localhost#test#Query#0#creating table#CREATE TABLE t3(c int, d int)
+1151489790.27127#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.27127#9#root#localhost#test#Query#0#creating table#CREATE TABLE t4(d int)
+1151489790.32312#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.32312#9#root#localhost#test#Query#0#creating table#CREATE TABLE t4(d int)
+1151489790.37509#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.37509#9#root#localhost#test#Query#0#creating table#CREATE TABLE t5(e int, f int)
+1151489790.42742#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.42742#9#root#localhost#test#Query#0#creating table#CREATE TABLE t5(e int, f int)
+1151489790.4801#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.4801#9#root#localhost#test#Query#0#creating table#CREATE TABLE t6(f int)
+1151489790.53198#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.53198#9#root#localhost#test#Query#0#NULL#create table t1 (id1 int(11) not null)
+1151489790.58408#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.58408#9#root#localhost#test#Query#0#creating table#create table t1 (id1 int(11) not null)
+1151489790.63598#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.63598#9#root#localhost#test#Query#0#NULL#create table t2 (id2 int(11) not null)
+1151489790.68805#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.68805#9#root#localhost#test#Query#0#creating table#create table t2 (id2 int(11) not null)
+1151489790.83094#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.83094#9#root#localhost#test#Query#0#creating table#create table t3 (id3 char(16) not null)
+1151489790.883#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.883#9#root#localhost#test#Query#0#creating table#create table t3 (id3 char(16) not null)
+1151489790.96903#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489790.96903#9#root#localhost#test#Query#0#creating table#create table t4 (id2 int(11) not null, id3 char(16))
+1151489791.022#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.022#9#root#localhost#test#Query#1#creating table#create table t4 (id2 int(11) not null, id3 char(16))
+1151489791.07395#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.07395#9#root#localhost#test#Query#0#creating table#create table t5 (id1 int(11) not null, key (id1))
+1151489791.12588#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.12588#9#root#localhost#test#Query#0#creating table#create table t5 (id1 int(11) not null, key (id1))
+1151489791.17788#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.17788#9#root#localhost#test#Query#0#NULL#create table t0 (a int)
+1151489791.23003#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.23003#9#root#localhost#test#Query#0#creating table#create table t0 (a int)
+1151489791.28199#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.28199#9#root#localhost#test#Query#0#creating table#create table t1(a int)
+1151489791.33385#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.33385#9#root#localhost#test#Query#0#NULL#create table t2 (a int, b int)
+1151489791.38592#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.38592#9#root#localhost#test#Query#0#creating table#create table t2 (a int, b int)
+1151489791.43801#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.43801#9#root#localhost#test#Query#0#creating table#create table t3(a int, b int, filler char(200), key(a))
+1151489791.48989#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.48989#9#root#localhost#test#Query#0#Repair by sorting#insert into t3 select a,a,'filler' from t1
+1151489791.5419#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.5419#9#root#localhost#test#Query#0#creating table#create table t1 (a int)
+1151489791.59387#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.59387#9#root#localhost#test#Query#0#creating table#create table t1 (a int)
+1151489791.64588#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.64588#9#root#localhost#test#Query#0#creating table#create table t2 (a int, filler char(100), key(a))
+1151489791.69782#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.69782#9#root#localhost#test#Query#0#creating table#create table t2 (a int, filler char(100), key(a))
+1151489791.74987#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.74987#9#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (id int NOT NULL PRIMARY KEY, type varchar(10))
+1151489791.80184#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.80184#9#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (pid int NOT NULL PRIMARY KEY, type varchar(10))
+1151489791.85377#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.85377#9#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (pid int NOT NULL PRIMARY KEY, type varchar(10))
+1151489791.90583#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.90583#9#root#localhost#test#Query#0#creating table#CREATE TABLE t3 (cid int NOT NULL PRIMARY KEY,
+id int NOT NULL,
+pid int NOT NULL)
+1151489791.9581#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489791.9581#9#root#localhost#test#Query#0#NULL#CREATE TABLE t1 (id1 int PRIMARY KEY, id2 int)
+1151489792.01082#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.01082#9#root#localhost#test#Query#1#creating table#CREATE TABLE t1 (id1 int PRIMARY KEY, id2 int)
+1151489792.06268#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.06268#9#root#localhost#test#Query#0#NULL#CREATE TABLE t2 (id1 int PRIMARY KEY, id2 int)
+1151489792.11479#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.11479#9#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (id1 int PRIMARY KEY, id2 int)
+1151489792.16671#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.16671#9#root#localhost#test#Query#0#NULL#CREATE TABLE t3 (id1 int PRIMARY KEY, id2 int)
+1151489792.21878#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.21878#9#root#localhost#test#Query#0#creating table#CREATE TABLE t3 (id1 int PRIMARY KEY, id2 int)
+1151489792.27091#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.27091#9#root#localhost#test#Query#0#creating table#CREATE TABLE t4 (id1 int PRIMARY KEY, id2 int)
+1151489792.32275#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.32275#9#root#localhost#test#Query#0#creating table#CREATE TABLE t4 (id1 int PRIMARY KEY, id2 int)
+1151489792.37475#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.37475#9#root#localhost#test#Query#0#creating table#CREATE TABLE t5 (id1 int PRIMARY KEY, id2 int)
+1151489792.42674#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.42674#9#root#localhost#test#Sleep#0##NULL
+1151489792.47875#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.53076#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.58282#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.58282#10#root#localhost#test#Query#0#Waiting on cond#drop table if exists t0,t1,t2,t3,t4,t5
+1151489792.63464#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.63464#10#root#localhost#test#Query#0#Waiting on cond#drop table if exists t0,t1,t2,t3,t4,t5
+1151489792.69227#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.69227#10#root#localhost#test#Query#0#Waiting on cond#drop table if exists t0,t1,t2,t3,t4,t5
+1151489792.74466#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.74466#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+grp int(11) default NULL,
+a bigint(20) unsigned default NULL,
+c char(10) NOT NULL default ''
+) ENGINE=MyISAM
+1151489792.79664#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.79664#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+grp int(11) default NULL,
+a bigint(20) unsigned default NULL,
+c char(10) NOT NULL default ''
+) ENGINE=MyISAM
+1151489792.84864#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.84864#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+grp int(11) default NULL,
+a bigint(20) unsigned default NULL,
+c char(10) NOT NULL default ''
+) ENGINE=MyISAM
+1151489792.90062#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.90062#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+grp int(11) default NULL,
+a bigint(20) unsigned default NULL,
+c char(10) NOT NULL default ''
+) ENGINE=MyISAM
+1151489792.97578#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489792.97578#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+grp int(11) default NULL,
+a bigint(20) unsigned default NULL,
+c char(10) NOT NULL default ''
+) ENGINE=MyISAM
+1151489793.02763#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.02763#10#root#localhost#test#Query#1#creating table#CREATE TABLE t1 (
+grp int(11) default NULL,
+a bigint(20) unsigned default NULL,
+c char(10) NOT NULL default ''
+) ENGINE=MyISAM
+1151489793.07955#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.07955#10#root#localhost#test#Query#1#creating table#CREATE TABLE t1 (
+grp int(11) default NULL,
+a bigint(20) unsigned default NULL,
+c char(10) NOT NULL default ''
+) ENGINE=MyISAM
+1151489793.23013#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.23013#10#root#localhost#test#Query#0#creating table#create table t2 (id int, a bigint unsigned not null, c char(10), d int, primary key (a))
+1151489793.28254#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.28254#10#root#localhost#test#Query#0#creating table#create table t2 (id int, a bigint unsigned not null, c char(10), d int, primary key (a))
+1151489793.33458#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.33458#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+usr_id INT unsigned NOT NULL,
+uniq_id INT unsigned NOT NULL AUTO_INCREMENT,
+start_num INT unsigned NOT NULL DEFAULT 1,
+increment INT unsigned NOT NULL DEFAULT 1,
+PRIMARY KEY (uniq_id),
+INDEX usr_uniq_idx (usr_id, uniq_id),
+INDEX uniq_usr_idx (uniq_id, usr_id)
+)
+1151489793.38655#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.38655#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+usr_id INT unsigned NOT NULL,
+uniq_id INT unsigned NOT NULL AUTO_INCREMENT,
+start_num INT unsigned NOT NULL DEFAULT 1,
+increment INT unsigned NOT NULL DEFAULT 1,
+PRIMARY KEY (uniq_id),
+INDEX usr_uniq_idx (usr_id, uniq_id),
+INDEX uniq_usr_idx (uniq_id, usr_id)
+)
+1151489793.43877#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.43877#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+usr_id INT unsigned NOT NULL,
+uniq_id INT unsigned NOT NULL AUTO_INCREMENT,
+start_num INT unsigned NOT NULL DEFAULT 1,
+increment INT unsigned NOT NULL DEFAULT 1,
+PRIMARY KEY (uniq_id),
+INDEX usr_uniq_idx (usr_id, uniq_id),
+INDEX uniq_usr_idx (uniq_id, usr_id)
+)
+1151489793.49152#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.49152#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+id INT unsigned NOT NULL DEFAULT 0,
+usr2_id INT unsigned NOT NULL DEFAULT 0,
+max INT unsigned NOT NULL DEFAULT 0,
+c_amount INT unsigned NOT NULL DEFAULT 0,
+d_max INT unsigned NOT NULL DEFAULT 0,
+d_num INT unsigned NOT NULL DEFAULT 0,
+orig_time INT unsigned NOT NULL DEFAULT 0,
+c_time INT unsigned NOT NULL DEFAULT 0,
+active ENUM ("no","yes") NOT NULL,
+PRIMARY KEY (id,usr2_id),
+INDEX id_idx (id),
+INDEX usr2_idx (usr2_id)
+)
+1151489793.5435#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.5435#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+id INT unsigned NOT NULL DEFAULT 0,
+usr2_id INT unsigned NOT NULL DEFAULT 0,
+max INT unsigned NOT NULL DEFAULT 0,
+c_amount INT unsigned NOT NULL DEFAULT 0,
+d_max INT unsigned NOT NULL DEFAULT 0,
+d_num INT unsigned NOT NULL DEFAULT 0,
+orig_time INT unsigned NOT NULL DEFAULT 0,
+c_time INT unsigned NOT NULL DEFAULT 0,
+active ENUM ("no","yes") NOT NULL,
+PRIMARY KEY (id,usr2_id),
+INDEX id_idx (id),
+INDEX usr2_idx (usr2_id)
+)
+1151489793.5955#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.5955#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+cod_asig int(11) DEFAULT '0' NOT NULL,
+desc_larga_cat varchar(80) DEFAULT '' NOT NULL,
+desc_larga_cas varchar(80) DEFAULT '' NOT NULL,
+desc_corta_cat varchar(40) DEFAULT '' NOT NULL,
+desc_corta_cas varchar(40) DEFAULT '' NOT NULL,
+cred_total double(3,1) DEFAULT '0.0' NOT NULL,
+pre_requisit int(11),
+co_requisit int(11),
+preco_requisit int(11),
+PRIMARY KEY (cod_asig)
+)
+1151489793.6474#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.6474#10#root#localhost#test#Query#0#update#INSERT INTO t1 VALUES (10362,'Laboratori d`Ordinadors','Laboratorio de Ordenadores','Laboratori d`Ordinadors','Laboratori Ordinadors',4.5,NULL,NULL,NULL)
+1151489793.69951#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.69951#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+idAssignatura int(11) DEFAULT '0' NOT NULL,
+Grup int(11) DEFAULT '0' NOT NULL,
+Places smallint(6) DEFAULT '0' NOT NULL,
+PlacesOcupades int(11) DEFAULT '0',
+PRIMARY KEY (idAssignatura,Grup)
+)
+1151489793.75142#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.75142#10#root#localhost#test#Query#0#Writing to net#INSERT INTO t2 VALUES (11403,5,0,0)
+1151489793.8035#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.8035#10#root#localhost#test#Query#0#creating table#CREATE TABLE t3 (
+id int(11) NOT NULL auto_increment,
+dni_pasaporte char(16) DEFAULT '' NOT NULL,
+idPla int(11) DEFAULT '0' NOT NULL,
+cod_asig int(11) DEFAULT '0' NOT NULL,
+any smallint(6) DEFAULT '0' NOT NULL,
+quatrimestre smallint(6) DEFAULT '0' NOT NULL,
+estat char(1) DEFAULT 'M' NOT NULL,
+PRIMARY KEY (id),
+UNIQUE dni_pasaporte (dni_pasaporte,idPla),
+UNIQUE dni_pasaporte_2 (dni_pasaporte,idPla,cod_asig,any,quatrimestre)
+)
+1151489793.85585#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.85585#10#root#localhost#test#Sleep#0##NULL
+1151489793.90864#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.90864#10#root#localhost#test#Query#0#creating table#CREATE TABLE t4 (
+id int(11) NOT NULL auto_increment,
+papa int(11) DEFAULT '0' NOT NULL,
+fill int(11) DEFAULT '0' NOT NULL,
+idPla int(11) DEFAULT '0' NOT NULL,
+PRIMARY KEY (id),
+KEY papa (idPla,papa),
+UNIQUE papa_2 (idPla,papa,fill)
+)
+1151489793.96037#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489793.96037#10#root#localhost#test#Query#0#NULL#CREATE TABLE t1 (
+id smallint(5) unsigned NOT NULL auto_increment,
+name char(60) DEFAULT '' NOT NULL,
+PRIMARY KEY (id)
+)
+1151489794.01245#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.01245#10#root#localhost#test#Query#1#creating table#CREATE TABLE t1 (
+id smallint(5) unsigned NOT NULL auto_increment,
+name char(60) DEFAULT '' NOT NULL,
+PRIMARY KEY (id)
+)
+1151489794.06446#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.06446#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+id smallint(5) unsigned NOT NULL auto_increment,
+owner smallint(5) unsigned DEFAULT '0' NOT NULL,
+name char(60),
+PRIMARY KEY (id)
+)
+1151489794.11633#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.11633#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+id smallint(5) unsigned NOT NULL auto_increment,
+owner smallint(5) unsigned DEFAULT '0' NOT NULL,
+name char(60),
+PRIMARY KEY (id)
+)
+1151489794.16905#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.16905#10#root#localhost#test#Query#0#NULL#create table t1 (id int not null, str char(10), index(str))
+1151489794.22137#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.22137#10#root#localhost#test#Query#0#creating table#create table t1 (id int not null, str char(10), index(str))
+1151489794.27339#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.27339#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+t1_id bigint(21) NOT NULL auto_increment,
+PRIMARY KEY (t1_id)
+)
+1151489794.32529#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.32529#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+t1_id bigint(21) NOT NULL auto_increment,
+PRIMARY KEY (t1_id)
+)
+1151489794.37734#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.37734#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+t2_id bigint(21) NOT NULL auto_increment,
+PRIMARY KEY (t2_id)
+)
+1151489794.42929#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.42929#10#root#localhost#test#Query#0#NULL#CREATE TABLE t3 (
+t3_id bigint(21) NOT NULL auto_increment,
+PRIMARY KEY (t3_id)
+)
+1151489794.48135#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.48135#10#root#localhost#test#Query#0#creating table#CREATE TABLE t3 (
+t3_id bigint(21) NOT NULL auto_increment,
+PRIMARY KEY (t3_id)
+)
+1151489794.53332#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.53332#10#root#localhost#test#Query#0#creating table#CREATE TABLE t4 (
+seq_0_id bigint(21) DEFAULT '0' NOT NULL,
+seq_1_id bigint(21) DEFAULT '0' NOT NULL,
+KEY seq_0_id (seq_0_id),
+KEY seq_1_id (seq_1_id)
+)
+1151489794.58527#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.58527#10#root#localhost#test#Query#0#creating table#CREATE TABLE t4 (
+seq_0_id bigint(21) DEFAULT '0' NOT NULL,
+seq_1_id bigint(21) DEFAULT '0' NOT NULL,
+KEY seq_0_id (seq_0_id),
+KEY seq_1_id (seq_1_id)
+)
+1151489794.6373#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.6373#10#root#localhost#test#Query#0#creating table#CREATE TABLE t5 (
+seq_0_id bigint(21) DEFAULT '0' NOT NULL,
+seq_1_id bigint(21) DEFAULT '0' NOT NULL,
+KEY seq_1_id (seq_1_id),
+KEY seq_0_id (seq_0_id)
+)
+1151489794.68942#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.68942#10#root#localhost#test#Query#0#creating table#CREATE TABLE t5 (
+seq_0_id bigint(21) DEFAULT '0' NOT NULL,
+seq_1_id bigint(21) DEFAULT '0' NOT NULL,
+KEY seq_1_id (seq_1_id),
+KEY seq_0_id (seq_0_id)
+)
+1151489794.74127#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.74127#10#root#localhost#test#Query#0#creating table#create table t1 (n int, m int, o int, key(n))
+1151489794.79321#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.79321#10#root#localhost#test#Query#0#NULL#create table t2 (n int not null, m int, o int, primary key(n))
+1151489794.84529#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.84529#10#root#localhost#test#Query#0#creating table#create table t2 (n int not null, m int, o int, primary key(n))
+1151489794.89715#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.89715#10#root#localhost#test#Query#0#NULL#CREATE TABLE t1 (id1 INT NOT NULL PRIMARY KEY, dat1 CHAR(1), id2 INT)
+1151489794.94926#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489794.94926#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (id1 INT NOT NULL PRIMARY KEY, dat1 CHAR(1), id2 INT)
+1151489795.00138#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.00138#10#root#localhost#test#Query#1#creating table#CREATE TABLE t2 (id2 INT NOT NULL PRIMARY KEY, dat2 CHAR(1))
+1151489795.05323#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.05323#10#root#localhost#test#Query#1#creating table#CREATE TABLE t2 (id2 INT NOT NULL PRIMARY KEY, dat2 CHAR(1))
+1151489795.10524#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.10524#10#root#localhost#test#Query#0#creating table#create table t1 ( color varchar(20), name varchar(20) )
+1151489795.1577#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.1577#10#root#localhost#test#Sleep#0##NULL
+1151489795.21038#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.21038#10#root#localhost#test#Query#0#creating table#create table t2 ( count int, color varchar(20) )
+1151489795.26214#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.26214#10#root#localhost#test#Query#0#Waiting on cond#drop table t1
+1151489795.31423#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.31423#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+pcode varchar(8) DEFAULT '' NOT NULL
+)
+1151489795.3661#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.3661#10#root#localhost#test#Query#0#NULL#CREATE TABLE t2 (
+pcode varchar(8) DEFAULT '' NOT NULL,
+KEY pcode (pcode)
+)
+1151489795.41834#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.41834#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+pcode varchar(8) DEFAULT '' NOT NULL,
+KEY pcode (pcode)
+)
+1151489795.47018#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.47018#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+id int(11),
+pid int(11),
+rep_del tinyint(4),
+KEY id (id),
+KEY pid (pid)
+)
+1151489795.52211#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.52211#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+id int(11),
+pid int(11),
+rep_del tinyint(4),
+KEY id (id),
+KEY pid (pid)
+)
+1151489795.57409#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.57409#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+id int(11),
+pid int(11),
+rep_del tinyint(4),
+KEY id (id),
+KEY pid (pid)
+)
+1151489795.62608#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.62608#10#root#localhost#test#Query#0#setup#create index rep_del ON t1(rep_del)
+1151489795.67827#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.67827#10#root#localhost#test#Query#0#creating table#create index rep_del ON t1(rep_del)
+1151489795.73003#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.73003#10#root#localhost#test#Query#0#creating table#create index rep_del ON t1(rep_del)
+1151489795.78204#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.78204#10#root#localhost#test#Query#0#NULL#CREATE TABLE t1 (
+id int(11) DEFAULT '0' NOT NULL,
+name tinytext DEFAULT '' NOT NULL,
+UNIQUE id (id)
+)
+1151489795.83411#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.83411#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+id int(11) DEFAULT '0' NOT NULL,
+name tinytext DEFAULT '' NOT NULL,
+UNIQUE id (id)
+)
+1151489795.88607#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.88607#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+id int(11) DEFAULT '0' NOT NULL,
+idx int(11) DEFAULT '0' NOT NULL,
+UNIQUE id (id,idx)
+)
+1151489795.93826#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.93826#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+id int(11) DEFAULT '0' NOT NULL,
+idx int(11) DEFAULT '0' NOT NULL,
+UNIQUE id (id,idx)
+)
+1151489795.99007#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489795.99007#10#root#localhost#test#Query#0#creating table#create table t1 (bug_id mediumint, reporter mediumint)
+1151489796.04205#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.04205#10#root#localhost#test#Query#1#creating table#create table t1 (bug_id mediumint, reporter mediumint)
+1151489796.09405#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.09405#10#root#localhost#test#Query#0#creating table#create table t2 (bug_id mediumint, who mediumint, index(who))
+1151489796.14592#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.14592#10#root#localhost#test#Query#0#NULL#create table t1 (fooID smallint unsigned auto_increment, primary key (fooID))
+1151489796.19825#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.19825#10#root#localhost#test#Query#0#creating table#create table t1 (fooID smallint unsigned auto_increment, primary key (fooID))
+1151489796.25106#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.25106#10#root#localhost#test#Query#0#creating table#create table t2 (fooID smallint unsigned not null, barID smallint unsigned not null, primary key (fooID,barID))
+1151489796.30297#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.30297#10#root#localhost#test#Query#0#creating table#create table t2 (fooID smallint unsigned not null, barID smallint unsigned not null, primary key (fooID,barID))
+1151489796.355#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.355#10#root#localhost#test#Query#0#creating table#create table t1 (i int)
+1151489796.40695#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.40695#10#root#localhost#test#Query#0#creating table#create table t1 (i int)
+1151489796.45897#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.45897#10#root#localhost#test#Query#0#creating table#create table t2 (i int)
+1151489796.51085#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.51085#10#root#localhost#test#Query#0#NULL#create table t3 (i int)
+1151489796.56296#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.56296#10#root#localhost#test#Query#0#creating table#create table t3 (i int)
+1151489796.61495#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.61495#10#root#localhost#test#Query#0#creating table#create table t1 (f1 integer,f2 integer,f3 integer)
+1151489796.66688#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.66688#10#root#localhost#test#Query#0#creating table#create table t1 (f1 integer,f2 integer,f3 integer)
+1151489796.71893#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.71893#10#root#localhost#test#Query#0#creating table#create table t2 (f2 integer,f4 integer)
+1151489796.77097#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.77097#10#root#localhost#test#Query#0#NULL#create table t3 (f3 integer,f5 integer)
+1151489796.82302#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.82302#10#root#localhost#test#Query#0#creating table#create table t3 (f3 integer,f5 integer)
+1151489796.8749#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.8749#10#root#localhost#test#Query#0#creating table#create table t1 (a1 int, a2 int)
+1151489796.92687#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.92687#10#root#localhost#test#Query#0#creating table#create table t1 (a1 int, a2 int)
+1151489796.97896#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489796.97896#10#root#localhost#test#Query#0#creating table#create table t2 (b1 int not null, b2 int)
+1151489797.0308#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.0308#10#root#localhost#test#Query#0#NULL#create table t3 (c1 int, c2 int)
+1151489797.08285#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.08285#10#root#localhost#test#Query#0#creating table#create table t3 (c1 int, c2 int)
+1151489797.13484#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.13484#10#root#localhost#test#Query#0#creating table#create table t1 (
+a int(11),
+b char(10),
+key (a)
+)
+1151489797.18672#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.18672#10#root#localhost#test#Query#0#NULL#create table t2 (a int)
+1151489797.23891#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.23891#10#root#localhost#test#Query#0#creating table#create table t2 (a int)
+1151489797.29088#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.29088#10#root#localhost#test#Query#0#creating table#create table t1 (
+match_id tinyint(3) unsigned not null auto_increment,
+home tinyint(3) unsigned default '0',
+unique key match_id (match_id),
+key match_id_2 (match_id)
+)
+1151489797.34273#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.34273#10#root#localhost#test#Query#0#creating table#create table t1 (
+match_id tinyint(3) unsigned not null auto_increment,
+home tinyint(3) unsigned default '0',
+unique key match_id (match_id),
+key match_id_2 (match_id)
+)
+1151489797.39478#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.39478#10#root#localhost#test#Query#0#creating table#create table t2 (
+player_id tinyint(3) unsigned default '0',
+match_1_h tinyint(3) unsigned default '0',
+key player_id (player_id)
+)
+1151489797.44675#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.44675#10#root#localhost#test#Query#0#statistics#explain select s.*, '*', m.*, (s.match_1_h - m.home) UUX from 
+(t2 s left join t1 m on m.match_id = 1) 
+order by UUX desc
+1151489797.49879#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.49879#10#root#localhost#test#Query#0#creating table#create table t1 (a int, b int, unique index idx (a, b))
+1151489797.55091#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.55091#10#root#localhost#test#Query#0#creating table#create table t2 (a int, b int, c int, unique index idx (a, b))
+1151489797.60375#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.60375#10#root#localhost#test#Query#0#creating table#create table t2 (a int, b int, c int, unique index idx (a, b))
+1151489797.65572#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.65572#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+ts_id bigint(20) default NULL,
+inst_id tinyint(4) default NULL,
+flag_name varchar(64) default NULL,
+flag_value text,
+UNIQUE KEY ts_id (ts_id,inst_id,flag_name)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
+1151489797.70801#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.70801#10#root#localhost#test#Query#0#NULL#CREATE TABLE t2 (
+ts_id bigint(20) default NULL,
+inst_id tinyint(4) default NULL,
+flag_name varchar(64) default NULL,
+flag_value text,
+UNIQUE KEY ts_id (ts_id,inst_id,flag_name)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
+1151489797.76074#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.76074#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+ts_id bigint(20) default NULL,
+inst_id tinyint(4) default NULL,
+flag_name varchar(64) default NULL,
+flag_value text,
+UNIQUE KEY ts_id (ts_id,inst_id,flag_name)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
+1151489797.91592#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.91592#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+ts_id bigint(20) default NULL,
+inst_id tinyint(4) default NULL,
+flag_name varchar(64) default NULL,
+flag_value text,
+UNIQUE KEY ts_id (ts_id,inst_id,flag_name)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
+1151489797.96867#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489797.96867#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+id int(11) unsigned NOT NULL auto_increment,
+text_id int(10) unsigned default NULL,
+PRIMARY KEY  (id)
+)
+1151489798.02069#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.02069#10#root#localhost#test#Query#1#creating table#CREATE TABLE t1 (
+id int(11) unsigned NOT NULL auto_increment,
+text_id int(10) unsigned default NULL,
+PRIMARY KEY  (id)
+)
+1151489798.07267#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.07267#10#root#localhost#test#Query#1#creating table#CREATE TABLE t1 (
+id int(11) unsigned NOT NULL auto_increment,
+text_id int(10) unsigned default NULL,
+PRIMARY KEY  (id)
+)
+1151489798.12462#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.12462#10#root#localhost#test#Query#1#creating table#CREATE TABLE t1 (
+id int(11) unsigned NOT NULL auto_increment,
+text_id int(10) unsigned default NULL,
+PRIMARY KEY  (id)
+)
+1151489798.17664#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.17664#10#root#localhost#test#Query#1#creating table#CREATE TABLE t1 (
+id int(11) unsigned NOT NULL auto_increment,
+text_id int(10) unsigned default NULL,
+PRIMARY KEY  (id)
+)
+1151489798.22861#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.22861#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (
+text_id char(3) NOT NULL default '',
+language_id char(3) NOT NULL default '',
+text_data text,
+PRIMARY KEY  (text_id,language_id)
+)
+1151489798.28053#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.28053#10#root#localhost#test#Query#0#NULL#CREATE TABLE t0 (a0 int PRIMARY KEY)
+1151489798.33267#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.33267#10#root#localhost#test#Query#0#creating table#CREATE TABLE t0 (a0 int PRIMARY KEY)
+1151489798.38461#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.38461#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (a1 int PRIMARY KEY)
+1151489798.43658#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.43658#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (a1 int PRIMARY KEY)
+1151489798.4886#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.4886#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (a2 int)
+1151489798.54058#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.54058#10#root#localhost#test#Query#0#creating table#CREATE TABLE t3 (a3 int)
+1151489798.59372#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.59372#10#root#localhost#test#Query#0#creating table#CREATE TABLE t3 (a3 int)
+1151489798.64554#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.64554#10#root#localhost#test#Query#0#creating table#create table t1 (a int, b int)
+1151489798.69831#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.69831#10#root#localhost#test#Query#0#NULL#create table t2 (a int, b int)
+1151489798.75056#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.75056#10#root#localhost#test#Query#0#creating table#create table t2 (a int, b int)
+1151489798.80254#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.80254#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (a int PRIMARY KEY, b int)
+1151489798.85446#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.85446#10#root#localhost#test#Query#0#NULL#CREATE TABLE t2 (a int PRIMARY KEY, b int)
+1151489798.90652#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.90652#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (a int PRIMARY KEY, b int)
+1151489798.95877#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489798.95877#10#root#localhost#test#Query#0#NULL#create table t1 (a int, b varchar(20))
+1151489799.01151#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.01151#10#root#localhost#test#Query#1#creating table#create table t1 (a int, b varchar(20))
+1151489799.06348#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.06348#10#root#localhost#test#Query#0#creating table#create table t2 (a int, c varchar(20))
+1151489799.11539#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.11539#10#root#localhost#test#Query#0#NULL#create table t1 (gid smallint(5) unsigned not null, x int(11) not null, y int(11) not null, art int(11) not null, primary key  (gid,x,y))
+1151489799.16743#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.16743#10#root#localhost#test#Query#0#creating table#create table t1 (gid smallint(5) unsigned not null, x int(11) not null, y int(11) not null, art int(11) not null, primary key  (gid,x,y))
+1151489799.21947#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.21947#10#root#localhost#test#Query#0#creating table#create table t2 (gid smallint(5) unsigned not null, x int(11) not null, y int(11) not null, id int(11) not null, primary key  (gid,id,x,y), key id (id))
+1151489799.2715#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.2715#10#root#localhost#test#Query#0#creating table#create table t2 (gid smallint(5) unsigned not null, x int(11) not null, y int(11) not null, id int(11) not null, primary key  (gid,id,x,y), key id (id))
+1151489799.32341#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.32341#10#root#localhost#test#Query#0#creating table#create table t3 ( set_id smallint(5) unsigned not null, id tinyint(4) unsigned not null, name char(12) not null, primary key  (id,set_id))
+1151489799.37535#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.37535#10#root#localhost#test#Query#0#NULL#CREATE TABLE t1 (EMPNUM INT, GRP INT)
+1151489799.42741#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.42741#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (EMPNUM INT, GRP INT)
+1151489799.47966#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.47966#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (EMPNUM INT, NAME CHAR(5))
+1151489799.53233#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.53233#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (EMPNUM INT, NAME CHAR(5))
+1151489799.58439#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.58439#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (c11 int)
+1151489799.6367#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.6367#10#root#localhost#test#Sleep#0##NULL
+1151489799.68981#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.68981#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (c21 int)
+1151489799.74241#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.74241#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (a int PRIMARY KEY, b int)
+1151489799.79431#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.79431#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (a int PRIMARY KEY, b int)
+1151489799.84636#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.84636#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (a int PRIMARY KEY, b int)
+1151489799.89823#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.89823#10#root#localhost#test#Query#0#Opening tables#INSERT INTO t2 VALUES (3,0), (4,1), (6,4), (7,5)
+1151489799.95035#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489799.95035#10#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (id int(11) NOT NULL PRIMARY KEY, name varchar(20),
+INDEX (name)) ENGINE=InnoDB
+1151489800.00231#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.00231#10#root#localhost#test#Query#1#creating table#CREATE TABLE t1 (id int(11) NOT NULL PRIMARY KEY, name varchar(20),
+INDEX (name)) ENGINE=InnoDB
+1151489800.05432#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.05432#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (id int(11) NOT NULL PRIMARY KEY, fkey int(11),
+FOREIGN KEY (fkey) REFERENCES t2(id)) ENGINE=InnoDB
+1151489800.10632#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.10632#10#root#localhost#test#Query#0#creating table#CREATE TABLE t2 (id int(11) NOT NULL PRIMARY KEY, fkey int(11),
+FOREIGN KEY (fkey) REFERENCES t2(id)) ENGINE=InnoDB
+1151489800.15824#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.15824#10#root#localhost#test#Query#0#update#INSERT INTO t2 VALUES (1,1),(2,2),(3,2),(4,3),(5,3)
+1151489800.21045#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.26235#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.31422#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.31422#11#root#localhost#test#Sleep#0##NULL
+1151489800.36618#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.36618#11#root#localhost#test#Sleep#0##NULL
+1151489800.4189#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.4189#11#root#localhost#test#Query#0#Waiting on cond#drop table if exists t1,t2,t3
+1151489800.47137#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.47137#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+ID CHAR(32) NOT NULL,
+name CHAR(32) NOT NULL,
+value CHAR(255),
+INDEX indexIDname (ID(8),name(8))
+)
+1151489800.52318#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.52318#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+ID CHAR(32) NOT NULL,
+name CHAR(32) NOT NULL,
+value CHAR(255),
+INDEX indexIDname (ID(8),name(8))
+)
+1151489800.57521#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.57521#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+price int(5) DEFAULT '0' NOT NULL,
+area varchar(40) DEFAULT '' NOT NULL,
+type varchar(40) DEFAULT '' NOT NULL,
+transityes enum('Y','N') DEFAULT 'Y' NOT NULL,
+shopsyes enum('Y','N') DEFAULT 'Y' NOT NULL,
+schoolsyes enum('Y','N') DEFAULT 'Y' NOT NULL,
+petsyes enum('Y','N') DEFAULT 'Y' NOT NULL,
+KEY price (price,area,type,transityes,shopsyes,schoolsyes,petsyes)
+)
+1151489800.62846#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.62846#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+price int(5) DEFAULT '0' NOT NULL,
+area varchar(40) DEFAULT '' NOT NULL,
+type varchar(40) DEFAULT '' NOT NULL,
+transityes enum('Y','N') DEFAULT 'Y' NOT NULL,
+shopsyes enum('Y','N') DEFAULT 'Y' NOT NULL,
+schoolsyes enum('Y','N') DEFAULT 'Y' NOT NULL,
+petsyes enum('Y','N') DEFAULT 'Y' NOT NULL,
+KEY price (price,area,type,transityes,shopsyes,schoolsyes,petsyes)
+)
+1151489800.68116#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.68116#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (program enum('signup','unique','sliding') not null,  type enum('basic','sliding','signup'),  sites set('mt'),  PRIMARY KEY (program))
+1151489800.7331#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.7331#11#root#localhost#test#Query#0#setup#ALTER TABLE t1 modify program enum('signup','unique','sliding')
+1151489800.78518#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.78518#11#root#localhost#test#Query#0#creating table#ALTER TABLE t1 modify program enum('signup','unique','sliding')
+1151489800.8371#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.8371#11#root#localhost#test#Query#0#NULL#CREATE TABLE t1 (
+name varchar(50) DEFAULT '' NOT NULL,
+author varchar(50) DEFAULT '' NOT NULL,
+category decimal(10,0) DEFAULT '0' NOT NULL,
+email varchar(50),
+password varchar(50),
+proxy varchar(50),
+bitmap varchar(20),
+msg varchar(255),
+urlscol varchar(127),
+urlhttp varchar(127),
+timeout decimal(10,0),
+nbcnx decimal(10,0),
+creation decimal(10,0),
+livinguntil decimal(10,0),
+lang decimal(10,0),
+type decimal(10,0),
+subcat decimal(10,0),
+subtype decimal(10,0),
+reg char(1),
+scs varchar(255),
+capacity decimal(10,0),
+userISP varchar(50),
+CCident varchar(50) DEFAULT '' NOT NULL,
+PRIMARY KEY (name,author,category)
+)
+1151489800.88944#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.88944#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+name varchar(50) DEFAULT '' NOT NULL,
+author varchar(50) DEFAULT '' NOT NULL,
+category decimal(10,0) DEFAULT '0' NOT NULL,
+email varchar(50),
+password varchar(50),
+proxy varchar(50),
+bitmap varchar(20),
+msg varchar(255),
+urlscol varchar(127),
+urlhttp varchar(127),
+timeout decimal(10,0),
+nbcnx decimal(10,0),
+creation decimal(10,0),
+livinguntil decimal(10,0),
+lang decimal(10,0),
+type decimal(10,0),
+subcat decimal(10,0),
+subtype decimal(10,0),
+reg char(1),
+scs varchar(255),
+capacity decimal(10,0),
+userISP varchar(50),
+CCident varchar(50) DEFAULT '' NOT NULL,
+PRIMARY KEY (name,author,category)
+)
+1151489800.94335#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.94335#11#root#localhost#test#Query#0#creating table#create table t1
+(
+name_id int not null auto_increment,
+name blob,
+INDEX name_idx (name(5)),
+primary key (name_id)
+)
+1151489800.99512#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489800.99512#11#root#localhost#test#Query#0#creating table#create table t1
+(
+name_id int not null auto_increment,
+name blob,
+INDEX name_idx (name(5)),
+primary key (name_id)
+)
+1151489801.04713#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.04713#11#root#localhost#test#Query#0#creating table#create table t2
+(
+name_id int not null auto_increment,
+name char(255) binary,
+INDEX name_idx (name(5)),
+primary key (name_id)
+)
+1151489801.09903#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.09903#11#root#localhost#test#Query#0#init#CREATE TABLE t3 SELECT * FROM t2 WHERE name='[T,U]_axpby'
+1151489801.1511#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.1511#11#root#localhost#test#Query#0#creating table#CREATE TABLE t3 SELECT * FROM t2 WHERE name='[T,U]_axpby'
+1151489801.20304#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.20304#11#root#localhost#test#Query#0#NULL#create table t1
+(
+SEQNO                         numeric(12 ) not null,
+MOTYPEID                 numeric(12 ) not null,
+MOINSTANCEID     numeric(12 ) not null,
+ATTRID                       numeric(12 ) not null,
+VALUE                         varchar(120) not null,
+primary key (SEQNO, MOTYPEID, MOINSTANCEID, ATTRID, VALUE )
+)
+1151489801.2551#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.2551#11#root#localhost#test#Query#0#creating table#create table t1
+(
+SEQNO                         numeric(12 ) not null,
+MOTYPEID                 numeric(12 ) not null,
+MOINSTANCEID     numeric(12 ) not null,
+ATTRID                       numeric(12 ) not null,
+VALUE                         varchar(120) not null,
+primary key (SEQNO, MOTYPEID, MOINSTANCEID, ATTRID, VALUE )
+)
+1151489801.30708#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.30708#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+a tinytext NOT NULL,
+b tinyint(3) unsigned NOT NULL default '0',
+PRIMARY KEY (a(32),b)
+) ENGINE=MyISAM
+1151489801.35957#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.35957#11#root#localhost#test#Sleep#0##NULL
+1151489801.4121#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.4121#11#root#localhost#test#Query#0#creating table#create table t1 (a int not null unique, b int unique, c int, d int not null primary key, key(c), e int not null unique)
+1151489801.46448#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.46448#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (c CHAR(10) NOT NULL,i INT NOT NULL AUTO_INCREMENT,
+UNIQUE (c,i))
+1151489801.51696#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.51696#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (c CHAR(10) NOT NULL,i INT NOT NULL AUTO_INCREMENT,
+UNIQUE (c,i))
+1151489801.56903#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.56903#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (c CHAR(10) NULL, i INT NOT NULL AUTO_INCREMENT,
+UNIQUE (c,i))
+1151489801.621#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.621#11#root#localhost#test#Query#0#creating table#create table t1 (i int, a char(200), b text, unique (a), unique (b(300))) charset utf8
+1151489801.67297#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.67297#11#root#localhost#test#Query#0#creating table#create table t1 (i int, a char(200), b text, unique (a), unique (b(300))) charset utf8
+1151489801.725#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.725#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (id int unsigned auto_increment, name char(50), primary key (id)) engine=myisam
+1151489801.7769#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.7769#11#root#localhost#test#Query#0#setup#ALTER TABLE t1 DROP PRIMARY KEY, ADD INDEX (id)
+1151489801.82899#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.82899#11#root#localhost#test#Query#0#creating table#ALTER TABLE t1 DROP PRIMARY KEY, ADD INDEX (id)
+1151489801.88096#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.88096#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (numeropost mediumint(8) unsigned NOT NULL default '0', numreponse int(10) unsigned NOT NULL auto_increment, PRIMARY KEY (numeropost,numreponse), UNIQUE KEY numreponse (numreponse))
+1151489801.93294#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.93294#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (numeropost mediumint(8) unsigned NOT NULL default '0', numreponse int(10) unsigned NOT NULL auto_increment, PRIMARY KEY (numeropost,numreponse), UNIQUE KEY numreponse (numreponse))
+1151489801.9849#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489801.9849#11#root#localhost#test#Query#0#creating table#create table t1 (c varchar(30) character set utf8, t text character set utf8, unique (c(2)), unique (t(3))) engine=myisam
+1151489802.03686#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.03686#11#root#localhost#test#Query#0#Writing to net#select t from t1 where t=0xD0B1D0B1212223D0B1D0B1D0B1D0B1
+1151489802.08912#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.08912#11#root#localhost#test#Query#0#creating table#CREATE TABLE t1 (
+c1 int,
+c2 varbinary(240),
+UNIQUE KEY (c1),
+KEY (c2)
+) ENGINE=MyISAM
+1151489802.14081#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.14081#11#root#localhost#test#Query#0#updating#delete from t1 where c1=1
+1151489802.19287#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.19287#11#root#localhost#test#Query#0#creating table#create table t1 (c1 char(10), c2 char(10))
+1151489802.24533#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.24533#11#root#localhost#test#Query#0#creating table#create table t1 (
+c1 int,
+c2 varchar(20) not null,
+primary key (c1),
+key (c2(10))
+) engine=myisam
+1151489802.29784#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.29784#11#root#localhost#test#Query#0#creating table#create table t1 (
+c1 int,
+c2 varchar(20) not null,
+primary key (c1),
+key (c2(10))
+) engine=myisam
+1151489802.34993#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.34993#11#root#localhost#test#Query#0#creating table#create table t1 (a varchar(10), b varchar(10), key(a(10),b(10)))
+1151489802.40198#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.40198#11#root#localhost#test#Query#0#setup#alter table t1 modify b varchar(20)
+1151489802.45397#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.45397#11#root#localhost#test#Query#0#creating table#alter table t1 modify b varchar(20)
+1151489802.50587#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.50587#11#root#localhost#test#Query#0#creating table#alter table t1 modify a varchar(20)
+1151489802.55794#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.55794#11#root#localhost#test#Query#0#creating table#alter table t1 modify a varchar(20)
+1151489802.60992#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.60992#11#root#localhost#test#Query#0#NULL#create table t1 (a int not null primary key, b varchar(20) not null unique)
+1151489802.66192#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.66192#11#root#localhost#test#Query#0#creating table#create table t1 (a int not null primary key, b varchar(20) not null unique)
+1151489802.71511#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.71511#11#root#localhost#test#Sleep#0##NULL
+1151489802.76788#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.76788#11#root#localhost#test#Query#0#creating table#create table t1 (a int not null primary key, b int not null unique)
+1151489802.81974#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.81974#11#root#localhost#test#Query#0#creating table#create table t1 (a int not null primary key, b int not null unique)
+1151489802.87177#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.87177#11#root#localhost#test#Query#0#creating table#create table t1 (a int not null primary key, b int not null unique)
+1151489802.92382#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.92382#11#root#localhost#test#Query#0#NULL#create table t1 (a int not null primary key, b varchar(20) not null, unique (b(10)))
+1151489802.97574#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489802.97574#11#root#localhost#test#Query#0#creating table#create table t1 (a int not null primary key, b varchar(20) not null, unique (b(10)))
+1151489803.02787#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489803.02787#11#root#localhost#test#Query#1#creating table#create table t1 (a int not null primary key, b varchar(20) not null, unique (b(10)))
+1151489803.07972#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489803.07972#11#root#localhost#test#Query#1#creating table#create table t1 (a int not null primary key, b varchar(20) not null, unique (b(10)))
+1151489803.13169#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489803.13169#11#root#localhost#test#Query#1#creating table#create table t1 (a int not null primary key, b varchar(20) not null, unique (b(10)))
+1151489803.18367#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489803.18367#11#root#localhost#test#Query#1#creating table#create table t1 (a int not null primary key, b varchar(20) not null, unique (b(10)))
+1151489803.23576#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489803.23576#11#root#localhost#test#Query#1#creating table#create table t1 (a int not null primary key, b varchar(20) not null, unique (b(10)))
+1151489803.28764#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489803.28764#11#root#localhost#test#Query#1#creating table#create table t1 (a int not null primary key, b varchar(20) not null, unique (b(10)))
+1151489803.33984#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489803.33984#11#root#localhost#test#Query#0#creating table#create table t1 (a int not null primary key, b varchar(20) not null, c varchar(20) not null, unique(b(10),c(10)))
+1151489803.39161#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489803.39161#11#root#localhost#test#Sleep#0##NULL
+1151489803.44369#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489803.49589#1#root#master.rebenweg:33299#NULL#Query#0#NULL#SHOW FULL PROCESSLIST
+1151489803.49589#12#unauthenticated user#localhost#NULL#Connect#NULL#Reading from net#NULL

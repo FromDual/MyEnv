@@ -1,0 +1,74 @@
+#!/bin/sh
+
+lTest=1;
+ret=0;
+
+# Tests for v 0.1
+# ---------------
+
+cat << EOF > input
+1
+2
+3
+aaa
+bbb
+ccc
+aaa
+bbb
+ccc
+aaa
+bbb
+ccc
+EOF
+
+./backslashG2table.pl --file=input -o 3 -r 3 > output 2>&1
+
+cat <<EOF > result
+aaa	bbb	ccc
+aaa	bbb	ccc
+aaa	bbb	ccc
+EOF
+
+diff output result
+if test  $? -ne 0  ; then
+  echo "Test $lTest failed"
+  let ret=$ret+1
+else
+  echo "Test $lTest OK"
+fi
+
+let lTest=$lTest+1
+
+# Tests for v 0.1.1
+# -----------------
+
+cat << EOF > input
+a
+1
+2
+1
+2
+EOF
+
+./backslashG2table.pl --file=input -o 1 -r 2 -s > output 2>&1
+
+cat <<EOF > result
+a
+1	2
+1	2
+EOF
+
+diff output result
+if test  $? -ne 0  ; then
+  echo "Test $lTest failed"
+  let ret=$ret+1
+else
+  echo "Test $lTest OK"
+fi
+
+let lTest=$lTest+1
+
+rm input output result
+echo "Failed tests: $ret"
+exit $ret
+

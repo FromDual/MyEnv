@@ -1,0 +1,75 @@
+#!/bin/sh
+#
+# This script is a resource for moving crontab.
+#
+# usage: $0 user crontab.file {start|stop|status}
+#
+
+usage() {
+  cat << EOF
+usage: $0 user crontab.file {start|stop|status}
+EOF
+  exit 1
+}
+
+. /etc/ha.d/shellfuncs
+
+VARLIB=/var/lib/heartbeat
+user=$1
+crontab=$2
+op=$3
+
+Crontab_stat() {
+  crontab -u $user -l 1>/dev/null 2>&1
+  return $?
+}
+
+Crontab_Status() {
+  if
+    Crontab_stat
+  then
+    echo "Crontab is running OK"
+    exit 0
+  else
+    echo "Crontab is not operational"
+    exit 1
+  fi
+}
+
+Crontab_Start() {
+  if
+    Crontab_stat
+  then
+    echo "Crontab already running"
+    return 0
+  else
+    crontab -u $user $crontab
+    return $?
+  fi
+}
+
+Crontab_Stop() {
+  if
+    Crontab_stat
+  then
+    crontab -u $user -r
+    return $?
+  else
+    echo "Crontab already stopped"
+    return 0
+  fi
+}
+
+case $op in
+  start)   Crontab_Start
+           ;;
+  stop)    Crontab_Stop
+           ;;
+  status)  Crontab_Status
+           ;;
+  *)       usage
+           exit 1
+           ;;
+esac
+exit $?
+

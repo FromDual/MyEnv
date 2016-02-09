@@ -1,0 +1,123 @@
+#!/usr/bin/perl -w
+
+#
+# Skript for mon to monitor load balancer
+# lb.monitor --maxfail=3 --host=localhost --port=3306
+#
+
+use strict;
+use warnings;
+
+use DBI;
+use Getopt::Long;
+use POSIX;
+
+my $lFailedFile = '/var/lib/mon/lb_monitor.failed';
+my $lFailedCount = 0;
+my $lLogFile = '/var/lib/mon/log.d/lb.monitor.log';
+
+$lFailedFile = '/tmp/lb_monitor.failed';
+$lLogFile = '/tmp/lb.monitor.log';
+
+# ----------------------------------------------------------------------
+
+sub getFailedCount(@) {
+
+	my ($lFailedFile) = @_;
+	my $lFailedCount = 0;
+
+	if (-e $lFailedFile) {
+		$lFailedCount = `cat $lFailedFile`;
+		$lFailedCount =~ s/\s//g;
+	}
+	else {
+		$lFailedCount=0;
+	}
+	return $lFailedCount;
+}
+
+sub incFailedCount(@) {
+
+	my ($failedFile) = @_;
+
+	my $failedCount = getFailedCount($failedFile) + 1;
+	`echo "$failedCount" > $failedFile`;
+	return $failedCount;
+}
+
+sub resetFailedCount(@) {
+
+	my ($failedFile) = @_;
+	`echo "0" > $failedFile`;
+}
+
+sub logMessage(@) {
+
+	my ($logFile) = $_[0];
+	my ($msg) = $_[1];
+
+	open LOG, ">>$logFile" or die $!;
+	print LOG strftime("%Y-%m-%d %H:%M:%S", localtime) . " - $msg\n";
+	close(LOG);
+}
+
+sub checkLB(@) {
+
+	my ($node) = $_[0];
+	my ($port) = $_[1];
+
+	`ping -c 1 -w 5 $node >/dev/null 2>&1`;
+	return $?;
+}
+
+# ----------------------------------------------------------------------
+
+my $rc = 0;
+
+my %options = (
+	'maxfail'  => 3
+, 'host'     => 'localhost'
+, 'port'     => 3306
+);
+
+GetOptions(
+  'maxfail=i' => \$options{'maxfail'}
+, 'host=s'    => \$options{'host'}
+, 'port=s'    => \$options{'port'}
+);
+
+my $cnt = 0;
+
+# Try to find load balancer 3 times
+for ( my $i = 1; $i <= 3; $i++ ) {
+
+	my $ret = checkLB($options{'host'}, $options{'port'});
+	if ( $ret != 0 ) {
+		logMessage($lLogFile, 'Error: Could not ping load balancer ' . $options{'host'} . ':' . $options{'port'});
+		sleep(1);
+	}
+	else {
+		$cnt++;
+	}
+}
+
+# We could not reach ONE node!
+if ( $cnt == 0 ) {
+
+	logMessage($lLogFile, "We could not reach load balancer 3 times!");
+	$lFailedCount = incFailedCount($lFailedFile);
+	if ( $lFailedCount > $options{'maxfail'} ) {
+		$rc = 380;
+	}
+	logMessage($lLogFile, "Number of failed checks: " . $lFailedCount . ", return code = " . $rc);
+	exit($rc);
+}
+
+# We found load balancer
+$lFailedCount = getFailedCount($lFailedFile);
+if ( $lFailedCount != 0 ) {
+	logMessage($lLogFile, "Reset failed count.");
+}
+resetFailedCount($lFailedFile);
+
+exit(0);

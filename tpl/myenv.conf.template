@@ -1,0 +1,24 @@
+;
+; /etc/myenv/myenv.conf
+;
+
+[default]
+
+user                 = mysql
+; default              = production
+; hideschema           = mysql,performance_schema,lost+found,sys
+
+; [production]
+;
+; basedir              = /home/mysql/product/mysql-5.5.7
+; datadir              = /home/mysql/data/production
+; port                 = 3306
+; socket               = /var/run/mysqld/mysql-3306.sock
+; my.cnf               = /home/mysql/data/production/my.cnf
+; start                = yes
+; stop                 = yes
+; readonly             = no
+; angel                = yes
+; ignore-passive       = yes
+; cgroups              = no
+; stage                = production

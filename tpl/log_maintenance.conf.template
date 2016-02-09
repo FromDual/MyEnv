@@ -1,0 +1,10 @@
+#
+# tpl/log_maintenance.conf.template
+#
+# user:password@host:port                          type     operation  destination lines
+# user:password@localhost:socket                   type     operation  destination lines
+#
+# oli:secret@192.168.0.42:3306                     general  delete
+# oli:secret@localhost:/var/run/mysql/mysqld.sock  slow     archive    /tmp/arch   10000
+# oli:secret@localhost:/var/run/mysql/mysqld.sock  error    truncate   noop        100
+# oli@localhost                                    file     truncate   noop        100

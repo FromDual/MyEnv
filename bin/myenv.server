@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# /etc/init.d/myenv
+#
+# chkconfig: 345 55 35
+# description: Start and stop MyEnv
+
+# 
+### BEGIN INIT INFO
+# Provides:      MyEnv
+# Required-Start: $local_fs
+# Required-Stop: $local_fs
+# Should-Start: $network
+# Should-Stop: $network
+# Default-Start: 3 4 5
+# Default-Stop: 0 1 2 6
+# Short-Description: start|stop|restart|reload|status myenv
+# Description: Start and Stop MyEnv
+### END INIT INFO
+
+lsb_functions="/lib/lsb/init-functions"
+if [ -f $lsb_functions ] ; then
+  . $lsb_functions
+elif [ -f /etc/init.d/functions ] ; then
+  . /etc/init.d/functions
+elif [ -f /etc/rc.d/init.d/functions ] ; then
+  . /etc/rc.d/init.d/functions
+else
+  exit 1
+fi
+
+# User should be either root or the user mysql is running under
+user=mysql
+
+MYENV_HOOK=/etc/myenv/MYENV_BASE
+if [ ! -e $MYENV_BASE ] ; then
+  log_failure_msg "MYENV_BASE not found at $MYENV_HOOK"
+  exit 1
+fi
+. $MYENV_HOOK
+
+# http://askubuntu.com/questions/322364/how-to-let-mysql-mysqld-to-create-and-write-to-var-run-mysqld-directory
+# -p suppresses output in case directory already exists...
+mkdir -p /var/run/mysqld
+chown $user: /var/run/mysqld
+
+su -c "$MYENV_BASE/bin/myenv_start_stop.php $1" $user
+if [ $? -eq 0 ] ; then
+  log_success_msg "myenv $1 OK"
+else
+  log_failure_msg "myenv $1 rc=$?"
+  exit 1
+fi
