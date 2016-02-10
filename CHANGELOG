@@ -1,0 +1,1105 @@
+#
+# FromDual MyEnv (http://fromdual.com/myenv-mysql-basenv)
+# CHANGELOG
+#
+
+Version 1.3.0
+-------------
+
+Change #793
+* MyEnv: CHANGELOG updated and release tagged.
+
+Change #792
+* MyEnv: Tests passed, CHANGELOG updated.
+
+Change #791
+* MyEnv: cgroups template completed.
+
+Change #790
+* Utilities: rc bug fixed in block_galera_node.sh
+
+Change #789 [merge]
+* MyEnv: Make scripts made more generic.
+
+Change #787
+* MyEnv installer: sys schema added to hideschema in installer.
+
+Change #786
+* MyEnv: cgroups report configuration errors to make problem obvious.
+
+Change #785
+* MyEnv installer: angel and default section are not attached to each section
+  any more during installation.
+
+Change #784
+* MyEnv: Test for new function added.
+
+Change #783
+* MyEnv installer: Installer made ready for MySQL 5.7.
+
+Change #781
+* MyEnv installer: Installer is automatizable now and delete works automatized.
+
+Change #780
+* MyEnv installer: Bug related to Mac OSX in installer fixed.
+
+Change #779
+* Utilities: ORDER BY added to GROUP BY to follow 5.6 deprecation recommendation
+  in query_bench.php.
+
+Change #778
+* MyEnv: Too verbose error message in case of missing my.cnf moved to debug log-
+  ging (mgb).
+
+Change #777
+* MyEnv: MyEnv warning how to fix problem made more clear.
+  Make file updated.
+
+Change #776
+* MyEnv: Note added and sql_mode in my.cnf template adapted.
+
+Change #775
+* Utilities: insert_test.sh made more clear where record comes from.
+
+Change #774
+* MyEnv: cgroups cpuset replaced by cpu.
+
+Change #773
+* MyEnv: cgroups conf file path fixed.
+
+Change #772
+*  MyEnv: move from xtrabackup to xtrabackup-v2 in my.cnf template.
+
+Change #771
+* MyEnv: my.cnf template synced with website.
+
+Change #770
+* MyEnv: Default password synced with training slides.
+
+Change #769
+* MyEnv installer: readlink preparation done for Mac OSX.
+
+Change #768
+* MyEnv: NDB stuff removed and templated cleaned up.
+
+
+Version 1.2.2
+-------------
+
+Change #766
+* MyEnv: CHANGELOG updated and release tagged.
+
+Change #765
+* MyEnv: Automated tests improved and fixed.
+
+Change #762
+* MyEnv installer: Layout stuff fixed in installer.
+
+Change #761
+* MyEnv installer: Tool mysql_install_db is now called with --no-defaults to
+  avoid troubles with existing configuration files.
+
+Change #760
+* MyEnv installer: Minor typos fixed in installer.
+
+Change #758
+* MyEnv installer: Nonsense code in myenv installer removed.
+
+Change #757
+* MyEnv installer: Check for missing /var/run/mysqld added.
+
+Change #756
+* MyEnv installer: Missing libaio is caught now in installer.
+
+Change #755
+* MyEnv installer: fixed mysql_install_db error output problem.
+
+Change #754
+* MyEnv installer: Mac OSX findings fixed in installer
+
+Change #753
+* MyEnv: up flooding of non privleged user fixed.
+
+Change #752
+* MyEnv: empty my.cnf is caught correctly now.
+
+Change #749
+* Utilities: Bug in *_partition.php was fixed.
+
+Change #748
+* Utilities: log_maintenance.php truncate with too many lines leads to out of
+  memory message and takes ages. Fixed this by limiting number of lines to
+  10000.
+
+Change #747
+* MyEnv: bind-address is only shown when return code id OK (file is readable)
+  and config file parser was made more robust.
+
+Change #746
+* Utilities: log_maintenance.php check for missing mb_strlen function was
+  added.
+
+Change #745
+* MyEnv: bind-address is now correctly represented in up.
+
+Change #744
+* MyEnv: Now all values from [default] section should be inherited to [db]
+  section.
+
+Change #743
+* Utilities: log_maintenance.php examples in --help and template
+  log_maintenance.conf.template improved.
+
+Change #742
+* Utilities: More debug information in log_maintenance.php added.
+
+Change #741
+* Utilities: log_maintenance.php will not abort when log file is missing but
+  continue. This is for configuration file use with multiple log files.
+
+Change #740
+* MyEnv: Preparation work for * for IP replacement done.
+  
+
+Version 1.2.1
+-------------
+
+Change #739
+* MyEnv: CHANGELOG updated and release tagged
+
+Change #736
+* Utilities: alter_engine.php now supports socket.
+
+Change #733
+* MyEnv: Bug in myenv.server fixed (chmod user).
+
+Change #732
+* Utilities: Check in alter_engine.php for Primary Key length of 767 bytes was
+  removed because it was wrong.
+
+Change #723
+* Utilities: MySQL config files are considered for parameters in
+  log_maintenance.php
+
+Change #722
+* Utilities: rc 410 made more verbose and socket implemented and default host
+  set to localhost.
+
+Change #720
+* Utilities: decrypt mylogin.cnf added.
+
+Change #719
+* MyEnv: Template my.cnf extended by hostname and instance name.
+
+Change #718
+* MyEnv: Distribution check for CentOS 7.1 fixed (bug report Jörg).
+
+Change #717
+* MyEnv installer: Skip in init script implemented, (bug report Jörg).
+
+Change #714
+* Utilities: Script log_maintenance.php introduced.
+
+Change #707
+* MyEnv: Directory /var/run/mysqld is created by myenv.server
+
+Change #705
+* MyEnv my.cnf.template merged with website.
+
+Change #704
+* MyEnv: Template AUTO_INCREMENT values fixed.
+
+Change #703
+* MyEnv: Galera Cluster variable causal read in my.cnf template updated.
+
+Change #701
+* MyEnv installer: functions separated into own library.
+
+Change #699
+* MyEnv: All templates moved from etc to tpl.
+
+Change #698
+* Utilities: Usage and --help added to block_galera_node.sh
+
+Change #697
+* MyEnv: Missing function output added.
+
+Change #694
+* MyEnv: my.cnf template provided with hostname tag.
+
+Change #692
+* MyEnv: Output changes unified, execute with LC_ALL=C made language
+  independent.
+
+
+Version 1.2.0
+-------------
+
+Change #690
+* CHANGELOG updated and release tagged.
+
+Change #689
+* Utilities: compare_status_files.pl added to compare output of 2 SHOW GLOBAL
+  STATUS.
+
+Change #675
+* MyEnv: lsb_release simulation implemented.
+
+Change #673
+* MyEnv installer: Install routine made more distro aware.
+
+Change #669
+* MyEnv: Up output prepared for bind-address awareness.
+
+Change #666
+* MyEnv: All /tmp/*sock moved to /var/run/mysqld.
+
+Change #665
+* MyEnv installer: Bugs in preparing myenv.conf fixed and name removed.
+
+Change #662
+* MyEnv: Color prompt added for stage production databases.
+
+Change #660
+* Utilities: Purge Binary Log rewrittten into PHP (purge_binary_log.php).
+
+Change #658
+* Utilities: Alter Engine script recognizes tables with A_I column not at 1st
+  position.
+
+Change #657
+* Utilities: Alter Engine script hanles too large PK better.
+
+Change #656
+* Utilities: Alter Engine script handles ROW_FORMAT=FIXED problem correctly
+  now.
+
+Change #654
+* Utilities: Alter Engine script rewritten into PHP (alter_engine.php).
+
+Change #653
+* Utilities: Split partition (split_partition.php) improved.
+
+Change #652
+* MyEnv: Knows stages now.
+
+Change #650
+* MyEnv installer: Installer allows now to run as other user than mysql.
+
+Change #646
+* MyEnv installer: Installer made mode modular and prepared for automatization.
+
+Change #642
+* MyEnv: Some minor fixes on init scripts.
+
+Change #641
+* MyEnv installer: Replace init script is distro aware and auto executable.
+
+Change #640
+* MyEnv installer: Init script replacement check added.
+
+Change #639
+* MyEnv installer: Port conflict resolution more verbose.
+
+Change #638
+* MyEnv installer: Advice for 2 sudo commands in row was wrong.
+
+Change #635
+* Utilities: Fix of DROP PARTITION (drop_partition.php) was executed in wrong
+  order (new before old).
+
+
+Version 1.1.4
+-------------
+
+Change #633
+* CHANGELOG updated and release tagged.
+
+Change #631
+* MyEnv installer: Installer cleans up $basedir/my.cnf now if this file did not
+  exists before.
+
+Change #630
+* MyEnv: Error messages are sent to stderr instead of stdout.
+  Error messsages of start command are tested after up test and only displayed
+  if up failed. Ugly but not serious bug introduced in v1.1.3.
+
+Change #629
+* Utilities: Partitioning tools error output is now writen to stderr instead of
+  stdout.
+
+
+Version 1.1.3
+-------------
+
+Change #628
+* CHANGELOG updated and release tagged.
+
+Change #627
+* Old test fixed and new tests added.
+
+Change #624
+* Utilities: Contribution of TS added. Very appreciated!
+
+Change #622
+* MyEnv: mysql_safe output is caught better now. More verbose information on
+  failed DB start.
+
+Change #619
+* MyEnv: Some more protection against wrong user access and more verbose error
+  message.
+
+Change #618
+* MyEnv: If wrong user wants to stop DB, error catch was done properly.
+
+Change #617
+* MyEnv installer: my.cnf template cleaned up.
+
+Change #616
+* MyEnv: Init script sligthly improved.
+
+Change #614
+* MyEnv installer: Moved [client] and [mysqldump] section to top of my.cnf
+  template to not overlook them later.
+
+Change #613
+* MyEnv: Error messages improved.
+
+Change #612
+* MyEnv: false positive error in instance start fixed.
+
+Change #611
+* MyEnv: variable parsing in my.cnf made more robust. Bug MGB.
+
+Change #610
+* MyEnv: Error messages and warnings made more verbose/clear.
+
+Change #607
+* Utilities: purge_binary_log added (not finished yet).
+
+Change #606
+* Utilities: insert_test made more robust against new 5.6 security warning.
+
+Change #605
+* MyEnv: Merges with myEnv.inc from fromdual_brman.
+
+Change #603
+* Utilities: node.monitor script added.
+
+Change #602
+* MyEnv: Bug from KN with empty myenv.conf fixed.
+
+Change #601
+* MyEnv installer: install advice on SuSE was wrong on runlevels for myenv.
+
+Change #599
+* innodb_strict_mode and innodb_file_format_check added to my.cnf template.
+
+Change #598
+* MyEnv installer: /tmp as location for socket removed because of RedHat
+  tmpcleaner job. Templates addapted accordingly.
+
+Change #597
+* MyEnv installer: datadir redundancy removed and many different smaller bugs
+  fixed.
+
+Change #596
+* MyEnv bug from MGB stopping database with dummy instance fixed.
+
+Change #595
+* MyEnv: cgroups functionality added.
+
+Change #594
+* MyEnv: lost+found added to hideschema.
+
+Change #593
+* MyEnv: PHP debug message is now only enabled in debug mode.
+
+Change #592
+* MyEnv installer: installMyEnv.sh replaced by installMyEnv.
+
+
+Version 1.1.2
+-------------
+
+Change #591
+* MyEnv: Release tagged.
+
+Change #589
+* MyEnv: oem_agent debug output disabled.
+  MyEnv installer: innodb_flush_log_at_trx_commit default in template changed.
+
+
+Version 1.1.2-RC1
+-----------------
+
+Change #588
+* CHANGELOG updated and release tagged.
+
+Change #586
+* MyEnv installer: Version guessing improved for installer.
+
+Change #582
+* MyEnv installer: Better download support for Percona Server and MariaDB added.
+
+Change #581
+* MyEnv installer: mkdir bug fixed.
+
+Change #580
+* MyEnv installer: Security check moved to other location.
+
+Change #579
+* MyEnv installer: my.cnf templated improved, version check for redhat made bet-
+  ter.
+
+Change #578
+* MyEnv installer: Some more installation bugs fixed.
+
+Change #577
+* MyEnv installer: Count array bug fixed.
+
+Change #576
+* MyEnv installer: Bugs removed and usability improved.
+
+Change #571
+* MyEnv installer: Check for lsb_release and SELinux/AppArmor check added for
+  faster finding problems during MySQL installation.
+
+Change #570
+* MyEnv installer: Template my.cnf from website is used for creating an intance.
+
+Change #568
+* MyEnv installer: Option hideschema is automatically added to the myenv.conf
+  file now.
+
+Change #567
+* MyEnv installer: Check and warning implemented if non mysql user is used.
+
+Change #566
+* MyEnv installer: Error is caught when wrong user is used.
+
+Change #565
+* MyEnv installer: mysql_install_db output made more verbose in case of errors
+  for debugging.
+
+Change #564
+* MyEnv installer: Default option changes from Add to Save after instance was
+  changed.
+
+Change #563
+* MyEnv installer: Missing users HOME directory is caught now.
+
+Change #562
+* MyEnv installer: Quesion done? can be answered with y now.
+
+Change #561
+* MyEnv installer: Comment about waiting during instance installation added.
+
+Change #560
+* Utilities: Table offline/online scripts integrated into MyEnv.
+
+Change #556
+* MyEnv: OEM Agent is checked now based on process list and not oemagentctl sta-
+  tus any more. Makes it much faster.
+
+Change #554
+* MyEnv: MD5 checksum stuff improved and system requirements checks extended.
+
+Change #552
+* Utilities: alter_engine.pl does hide views from PK check now.
+
+Change #551
+* MyEnv: Alias cdc for NDB Cluster directory removed. NDB Cluster is not suppor-
+  ted any more.
+
+Change #550
+* MyEnv: Some typos removed.
+
+Change #549
+* MyEnv: Deprecate alias v and replace by V.
+
+Change #548
+* MyEnv: Error unlink(/var/lock/subsys/mysql): Permission denied is caught more
+  nicely now.
+
+Change #547
+* MyEnv: Unknown version in up version guessing is improved.
+
+Change #546
+* MyEnv: MD5 checksum made portable for Darwin OS (Mac OSX).
+
+Change #544
+* MyEnv: mysql_bman separated from MyEnv.
+
+----
+
+Version 1.1.1
+
+Change #542
+* MyEnv: Release tagged.
+
+Change #540
+* mysql_bman: More mysql_bman cmd tests added.
+
+Change #539
+* mysql_bman: End tag added to mysql_bman.
+
+Change #538
+* mysql_bman: innodbackup bug fixed, pigz bug fixed.
+
+Change #535
+* mysql_bman: copy_preserve reverted back to copy for config file.
+
+Change #533
+* mysql_bman: Warning message more verbose explaining solution in case of mis-
+  sing xtrabackup binaries.
+
+Change #530
+* mysql_bman: pigz as alternative compression mechanism implemented.
+
+Change #529
+* mysql_bman: Log mysqldump error to stderr.
+
+Change #528
+* mysql_bman: passthru replaced by my_exec.
+
+Change #527
+* mysql_bman: shell_exec replaced my my_exec.
+
+Change #526
+* mysql_bman: my_exec replaces exec/system.
+
+Change #525
+* mysql_bman: Own exec function implemented.
+
+Change #524
+* mysql_bman: Return code exits fixed.
+
+
+Version 1.1.1-RC2
+-----------------
+
+Change #519
+* CHANGELOG updated.
+
+Change #518
+* MyEnv: checkForOldStuff function has better error messages now.
+
+Change #517
+* mysql_bman: Catalog DB handle was sometimes called without a catalog (ugly bug
+  introduced in 1.1.0!).
+
+Change #516
+* mysql_bman: Cleanup date is formated nicer and cleanup bug is fixed.
+
+
+Version 1.1.1-RC1
+-----------------
+
+Change #515
+* MyEnv: Function to check upgrade requirements to v1.1 imlemented.
+
+Change #513
+* mysql_bman: copy_preserve introduced and archive code cleaned up.
+
+Change #512
+* mysql_bman: Retention time can be 0 or any value out of h, d, w, m.
+
+Change #511
+* mysql_bman: Binary log begin and end ts is written to log file.
+
+
+Version 1.1.0
+-------------
+
+Change #509
+* MyEnv: CHANGELOG updated
+
+Change #507
+* MyEnv: Formating of up output is working correctly again
+
+Change #506
+* mysql_bman: Some typos fixed.
+
+Change #503
+* MyEnv: Merge wit 1.0 tree completed and file clean-up done.
+
+
+Version 1.1.0-RC3
+-----------------
+
+Change #501
+* MyEnv: Error with !includedir fixed (Bug #143).
+
+Change #498
+* mysql_bman: For many backup types cleanup, archive and compress functionality
+  added.
+
+Change #496
+* mysql_bman: Schema backup per-schema writes log pos now to log file and cata-
+  log.
+
+Change #495
+* mysql_bman: Binlog policy added.
+
+
+Version 1.1.0-RC2
+-----------------
+
+Change #494
+* MyEnv: Config file parsing improved. More robust now.
+
+Change #491
+* MyEnv: tput is hidden in interactive mode now. No more nasty warning messages.
+
+Change #487
+* MyEnv: Start/stop script did not pass error code correctly.
+
+Change #485
+* MyEnv: Timezone complain on myenv_start_stop.php fixed with temporary fix.
+
+Change #484
+* MyEnv: Init script should not through errors on SuSE any more.
+
+Change #483
+* MyEnv: Init script is improved. myenv should only start if network is available
+  (runlevel).
+
+Change #482
+* MyEnv: mysqladmin complains now if my.cnf has wrong parameters and does not
+  show the schema down any more.
+
+Change #481
+* MyEnv: MYSQL_HOME was changed from basedir to datadir, consider this for up-
+  grade, this is a significant change, impact is not clear!
+
+Change #479
+* mysql_bman: Backup structure is not created any more for cleanup and catalog
+  operations.
+
+Change #478
+* MyEnv: parse_ini_file is not too good for mysql cnf parsing. Preparation work
+  for later replacement done.
+
+Change #477
+* MyEnv: Under some circumstances 'up' did not show all schemata, fixed.
+
+Change #476
+* mysql_bman: Binlog backup should work now with and without default location.
+
+Change #474
+* Utilities: NUMA maps script from Jeremy Cole added.
+
+Change #468
+* mysql_bman: Passing strange characters in password is handled more robust now.
+
+Change #467
+* mysql_bman: Schema names more robust with back-ticks.
+
+Change #466
+* mysql_bman: Catalog-name is configureable now.
+
+Change #465
+* mysql_bman: memory-table-check bug fixed.
+
+Change #462
+* mysql_bman: Too long log column replaced by text.
+
+Change #458
+* mysql_bman: Command line is displayed in output (without exposing password).
+
+Change #455
+* mysql_bman: xtrabackup_binlog_info and xtrabackup_binlog_pos_innodb conflict
+  solved.
+
+Change #454
+* mysql_bman: Cleanup without catalog failed. Bug from MGB.
+
+Change #452
+* mysql_bman: binlog pos file info added to catalog.
+
+Change #451
+* Utilities: block_galera_node.sh fixed for more than 1 backend.
+
+Change #447
+* mysql_bman: Binary log begin ts fixed.
+
+Change #445
+* mysql_bman: File names in file table fixed.
+
+
+Version 1.1.0-RC1
+-----------------
+
+Change #436
+* mysql_bman: Correct binary log begin position is fixed now.
+
+Change #435
+* mysql_bman: Schema backup written to catalog.
+
+Change #434
+* mysql_bman: Catalog is updated on cleanup.
+
+Change #433
+* mysql_bman: Cleanup of archivedir is possible now.
+
+Change #432
+* mysql_bman: Binary log catalog notices implemented.
+
+Change #431
+* mysql_bman: Privilege backup to catalog implemented.
+
+Change #430
+* mysql_bman: Schema backup logging to catalog done.
+
+Change #429
+* mysql_bman: Backup for configuration file implemented.
+
+Change #428
+* mysql_bman: Full physical backup logs to catalog.
+
+Change #427
+* mysql_bman: Hostname is written to catalog.
+
+Change #424
+* mysql_bman: File catalog information added.
+
+Change #421
+* mysql_bman: Physical backup basend on xtrabackup/mysqlbackup implemented.
+
+Change #420
+* mysql_bman: Binlog information written to backup_details table.
+
+Change #419
+* mysql_bman: All exit's replaced by returns. Proper error handling should be possible.
+
+Change #417
+* mysql_bman: Backup logging implemented.
+
+Change #416
+* mysql_bman: Password from commandline is not exposed any more to log file. Backport from v1.0.5.
+
+Change #414
+* mysql_bman: Release of mysql_bman and catalog is displayed now.
+
+Change #412
+* mysql_bman: Catalog password is hidden now and not displayed in cleartext any more.
+
+Change #410
+* mysql_bman: Catalog creation and catalog upgrade integrated.
+
+Change #408
+* mysql_bman: Per schema privilege backup implemented.
+
+
+Version 1.0.5
+-------------
+
+Change #407
+* CHANGELOG updated.
+
+Change #406
+* mysql_bman: Cleanup job errors with missing target. Fixed for MGB.
+
+
+Version 1.0.5-RC4
+-----------------
+
+Change #404
+* mysql_bman: Password on command line is not exposed anymore to log file.
+
+Change #402
+* mysql_bman: Instance name optionally added to binary-log backup file names.
+
+Change #400
+* mysql_bman: Binary logs are not cleaned-up because they are not copied with bck_ prefix (Bug #143).
+
+Change #399
+* all: mktime() replaced by time() function.
+
+
+Version 1.0.5-RC3
+-----------------
+
+Change #397
+* CHANGELOG updated
+
+Change #396
+* mysql_bman: Many tests for mysql_bman test automatizing added.
+
+Change #395
+* MyEnv installer: Lists each basedir candidate in a separate line when adding a new instance. More conveniant for reading if many basedirs are available.
+
+Change #394
+* mysql_bman: Debug trap installed for MGB bug with unknown target.
+
+Change #393
+* mysql_bman: Config file example in --help output done more nicely.
+
+Change #391
+* mysql_bman: More strict option checking implemented.
+
+Change #390
+* mysql_bman: Return code clean-up.
+
+Change #389
+* mysql_bman: All schemas with non transactional tables are shown instead of just the first one.
+
+Change #388
+* MyEnv: Removed call by reference and & in general.
+* Utilities: Removed call by reference and & in general.
+
+Change #387
+* MyEnv: Function split() is deprecated and was replaced by explode().
+* Utilities: Function split() is deprecated and was replaced by explode().
+
+Change #384
+* Utilities: block galera node made more flexible.
+
+Change #383
+* mysql_bman: Help typo fixed and example improved.
+
+
+Version 1.0.5-RC2
+-----------------
+
+Change #382
+* CHANGELOG update
+
+Change #381
+* mysql_bman: Schema backup in mysql_bman had wrong hexblob option. Fixed to hex-blob.
+
+Change #380
+* MyEnv: Schema output in up was still ugly
+
+
+Version 1.0.5-RC1
+-----------------
+
+Change #378
+* CHANGELOG update
+
+Change #376
+* MyEnv: instance output is split correctly similar to up/down display.
+
+Change #375
+* MyEnv: instance list is now shorter when short instance names are used.
+
+Change #374
+* MyEnv: --ignore-passive option added for myEnv to ignore passive databases in an active/passive fail-over cluster. Based on existence of datadir.
+
+Change #373
+* MyEnv: upgrade instructions have been improved and denormalized.
+
+Change #372
+* mysql_bman: --ignore-memory-table-check implemented to avoid error exit with MEMORY tables.
+
+Change #371
+* MyEnv: only display existing OEM agents, criteria is directory in oratab must exist.
+
+Change #369
+* mysql_bman: preparation work for blocking MyISAM backup done.
+
+Change #368
+* mysql_bman: missing hex-blob option added.
+
+Change #365
+* MyEnv: up instances are not reported with missing mysqladmin command (Galera binary tar balls) but it was not visible what is the reason. Reason is displayed as an error message now.
+
+Change #357
+* block_galera_node.sh: Insert instead of Append used for firewall rules. Only block load-balancer ports and not everything else.
+
+
+Version 1.0.4
+-------------
+
+Change #356
+* Tag and release version v1.0.4
+* Instance name can be added in mysql_bman backup file name, feature request customer.
+
+Change #354
+* Installation instructions improved for myenv and mysql_bman.
+
+Change #353
+* Usage is only displayed with --help (mysql_bman).
+
+Change #352
+* Improve error message for missing PHP (myenv installer).
+
+Change #350
+* mysql_bman now also follows system requirement checks.
+
+Change #349
+* Prepare myenv for system requirement checks (installation).
+
+Change #348
+* Call-time pass-by-reference has been removed error message cleaned up for php 5.4 in mysql_bman and myEnv.
+
+
+Version 1.0.3
+-------------
+
+Change #346
+* Tag and release version v1.0.3
+* CHANGELOG updated.
+
+Change #345
+* kill_sessions procedures renamed and code reniced.
+
+
+Version 1.0.3-RC3
+-----------------
+
+Change #344
+* CHANGELOG updated
+* Tag and release version v1.0.3-RC3
+
+Change #343
+* Dump overview feature implemented
+
+Change #342
+* getAllSchemas got its own function and full backup lists all schemas included now
+
+Change #341
+* Cleanup still used target and failed. Fixed.
+
+Change #340
+* CHANGELOG updated, testautomatization improved
+
+Change #339
+* Help more verbose, write permission problems for tee captured more nicely.
+
+Change #338
+* Realpath on SLES behaves differently than other Linux distros. Output
+  caught properly now.
+
+
+Version 1.0.3-RC2
+-----------------
+
+Change #337
+* Catch parse error on .my.cnf caused by ! in password string.
+* Tag and release version v1.0.3-RC2
+
+Change #336
+* .my.cnf (user, password) is considered and target adapted accordingly.
+
+Change #335
+* No value options (--no-compress, --per-schema, --archive, etc.) in config file now works.
+* Example in --help is more clear.
+
+Change #333
+* Target improved and more easy now.
+
+Change #332
+* Cleanup does only delete bck_* files now.
+
+Change #331
+* Use readlink if realpath is not available (problem with SLES).
+
+Change #330
+*  up alias pointing to function in .bash_profile caused troubles in cluster failover. Thus we are using the variables which should always work.
+
+Change #329
+* Fixed endless loop bug in config read which affected MGB.
+
+
+Version 1.0.3-RC1
+-----------------
+
+Change #328
+* Usage made more verbose
+* Tag and release version v1.0.3-RC1
+
+Change #327
+* myenv: Kill query procedure added
+
+Change #325
+* If option was passed twice this lead to strong behaviour (bug #33).
+
+Change #324
+* backupdir creation error caught more nicely (bug #75).
+
+Change #323
+* No option --cleanup removes files after archiving to tape (bug #76).
+
+Change #322
+* Testing infrastructure prepared.
+
+Change #321
+* Some testings added.
+
+Change #320
+* Split mysql_bman code and lib for automated testing.
+
+Change #319
+* Separated mysql_bman into php and bash wrapper.
+
+Change #318
+* mysql_bman considers now ~.my.cnf (user and password) in client and mysqldump section.
+
+Change #316
+* mysql_bman compression can be switched off for deduplicated drives.
+
+Change #315
+* Keys and values trimmed while reading config file.
+
+Change #314
+* Remove target for type cleanup, cleanup does not require target.
+
+Change #313
+* Some typos in usage and error messages fixed.
+
+Change #312
+* mysql_bman retention time maximum was verified wrong.
+
+Change #311
+* Same fixes for myenv variables.conf (comment and skip comments).
+
+Change #310
+* CHANGELOG added.
+
+Change #309
+* Skip comments in myenv aliases.conf improved.
+
+Change #308
+* product/lib/mysql added to LD_LIBRARY_PATH for some set-ups (bug #106).
+
+Change #307
+* Better check for invalid options/parameters in utl/slave_monitor.php (bug #114).
+
+Change #306
+* New socket candidate added
+* Homedirs are guessed now from product directory (MGB)
+
+Change #305
+* MyEnv installer: root commands changed into sudo commands (MGB)
+
+Change #304
+* Commented lines in aliases.conf are ignored now (MGB)
+
+Change #303
+* Comment in aliases.conf more clear to avoid conflicts with shell variables (MGB)
+
+Change #302
+* Install comments for MyEnv installer improved (MGB)
+
+Change #301
+* Partition test added
+
+Change #299
+* Partition merge added (utl/merge_partition.php)
+* Split partition is now one week ahead to avoid huge amount of data copy
+* Password can be stored in file now instead of command line
+* Options are used correctly
+* Debug is implemented
+
+Change #297
+* glb_control.shx added
+
+
+Version 1.0.2
+-------------
+
+Change #296
+* Tag and release version v1.0.2
