@@ -1,0 +1,12 @@
+# BEGIN MyEnv
+# Inserted by the 'myenv' package installation, release 2.0.0
+# 'BEGIN' and 'END' marker lines are needed for package management!
+source /etc/myenv/MYENV_BASE
+MYENV_PWD=$(pwd)
+cd $MYENV_BASE/bin
+source myenv.profile
+cd $MYENV_BASE
+$MYENV_BASE/bin/showMyEnvStatus.php
+cd - > /dev/null
+cd $MYENV_PWD
+# END MyEnv

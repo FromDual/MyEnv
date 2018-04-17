@@ -5,7 +5,7 @@
 
    Fix encoding is made to fix encoding issues as as described here:
 
-   http://fromdual.com/mysql-questions-and-answers#wrong-encoding
+   https://www.fromdual.com/mysql-questions-and-answers#wrong-encoding
 
 */
 
@@ -144,7 +144,7 @@ print "\n";
 
 // Fetch all tables of schema
 
-$sql = sprintf("SELECT table_name
+$sql = sprintf("SELECT table_name AS 'table_name'
   FROM information_schema.tables
  WHERE table_schema = '%s'
    AND table_type = 'BASE TABLE'
@@ -194,7 +194,7 @@ while ( $record = $result->fetch_array(MYSQLI_ASSOC) ) {
 
   // Get Columns for ALTER TABLE statement
 
-  $sql = sprintf("SELECT column_name, column_default, is_nullable, data_type, column_type
+  $sql = sprintf("SELECT column_name AS 'column_name', column_default AS 'column_default', is_nullable AS 'is_nullable', data_type AS 'data_type', column_type AS 'column_type'
   FROM information_schema.columns
  WHERE table_schema = '%s'
    AND table_name = '%s'", $aOptions['database'], $record['table_name']);

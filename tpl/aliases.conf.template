@@ -3,14 +3,23 @@
 #
 
 #
-# Some examples. These can be replaced by your own!
+# Some examples: %MYENV_BASEDIR%, %INSTANCEDIR%, %DATADIR%, %MYSQL_BASEDIR%, %INSTANCE_NAME%
 #
 
-alias cdh='cd " . $aDatabaseParameter['basedir'] . "'
-alias cdb='cd " . $aDatabaseParameter['basedir'] . "'
-alias cdd='cd " . $aDatabaseParameter['datadir'] . "'
-alias cde='cd " . $basedir . "'
-alias cdl='cd " . $basedir . '/log' . "'
+alias cdh='cd %MYSQL_BASEDIR%'
+# old: alias cdb='cd %MYSQL_BASEDIR%'
+alias cdd='cd %DATADIR%'
+alias cdi='cd %INSTANCEDIR%'
+alias cdt='cd %INSTANCEDIR%/tmp'
+alias cdl='cd %INSTANCEDIR%/log'
+alias cde='cd %INSTANCEDIR%/etc'
+alias cdb='cd %INSTANCEDIR%/binlog'
+# old: alias cde='cd %MYENV_BASEDIR%'
+alias cdm='cd %MYENV_BASEDIR%'
+# old: alias cdl='cd %MYENV_BASEDIR%/log'
+
+# todo: to remove again later
+alias mycg='echo "mycg is not supported yet."'
 
 alias ll='ls -l'
 alias la='ls -la'
@@ -20,7 +29,5 @@ alias rm='rm -i'
 alias mv='mv -i'
 
 #
-# Add your own aliases here
-# Please be carefull to quote correctly. Otherwise it will not work.
-# You have to use PHP syntax NOT shell syntax!!!
+# Add your own aliases here: /etc/myenv/my_aliases.conf
 #

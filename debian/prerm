@@ -1,0 +1,71 @@
+#!/bin/bash
+# prerm script for myenv
+#
+# see: dh_installdeb(1)
+
+set -e
+
+# summary of how this script can be called:
+#        * <prerm> `remove'
+#        * <old-prerm> `upgrade' <new-version>
+#        * <new-prerm> `failed-upgrade' <old-version>
+#        * <conflictor's-prerm> `remove' `in-favour' <package> <new-version>
+#        * <deconfigured's-prerm> `deconfigure' `in-favour'
+#          <package-being-installed> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+
+function prevent_dangling ()
+{
+# The purpose of "myenv" is to allow controlling multiple MySQL instances,
+# this is implementing by giving the user an instance-specific environment.
+# Removing "myenv" while there is such an instance would lose this environment,
+# leving the instance un-controllable.
+# So "myenv" must not be removed while there are instances.
+
+MYSQL_HOME=/home/mysql
+
+# Package removal, not upgrade
+INSTANCES=$(${MYSQL_HOME}/product/myenv/bin/getInstanceNames.php)
+RC=$?
+COUNT=$(echo $INSTANCES | wc -w)
+if [ $COUNT -gt 0 ] ; then
+    echo "'myenv' is still controlling $COUNT instances of MySQL, it cannot be uninstalled."
+    echo $INSTANCES
+    echo "Use 'installMyEnv' to delete them."
+    exit 1
+fi
+
+# Automatically added by dh_installinit
+if [ -x "/etc/init.d/myenv" ] || [ -e "/etc/init/myenv.conf" ]; then
+        invoke-rc.d myenv stop || exit $?
+fi
+# End automatically added section
+
+if [ -d /run/systemd/system ] ; then
+    systemctl stop myenv >/dev/null 2>&1 || :
+fi
+}
+
+
+case "$1" in
+    upgrade)
+        # No action: We just change the files, but without a service stop/start
+    ;;
+
+    remove|deconfigure)
+        prevent_dangling
+    ;;
+
+    failed-upgrade)
+    ;;
+
+    *)
+        echo "prerm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0

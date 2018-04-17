@@ -9,7 +9,7 @@
 	getInstances($aConfiguration)
 	installInstance($aConfiguration)
 	askForMyCnf($aConfiguration)
-	askForSocket($aConfiguration, $tSocket = '')
+	askForSocket($aGlobalConfiguration, $aConfiguration, $tSocket = '')
 	askForBasedir($aConfiguration)
 	downloadChunkedFile($url, $outfile)
 	askForDatadir($aConfiguration)
@@ -34,6 +34,11 @@
 	printUsage()
 	checkOptions($aArgv, $aOptions, $pConfFile)
 	deleteInstanceAutomatized($aOptions, $pConfFile)
+	askForInstancedir($aConfiguration)
+	askForAngel($aConfiguration)
+	askForCgroups($aConfiguration)
+	askForPort($aInstanceConfiguration, $tPort = '')
+	addInstanceAutomatized($aOptions, $pConfFile)
 
 */
 
@@ -109,7 +114,8 @@ function addInstance()
 	$aConfiguration[$instance]['start']      = 'yes';
 	$aConfiguration[$instance]['stop']       = 'yes';
 	$aConfiguration[$instance]['hideschema'] = 'mysql,performance_schema,lost+found,sys';
-	changeInstance($instance);
+	$aConfiguration[$instance]['type']       = 'mysqld';
+	$rc = changeInstance($instance);
 
 	return $rc;
 }
@@ -119,6 +125,7 @@ function changeInstance($pInstance)
 // ---------------------------------------------------------------------
 {
 	$rc = OK;
+
 	// todo: Bug: This is wrong should not be $aConfiguration but only the raw section!?!
 	global $aConfiguration;
 	$lHomeDir = $_ENV['HOME'];
@@ -142,22 +149,13 @@ function changeInstance($pInstance)
 	$basedir = askForBasedir($aConfiguration[$pInstance]);
 	$aConfiguration[$pInstance]['basedir'] = $basedir;
 
-	// Do not create directory here otherwise link will fail later
-	/*
-	if ( ! is_dir($aConfiguration[$pInstance]['basedir']) ) {
-		output("WARNING: Directory " . $aConfiguration[$pInstance]['basedir'] . " is NOT a directory or does not exist.\n");
-		output("Creating directory " . $aConfiguration[$pInstance]['basedir'] . "\n");
-		mkdir($aConfiguration[$pInstance]['basedir'], 0755, true);
-	}
-	*/
-
 
 	// Install binaries as well
 
 	if ( $aConfiguration[$pInstance]['basedir'] == '/usr' ) {
 		output("\n");
 		output("You have choosen the default package location of MySQL basedir.\n");
-		output("Please install MySQL with your package manger if not done yet.\n");
+		output("Please install MySQL with your package manager if not done yet.\n");
 	}
 	elseif ( (is_dir($aConfiguration[$pInstance]['basedir'])
 	  && (count(glob($aConfiguration[$pInstance]['basedir'] . '/*')) == 0))
@@ -169,54 +167,9 @@ function changeInstance($pInstance)
 		$key = answerQuestion($question, array('y', 'n'), 'y');
 		if ( $key == 'y' ) {
 
-			// This seems to be complete nonsense here?
-			/*
-			if ( $aConfiguration[$pInstance]['basedir'] == '' ) {
-				$rc = 702;
-				error("MyEnv is not installed yet. Please install MyEnv first with the command installMyEnv.php");
-				exit($rc);
-			}
-
-			// require($aConfiguration[$pInstance]['basedir'] . "/lib/myEnv.inc");
-			// $lConfFile = $_ENV['MYENV_BASE'] . '/' . 'etc/' . 'myenv.conf';
-			// todo: hard coded fix this!
-			$lConfFile = '/etc/myenv/myenv.conf';
-			debug("ConfFile: $lConfFile");
-
-			if ( ! file_exists($lConfFile) ) {
-				$rc = 703;
-				error("MyEnv configuration file $lConfFile does not exist.");
-				exit($rc);
-			}
-
-			list($ret, $aConfiguration) = getConfiguration($lConfFile);
-			if ( $ret != OK ) {
-				$msg = "MyEnv configuration file $lConfFile has an error.";
-				error($msg);
-				error(print_r($aConfiguration, true));
-				return $ret;
-			}
-			*/
-
 			$lProductDir = dirname($aConfiguration[$pInstance]['basedir']);
 			$lTmpDir     = $_ENV['HOME'] . '/' . 'tmp';
 
-			// Do not create otherwiese link below will fail
-			/*
-				if ( ! is_dir($lProductDir) ) {
-				output("\n");
-				output("INFO: Product directory $lProductDir does not exist yet.\n");
-				output("INFO: Creating it now.\n");
-				mkdir($lProductDir, 0755, true);
-			}
-			*/
-
-			if ( ! is_dir($lTmpDir) ) {
-				output("\n");
-				output("INFO: Tmp directory $lTmpDir does not exist yet.\n");
-				output("INFO: Creating it now.\n");
-				mkdir($lTmpDir, 0755, true);
-			}
 
 			// Download URL
 
@@ -328,8 +281,17 @@ function changeInstance($pInstance)
 		output("Omitting installation of binary tar ball.\n");
 	}
 
-	$mycnf = askForDatadir($aConfiguration[$pInstance]);
-	$aConfiguration[$pInstance]['datadir'] = $mycnf;
+
+	// Ask for instancedir
+
+	$instancedir = askForInstancedir($aConfiguration[$pInstance]);
+	$aConfiguration[$pInstance]['instancedir'] = $instancedir;
+
+
+	// Ask for datadir
+
+	$datadir = askForDatadir($aConfiguration[$pInstance]);
+	$aConfiguration[$pInstance]['datadir'] = $datadir;
 
 
 	// Install instance
@@ -338,47 +300,45 @@ function changeInstance($pInstance)
 	$ret = installInstance($aConfiguration[$pInstance]);
 
 
-	// port
+	// Ask for port
 
-	output("\n");
-	output("Set port.\n");
-	if ( isset($aConfiguration[$pInstance]['port']) && ($aConfiguration[$pInstance]['port'] != '') ) {
-		$default = $aConfiguration[$pInstance]['port'];
-	}
-	else {
-		$default = 3306;
-	}
-	output("Example: 3307 or [$default]\n");
-	$input = intval(readline("port    = "));
-	if ( $input == 0 ) {
-		$aConfiguration[$pInstance]['port'] = $default;
-	}
-	else {
-		$aConfiguration[$pInstance]['port'] = $input;
-	}
-	output("\n");
-
-	// Check if port already is in use
-	foreach( getInstances($aConfiguration) as $instance ) {
-
-		if ( ($aConfiguration[$instance]['port'] == $aConfiguration[$pInstance]['port']) && ($instance != $pInstance) ) {
-			output("WARNING: Port " . $aConfiguration[$pInstance]['port'] . " already exists under instance $instance.\n");
-			output("         Please make resolving conflict for example by having different IP addresses\n");
-			output("         (bind_address) or reconfiguring instance.\n");
-		}
-	}
+	$port = askForPort($aConfiguration[$pInstance]);
+	$aConfiguration[$pInstance]['port'] = $port;
 
 
 	// Ask for socket
 
-	$socket = askForSocket($aConfiguration[$pInstance]);
+	$socket = askForSocket($aConfiguration, $aConfiguration[$pInstance]);
 	$aConfiguration[$pInstance]['socket'] = $socket;
 
 
 	// Ask for my.cnf
 
-	$mycnf = askForMyCnf($aConfiguration[$pInstance]);
+	list($rc, $mycnf) = askForMyCnf($aConfiguration[$pInstance]);
+	if ( $rc != OK ) {
+		$aConfiguration[$pInstance]['my.cnf'] = '';
+		$msg = 'Creating instance configuration failed. Aborting...';
+		error($msg);
+		return $rc;
+	}
 	$aConfiguration[$pInstance]['my.cnf'] = $mycnf;
+
+
+	// Ask for angel
+
+	$angel = askForAngel($aConfiguration[$pInstance]);
+	$aConfiguration[$pInstance]['angel'] = $angel;
+
+
+	// Ask for cgroups
+
+	$ret = askForCgroups($aConfiguration[$pInstance]);
+	if ( $ret == 'yes' ) {
+		$aConfiguration[$pInstance]['cgroups'] = 'yes';
+	}
+	else {
+		$aConfiguration[$pInstance]['cgroups'] = 'no';
+	}
 
 
 	// Ask for stage
@@ -440,7 +400,7 @@ function installInstance($aConfiguration)
 				$rc = 725;
 				$msg = "\nCommand $cmd failed. Possibly library libaio / libaio1 is missing. Please install libaio first:\n";
 				output($msg);
-				
+
 				$lOs = getOs();
 				$lDistribution = 'unknown';
 				if ( $lOs == 'Linux' ) {
@@ -451,10 +411,12 @@ function installInstance($aConfiguration)
 				case 'CentOS':
 				case 'RedHat':
 				case 'Fedora':
+				case 'RedHatEnterpriseServer':
 					$cmd = "sudo yum install libaio";
 					output("  shell> $cmd\n\n");
 					break;
 				case 'SUSE':
+				case 'SUSE LINUX':
 				case 'openSUSE project':
 					$cmd = "sudo zypper install libaio";
 					output("  shell> $cmd\n\n");
@@ -574,7 +536,7 @@ function installInstance($aConfiguration)
 			}
 
 			if ( file_exists($bin) && is_executable($bin) ) {
-				output("Installing MySQL instance. Please be patient, this can take a while...\n");
+				output("Installing MySQL instance. Please be patient, this can take a while...\n\n");
 
 				// Check if $basedir/my.cnf exists already
 				// if not delete it afterwards again.
@@ -584,7 +546,7 @@ function installInstance($aConfiguration)
 				}
 
 				$cmd = $bin . " --no-defaults $sec --user=" . $aConfiguration['user'] . " --datadir=" . $aConfiguration['datadir'] . " --basedir=" . $aConfiguration['basedir'];
-				output("  $cmd\n");
+				output("$cmd\n");
 				// Here it seems like mysql_install_db does not return return code correctly!!!
 				list($ret, $output, $stdout, $stderr) = my_exec($cmd);
 				// var_dump($ret, $output, $stdout, $stderr);
@@ -675,23 +637,26 @@ function installInstance($aConfiguration)
 function askForMyCnf($aConfiguration)
 // ---------------------------------------------------------------------
 {
+	$rc = OK;
+
 	$aMyCnfCandidates = array(
 		'/etc/my.cnf'
 	, '/etc/mysql/my.cnf'
 	, $aConfiguration['datadir'] . '/my-' . $aConfiguration['port'] . '.cnf'
 	, $aConfiguration['datadir'] . '/my.cnf'
+	, $aConfiguration['instancedir'] . '/' . 'etc' . '/my.cnf'
 	);
 
 	// Default my.cnf:
 	if ( isset($aConfiguration['my.cnf']) && ($aConfiguration['my.cnf'] == '') ) {
-		$default = $aConfiguration['datadir'] . "/my.cnf";
+		$default = $aConfiguration['instancedir'] . '/' . 'etc' . '/my.cnf';
 	}
 	elseif ( isset($aConfiguration['my.cnf']) && ($aConfiguration['my.cnf'] != '') ) {
 		$default = $aConfiguration['my.cnf'];
 		array_push($aMyCnfCandidates, $default);
 	}
 	else {
-		$default = $aConfiguration['datadir'] . '/my.cnf';
+		$default = $aConfiguration['instancedir'] . '/' . 'etc' . '/my.cnf';
 	}
 
 	$aMyCnfCandidates = array_unique($aMyCnfCandidates);
@@ -723,60 +688,111 @@ function askForMyCnf($aConfiguration)
 	}
 	// Create my.cnf if not exits
 	elseif ( ! is_file($aConfiguration['my.cnf']) ) {
+
 		output("INFO: There is no such file " . $aConfiguration['my.cnf'] . " yet.\n");
-		output("Creating file " . $aConfiguration['my.cnf'] . "\n");
+
+		$etcdir = dirname($aConfiguration['my.cnf']);
+		// directory does not exist yet
+		if ( file_exists($etcdir) === false ) {
+			output("Creating directory " . $etcdir . "\n");
+			if ( @mkdir($etcdir, 0750, true) === false ) {
+				$rc = 755;
+				error("Failed to create directory " . $etcdir);
+				$a = error_get_last();
+				$msg = "Reason: " . $a['message'] . " (rc=$rc).";
+				error($msg);
+				output("Skipping...\n");
+				return array($rc, $aConfiguration['my.cnf']);
+			}
+		}
+		// touch of my.cnf comes further down
+
+
+		// Ask for stripping
+
+		output("\n");
+		$question = 'Shall I strip comments from the configuration file (Y/n)? ';
+		$key = answerQuestion($question, array('y', 'n'), 'y');
+		$lStrip = 'yes';
+		if ( strtolower($key) == 'n' ) {
+			$lStrip = 'no';
+		}
+
 
 		// todo: would be better to get it from outside!
 		$basedir = dirname(dirname(__FILE__));
-		// read our template
-		$tpl = file_get_contents($basedir . '/tpl/my.cnf.template');
-		// Substitue all %VARIABLES%
-		$aSearch = array('%MYCNF%', '%PORT%', '%SOCKET%', '%BASEDIR%', '%DATADIR%', '%SERVERID%', '%UNAME%', '%INSTANCE%');
-		if ( $aConfiguration['name'] != 'mysqld' ) {
-			$lInstance = $aConfiguration['name'] . '_';
-		}
-		else {
-			$lInstance = '';
-		}
-		$aReplace = array($aConfiguration['my.cnf'], $aConfiguration['port'], $aConfiguration['socket'], $aConfiguration['basedir'], $aConfiguration['datadir'], $aConfiguration['port'], php_uname('n'), $lInstance);
-		$cnf = str_replace($aSearch, $aReplace, $tpl);
 
+
+		// read our template and create my.cnf
+
+		// Substitue all %VARIABLES%
+
+		$aSearch = array('%MYCNF%', '%PORT%', '%SOCKET%', '%BASEDIR%', '%DATADIR%', '%SERVERID%', '%UNAME%', '%INSTANCEDIR%', '%INSTANCE%', '__');
+		$aReplace = array($aConfiguration['my.cnf'], $aConfiguration['port'], $aConfiguration['socket'], $aConfiguration['basedir'], $aConfiguration['datadir'], $aConfiguration['port'], php_uname('n'), $aConfiguration['instancedir'], $aConfiguration['name'], '_');
+
+		$aVarSearch  = array('/^# wsrep_/', '/^# WSREP parameter/');
+		$aVarReplace = array('', '');
+
+		$lTemplateFile = $basedir . '/tpl/my.cnf.template';
+		$srcFh = fopen($lTemplateFile, 'r');
 		ini_set('track_errors', 1);
-		if ( $fh = @fopen($aConfiguration['my.cnf'], 'w') ) {
-			fwrite($fh, $cnf);
-			fclose($fh);
-			chmod($aConfiguration['my.cnf'], 0600);
+		// touch file
+		output("Creating file " . $aConfiguration['my.cnf'] . "\n");
+		$newFh = @fopen($aConfiguration['my.cnf'], 'w');
+		if ( $newFh === false ) {
+			$rc = 753;
+			$msg = 'Opening file ' . $aConfiguration['my.cnf'] . ' for writing failed. ' . "(rc=$rc)";
+			error($msg);
+			return array($rc, $aConfiguration['my.cnf']);
 		}
-		// Opening my.cnf for writing failed (e.g. /etc/my.cnf)
-		else {
-			$rc = 706;
-			error("Writing to file " . $aConfiguration['my.cnf'] . " failed (rc=$rc)");
-			error($php_errormsg);
+		while( ($line = fgets($srcFh)) !== false ) {
+
+			$line = str_replace($aSearch, $aReplace, $line);
+			if ( 'yes' == $lStrip ) {
+				// Use preg_replace for array search. preg_match would also do the job
+				// but only for strings!
+				$lNewLine = preg_replace($aVarSearch, $aVarReplace, $line);
+				// We got a match, skip/strip the line
+				if ( $line != $lNewLine ) {
+					continue;
+				}
+			}
+			fputs($newFh, $line);
 		}
+		fclose($newFh);
+		chmod($aConfiguration['my.cnf'], 0600);
+		fclose($srcFh);
+	}
+	// Opening my.cnf for writing failed (e.g. /etc/my.cnf)
+	else {
+		$rc = 706;
+		error("Writing to file " . $aConfiguration['my.cnf'] . " failed (rc=$rc)");
+		// Does not exist in this context here: error($php_errormsg);
 	}
 
 	output("\n");
 
-	return $aConfiguration['my.cnf'];
+	return array($rc, $aConfiguration['my.cnf']);
 }
 
 // ---------------------------------------------------------------------
-function askForSocket($aConfiguration, $tSocket = '')
+function askForSocket($aGlobalConfiguration, $aInstanceConfiguration, $tSocket = '')
 // ---------------------------------------------------------------------
 {
+
 	$aSocketCandidates = array(
-		'/var/run/mysqld/mysql-' . $aConfiguration['port'] . '.sock'
-	, '/var/run/mysqld/mysql-' . $aConfiguration['name'] . '.sock'
+		'/var/run/mysqld/mysql-' . $aInstanceConfiguration['port'] . '.sock'
+	, '/var/run/mysqld/mysql-' . $aInstanceConfiguration['name'] . '.sock'
 	, '/var/run/mysqld/mysql.sock'
 	);
 
 	// Default socket:
-	if ( isset($aConfiguration['socket']) && ($aConfiguration['socket'] == '') ) {
+	if ( isset($aInstanceConfiguration['socket']) && ($aInstanceConfiguration['socket'] == '') ) {
 		// /var/run/mysqld/mysql-3306.sock
-		$default =  "/var/run/mysqld/mysql-" . $aConfiguration['port'] . ".sock";
+		$default =  "/var/run/mysqld/mysql-" . $aInstanceConfiguration['port'] . ".sock";
 	}
-	elseif ( isset($aConfiguration['socket']) && ($aConfiguration['socket'] != '') ) {
-		$default =  $aConfiguration['socket'];
+	elseif ( isset($aInstanceConfiguration['socket']) && ($aInstanceConfiguration['socket'] != '') ) {
+		$default =  $aInstanceConfiguration['socket'];
 		array_push($aSocketCandidates, $default);
 	}
 	else {
@@ -799,20 +815,38 @@ function askForSocket($aConfiguration, $tSocket = '')
 	}
 	output("\n");
 
+
 	// For testing purposes only:
+
 	if ( $tSocket == '' ) {
-		$aConfiguration['socket'] = readline("socket  = ");
+		$aInstanceConfiguration['socket'] = readline("socket  = ");
 	}
 	else {
-		$aConfiguration['socket'] = $tSocket;
+		$aInstanceConfiguration['socket'] = $tSocket;
 	}
 
-	if ( $aConfiguration['socket'] == '' ) {
-		$aConfiguration['socket'] = $default;
+	if ( $aInstanceConfiguration['socket'] == '' ) {
+		$aInstanceConfiguration['socket'] = $default;
 	}
 	output("\n");
 
-	return $aConfiguration['socket'];
+
+	// Check if socket already is in use
+
+	$aSocketConflicts = array();
+	foreach( getInstances($aGlobalConfiguration) as $instance ) {
+
+		if ( ($instance != $aInstanceConfiguration['name']) && ($aGlobalConfiguration[$instance]['socket'] == $aInstanceConfiguration['socket']) ) {
+			array_push($aSocketConflicts, $instance);
+		}
+	}
+	if ( count($aSocketConflicts) > 0 ) {
+		$insts = implode(', ', $aSocketConflicts);
+		output("WARNING: Socket " . $aInstanceConfiguration['socket'] . " already exists under instance(s) $insts.\n");
+		output("         Please resolve conflict by renaming socket file. For example add instance name or port to socket\n");
+	}
+
+	return $aInstanceConfiguration['socket'];
 }
 
 // ---------------------------------------------------------------------
@@ -960,11 +994,12 @@ function askForDatadir($aConfiguration)
 	, '/opt/mysql/data'
 	, '/usr/local/mysql/data'
 	, $lHomeDir . '/data/' . $aConfiguration['name']
+	, $aConfiguration['instancedir'] . '/' . 'data'
 	);
 
 	// Default datadir:
 
-	$default = $lHomeDir . '/data/' . $aConfiguration['name'];
+	$default = $aConfiguration['instancedir'] . '/' . 'data';
 	if ( isset($aConfiguration['datadir']) && ($aConfiguration['datadir'] == '') ) {
 		// /opt/mysql/data/mysqld1
 		$default =  $lHomeDir . '/data' . $aConfiguration['name'];
@@ -1005,7 +1040,7 @@ function askForDatadir($aConfiguration)
 	}
 	else {
 		output("Creating directory " . $aConfiguration['datadir'] . "\n");
-		mkdir($aConfiguration['datadir'], 0755, true);
+		mkdir($aConfiguration['datadir'], 0750, true);
 	}
 
 	return $aConfiguration['datadir'];
@@ -1022,18 +1057,25 @@ function replaceInitScripts($tKey = '')
 	  '/etc/init.d/mysql'
 	, '/etc/init.d/mysqld'
 	, '/etc/init.d/mysqld_multi'
+	, '/etc/systemd/system/mysqld.service'
+	, '/etc/systemd/system/mysql.service'
 	);
 	$lDistribution = 'unknown';
 
 	$lOs = getOs();
 	if ( $lOs == 'Linux' ) {
 		$lDistribution = getDistribution();
+		$lDistributionVersion = getDistributionVersion();
+		// 14.04
+		// 6.8
+		// 7
+		// 16.04
 	}
 
 	foreach ( $aInitScritps as $script ) {
 
 		while ( file_exists($script) ) {
-			$s = explode('/', $script);
+			$s = basename($script);
 			output("\n");
 			output("You still have an old init script ($script) which can confuse\n");
 			output("MyEnv during server boot. Please remove and deactivate this init script.\n\n");
@@ -1041,15 +1083,39 @@ function replaceInitScripts($tKey = '')
 			switch ($lDistribution) {
 			case 'CentOS':
 			case 'RedHat':
+			case 'RedHatEnterpriseServer':
+				// CentOS 7 has systemd
+				if ( $lDistributionVersion >= '7' ) {
+					$cmd = "sudo systemctl disable " . $s . "; sudo rm -f $script";
+					output("  shell> $cmd\n\n");
+				}
+				// CentOS 6 has still sysV
+				else {
+					$cmd = "sudo chkconfig --del " . $s . "; sudo rm -f $script";
+					output("  shell> $cmd\n\n");
+				}
+				break;
 			case 'Fedora':
 			case 'SUSE':
+			case 'SUSE LINUX':
 			case 'openSUSE project':
-				$cmd = "sudo chkconfig --del " . $s[3] . "; sudo rm -f $script";
+				$cmd = "sudo chkconfig --del " . $s . "; sudo rm -f $script";
 				output("  shell> $cmd\n\n");
 				break;
 			case 'Ubuntu':
+				// Ubuntu 15.04 and newer has systemd
+				if ( $lDistributionVersion >= '15' ) {
+					$cmd = "sudo systemctl disable " . $s . "; sudo rm -f $script";
+					output("  shell> $cmd\n\n");
+				}
+				// Older Ubuntu has sysV or upstart
+				else {
+					$cmd = "sudo rm -f $script; sudo update-rc.d " . $s . " remove";
+					output("  shell> $cmd\n\n");
+				}
+				break;
 			case 'Debian':
-				$cmd = "sudo rm -f $script; sudo update-rc.d " . $s[3] . " remove";
+				$cmd = "sudo rm -f $script; sudo update-rc.d " . $s . " remove";
 				output("  shell> $cmd\n\n");
 				break;
 			default:
@@ -1087,39 +1153,83 @@ function replaceInitScripts($tKey = '')
 }
 
 // ---------------------------------------------------------------------
-function addMyEnvInitScript($pInitScript, $tKey = '')
+function addMyEnvInitScript($tKey = '')
 // ---------------------------------------------------------------------
 {
 	$rc = OK;
 	$lDistribution = 'unknown';
 
-	$cmd = "sudo cp " . $_ENV['MYENV_BASE'] . "/bin/myenv.server " . $pInitScript;
-
 	$lOs = getOs();
 	if ( $lOs == 'Linux' ) {
 		$lDistribution = getDistribution();
+		$lDistributionVersion = getDistributionVersion();
+	}
+	else {
+		$rc = 739;
+		output("O/S $lOs is not yet supported. (rc=$rc)\n");
+		return $rc;
 	}
 
 	switch ($lDistribution) {
 	case 'CentOS':
 	case 'RedHat':
+	case 'RedHatEnterpriseServer':
+		// SystemD
+		// 7
+		if ( $lDistributionVersion >= '7' ) {
+			$lInitScript = '/etc/systemd/system/myenv.service';
+			$ret = prepareUnitFile($_ENV['MYENV_BASE'] . '/tpl/systemd.myenv.unit.template', $_ENV['MYENV_BASE']);
+			$cmd  = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/systemd.myenv.unit.template " . $lInitScript;
+			$cmd1 = "sudo systemctl daemon-reload ; sudo systemctl enable myenv";
+		}
+		// sysV
+		// 6.8
+		else {
+			$lInitScript = '/etc/init.d/myenv';
+			$cmd  = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/myenv.server " . $lInitScript;
+			$cmd1 = "sudo chkconfig --add myenv; sudo chkconfig myenv on";
+		}
+		break;
 	case 'Fedora':
 	case 'SUSE':
+	case 'SUSE LINUX':
 	case 'openSUSE project':
+		$lInitScript = '/etc/init.d/myenv';
+		$cmd  = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/myenv.server " . $lInitScript;
 		$cmd1 = "sudo chkconfig --add myenv; sudo chkconfig myenv on";
 		break;
 	case 'Ubuntu':
+		// SystemD
+		// >= 15.04
+		if ( $lDistributionVersion >= '15' ) {
+			$lInitScript = '/etc/systemd/system/myenv.service';
+			$ret = prepareUnitFile($_ENV['MYENV_BASE'] . '/tpl/systemd.myenv.unit.template', $_ENV['MYENV_BASE']);
+			$cmd = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/systemd.myenv.unit.template " . $lInitScript;
+			$cmd1 = "sudo systemctl daemon-reload ; sudo systemctl enable myenv";
+		}
+		// sysV/upstart
+		// 14.04
+		else {
+			$lInitScript = '/etc/init.d/myenv';
+			$cmd = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/myenv.server " . $lInitScript;
+			$cmd1 = "sudo update-rc.d myenv defaults";
+		}
+		break;
 	case 'Debian':
+		$lInitScript = '/etc/init.d/myenv';
+		$cmd  = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/myenv.server " . $lInitScript;
 		$cmd1 = "sudo update-rc.d myenv defaults";
 		break;
 	default:
-		$cmd1 = 'echo "Unknown distribution: ' . $lDistribution . '"';
+		$rc = 750;
+		output("Unknown distribution: $lDistribution ");
 		output("OS/Distribution $lOs/$lDistribution is not yet supported.\n");
+		return $rc;
 	}
 
-	while ( ! file_exists($pInitScript) ) {
+	while ( ! file_exists($lInitScript) ) {
 
-		output("\nPlease copy yourself manually the MyEnv start/stop script to the following location\n");
+		output("\nPlease copy yourself manually the MyEnv start/stop script/unit file to the following location\n");
 		output("and link it to your O/S runlevels:\n\n");
 		output("  shell> $cmd\n");
 		output("  shell> $cmd1\n\n");
@@ -1168,6 +1278,7 @@ function addMyEnvHook($pMyenvHook, $tKey = '')
 			fwrite($fh, "export MYENV_BASE=" . $lLikedBase . "\n");
 			fclose($fh);
 		}
+
 		if ( ! file_exists($_ENV['MYENV_BASE'] . '/etc/aliases.conf') ) {
 			copy($_ENV['MYENV_BASE'] . '/tpl/aliases.conf.template', '/etc/myenv/aliases.conf');
 		}
@@ -1195,10 +1306,10 @@ function addMyEnvProfile($pHomeDir, $tKey = '')
 	if ( $ret == 1 ) {
 
 		// todo: This is redundant with profile.template!!!
-		$lSourceSequence  = ". /etc/myenv/MYENV_BASE\n";
+		$lSourceSequence  = "source /etc/myenv/MYENV_BASE\n";
 		$lSourceSequence .= 'MYENV_PWD=$(pwd)' . "\n";
 		$lSourceSequence .= 'cd $MYENV_BASE/bin' . "\n";
-		$lSourceSequence .= ". myenv.profile\n";
+		$lSourceSequence .= "source myenv.profile\n";
 		$lSourceSequence .= 'cd $MYENV_BASE;' . "\n";
 		$lSourceSequence .= '$MYENV_BASE/bin/showMyEnvStatus.php;' . "\n";
 		$lSourceSequence .= "cd - > /dev/null\n";
@@ -1397,6 +1508,8 @@ function deleteInstance($pInstance)
 function changeInstance2($aInstances)
 // ---------------------------------------------------------------------
 {
+	$rc = OK;
+
 	if ( count($aInstances) > 0 ) {
 		output("The following instances are available to change:\n");
 		output("\n");
@@ -1414,9 +1527,11 @@ function changeInstance2($aInstances)
 		output("Please enter an instance name.\n\n");
 	}
 	else {
-	output("\n");
-		changeInstance($instance);
+		output("\n");
+		$rc = changeInstance($instance);
 	}
+
+	return $rc;
 }
 
 // ---------------------------------------------------------------------
@@ -1562,7 +1677,7 @@ function checkOsUser($pUser)
 			$rc = 747;
 			output("Aborting... (rc=$rc)\n");
 			exit($rc);
-			break;
+			//break;
 		}
 		elseif ( $key == 'd' ) {
 			null;
@@ -1588,7 +1703,7 @@ function checkForRootUser($pCurrentUser)
 		output("You started the MyEnv installer as user root. You should better use another user like\n$default or similar.\n");
 
 		output("\n");
-		$key = answerQuestion("Do you want to install MyEnv as 	root, install as Other user or Abort? [r/O/a]? ", array('r', 'o', 'a'), 'o');
+		$key = answerQuestion("Do you want to install MyEnv as root, install as Other user or Abort? [r/O/a]? ", array('r', 'o', 'a'), 'o');
 		if ( $key == 'o' ) {
 
 			output("\n");
@@ -1614,7 +1729,7 @@ function checkForRootUser($pCurrentUser)
 					$rc = 721;
 					output("Aborting... (rc=$rc)\n");
 					exit($rc);
-					break;
+					//break;
 				}
 				elseif ( $key == 'd' ) {
 					null;
@@ -1717,11 +1832,14 @@ Options:
                   - change: Change an existing instance.
                   - delete: Delete an existing instance.
   instance        Name of the instance to manage.
+  purge-data      Purges data in case of deletion.
   help            Print this help.
 
 Examples:
 
   $script --operation=delete --instance=test
+
+  $script --operation=add --instance=test --port=3306 --socket=/var/run/mysqld/mysql.sock
 
 ";
 }
@@ -1737,7 +1855,7 @@ function checkOptions($aArgv, $aOptions, $pConfFile)
 		$rc = 730;
 		$msg = "Invalid arguments or options. (rc=$rc)";
 		error($msg);
-		return($rc);
+		return $rc;
 	}
 
 	// Allowed operations
@@ -1745,7 +1863,7 @@ function checkOptions($aArgv, $aOptions, $pConfFile)
 		$rc = 731;
 		$msg = "Invalid operation " . $aOptions['operation'] . ". Valid operations are add, change, delete. (rc=$rc)";
 		error($msg);
-		return($rc);
+		return $rc;
 	}
 
 	// Operations are not allowed yet
@@ -1753,33 +1871,64 @@ function checkOptions($aArgv, $aOptions, $pConfFile)
 		$rc = 732;
 		$msg = "Operation add and change are not supported yet. (rc=$rc)";
 		error($msg);
-		return($rc);
+		return $rc;
 	}
+
+  if ( ! isset($aOptions['instance']) ) {
+		$rc = 751;
+		$msg = "Instance name was not defined. (rc=$rc)";
+		error($msg);
+		return $rc;
+  }
 
 	// Check if instance exists
 	list($ret, $aConfiguration) = getConfiguration($pConfFile);
 
-	if ( ! isset($aConfiguration[$aOptions['instance']]) ) {
-		$rc = 733;
-		$msg = "Instance " . $aOptions['instance'] . " does not exist. Please choose a valid instance name (rc=$rc).";
+	// Complain if instance does NOT exist on delete and change
+	if ( in_array($aOptions['operation'], array('delete', 'change')) ) {
+
+		if ( ! isset($aConfiguration[$aOptions['instance']]) ) {
+			$rc = 733;
+			$msg = "Instance " . $aOptions['instance'] . " does NOT exist. Please choose an existing instance name (rc=$rc).";
+			error($msg);
+			return $rc;
+		}
+	}
+	// Complain if instance DOES exist on add
+	// add
+	else {
+
+		if ( isset($aConfiguration[$aOptions['instance']]) ) {
+			$rc = 702;
+			$msg = "Instance " . $aOptions['instance'] . " DOES exist. Please choose a new instance name (rc=$rc).";
+			error($msg);
+			return $rc;
+		}
+	}
+
+	// purge-data only in combination with delete
+	if ( isset($aOptions['purge-data']) && ('delete' != $aOptions['operation']) ) {
+		$rc = 752;
+		$msg = "Option --purge-data can only be use with --operation=delete (rc=$rc).";
 		error($msg);
 		return $rc;
 	}
 
-	return($rc);
+	return $rc;
 }
 
 // ---------------------------------------------------------------------
-function deleteInstanceAutomatized($aOptions, $pConfFile)
+function deleteInstanceAutomatized($aOptions, $pMyEnvConfFile)
 // ---------------------------------------------------------------------
 {
 	$rc = OK;
 
-	list($ret, $aConfiguration) = getConfiguration($pConfFile);
+	list($ret, $aConfiguration) = getConfiguration($pMyEnvConfFile);
 
 	// Check if database is still running
 	$ret = checkDatabase($aConfiguration[$aOptions['instance']]);
 
+	$lInstanceConfigBackup = $aConfiguration[$aOptions['instance']];
 	if ( $ret == OK ) {
 		$rc = 734;
 		$msg = "Please stop instence first before deleting it (rc=$rc).";
@@ -1788,10 +1937,269 @@ function deleteInstanceAutomatized($aOptions, $pConfFile)
 	}
 	else {
 		unset($aConfiguration[$aOptions['instance']]);
-		writeConfigurationFile($aConfiguration, $pConfFile);
+		writeConfigurationFile($aConfiguration, $pMyEnvConfFile);
 	}
 
-	return($rc);
+	// Purge database
+	// We should better clean-up instance-dir
+	if ( isset($aOptions['purge-data']) ) {
+		output('Purging data of instance ' . $aOptions['instance'] . ' from ' . $lInstanceConfigBackup['datadir'] . "\n");
+		$rc = recursivelyRemoveDirectory($lInstanceConfigBackup['datadir']);
+	}
+
+	return $rc;
+}
+
+// ---------------------------------------------------------------------
+function prepareUnitFile($pUnitFile, $pMyenvBase)
+// ---------------------------------------------------------------------
+{
+	$rc = OK;
+
+	$lLikedBase = preg_replace("|(.*/myenv)-.*|", "$1", $pMyenvBase);
+
+	$lUnitOrigFile = $pUnitFile . '.orig';
+	if ( ! file_exists($lUnitOrigFile) ) {
+		if ( ! copy($pUnitFile, $lUnitOrigFile) ) {
+			$rc = 738;
+			$msg = "Cannot copy $pUnitFile to $lUnitOrigFile";
+			error($msg);
+			// do not exit here
+		}
+	}
+
+	$src = fopen($lUnitOrigFile, 'r');
+	$new = fopen($pUnitFile, 'w');
+	while( ($line = fgets($src)) !== false) {
+		fputs($new, preg_replace('/^ExecStart=.*$/', 'ExecStart=' . $lLikedBase . '/bin/myenv_start_stop.php start', $line));
+		# And what about stop??
+	}
+	fclose($new);
+	fclose($src);
+
+	return $rc;
+}
+
+// ---------------------------------------------------------------------
+function askForInstancedir($aConfiguration)
+// ---------------------------------------------------------------------
+{
+	$lHomeDir = $_ENV['HOME'];
+
+	$aInstancedirCandidates = array(
+		'/var/lib/mysql/' . $aConfiguration['name']
+	, '/opt/mysql/' . $aConfiguration['name']
+	, '/usr/local/mysql/' . $aConfiguration['name']
+	, $lHomeDir . '/database/' . $aConfiguration['name']
+	);
+
+
+	// Default instancedir
+
+	$default = $lHomeDir . '/database/' . $aConfiguration['name'];
+	if ( isset($aConfiguration['instancedir']) && ($aConfiguration['instancedir'] == '') ) {
+		// /home/mysql/database/mysqld1
+		$default =  $lHomeDir . '/database' . $aConfiguration['name'];
+	}
+	elseif ( isset($aConfiguration['instancedir']) && ($aConfiguration['instancedir'] != '') ) {
+		array_push($aInstancedirCandidates, $aConfiguration['instancedir']);
+		$default =  $aConfiguration['instancedir'];
+	}
+	array_push($aInstancedirCandidates, $default);
+
+	$aInstancedirCandidates = array_unique($aInstancedirCandidates);
+
+	output("\n");
+	output("Set instancedir. The instancedir is the directory where your MySQL data directory (datadir) is located.\n");
+	output("\n");
+	output("Example: ");
+
+	foreach ( $aInstancedirCandidates as $instancedir ) {
+		if ( $instancedir == $default ) {
+			output('[' . $instancedir . ']');
+		}
+		else {
+			output($instancedir);
+		}
+		output(' ');
+	}
+	output("\n");
+
+	$aConfiguration['instancedir'] = rtrim(readline("instancedir = "), '/');
+	output("\n");
+
+	if ( isset($aConfiguration['instancedir']) && ($aConfiguration['instancedir'] == '') ) {
+		$aConfiguration['instancedir'] = $default;
+	}
+	if ( is_dir($aConfiguration['instancedir']) ) {
+		output("WARNING: directory " . $aConfiguration['instancedir'] ." already exist.\n");
+	}
+	else {
+		output("Creating directory " . $aConfiguration['instancedir'] . "\n");
+		mkdir($aConfiguration['instancedir'], 0750, true);
+		mkdir($aConfiguration['instancedir'] . '/binlog', 0750);
+		// datadir is created autonomously and can be located somewhere else!
+		mkdir($aConfiguration['instancedir'] . '/etc', 0750);
+		mkdir($aConfiguration['instancedir'] . '/log', 0750);
+		mkdir($aConfiguration['instancedir'] . '/tmp', 0750);
+	}
+
+	return $aConfiguration['instancedir'];
+}
+
+// ---------------------------------------------------------------------
+function askForAngel($aConfiguration)
+// ---------------------------------------------------------------------
+{
+
+	// Ask if mysqld should be started with angel
+
+	output("\n");
+	$question = 'Shall mysqld be started with angel process (mysqld_safe) (y/N)? ';
+	$key = answerQuestion($question, array('y', 'n'), 'n');
+	$aConfiguration['angel'] = 'no';
+	if ( strtolower($key) == 'y' ) {
+		$aConfiguration['angel'] = 'yes';
+	}
+
+	return $aConfiguration['angel'];
+}
+
+// ---------------------------------------------------------------------
+function askForCgroups($aConfiguration)
+// ---------------------------------------------------------------------
+{
+
+	// Ask if instance should run under cgroups
+
+	output("\n");
+	$question = 'Shall instance run under cgroups to fences resources (y/N)? ';
+	$key = answerQuestion($question, array('y', 'n'), 'n');
+	$cgroups = 'no';
+	if ( strtolower($key) == 'n' ) {
+		$cgroups = 'no';
+		return 'no';
+	}
+
+
+	// Ask for relative CPU shares
+
+	output("\n");
+	$default = 100;
+	$rcs = readline("Enter relative CPU shares (default = 100): ");
+	if ( $rcs == '' ) {
+		$lRelativeCpuShares = $default;
+	}
+	else {
+		$lRelativeCpuShares = intval($rcs);
+	}
+
+	if ( $lRelativeCpuShares == 0 ) {
+		$lRelativeCpuShares = $default;
+	}
+
+
+	// Aktivate cgroups
+
+	$file = $aConfiguration['instancedir'] . '/etc/cgroups.conf';
+	$cgFh = fopen($file, 'w');
+	fputs($cgFh, 'cpu.shares = ' . $lRelativeCpuShares . "\n");
+	fclose($cgFh);
+
+	return 'yes';
+}
+
+// ---------------------------------------------------------------------
+function askForPort($aInstanceConfiguration, $tPort = '')
+// ---------------------------------------------------------------------
+{
+	global $aConfiguration;
+
+	output("\n");
+	output("Set port.\n");
+	if ( isset($aInstanceConfiguration['port']) && ('' != $aInstanceConfiguration['port']) ) {
+		$default = $aInstanceConfiguration[$pInstance]['port'];
+	}
+	else {
+		$default = 3306;
+	}
+	output("Example: [$default] or 3307\n");
+
+
+	// For test suite only:
+	if ( '' == $tPort ) {
+		$aInstanceConfiguration['port'] = intval(readline("port  = "));
+	}
+	else {
+		$aInstanceConfiguration['port'] = $tPort;
+	}
+
+	if ( 0 == $aInstanceConfiguration['port'] ) {
+		$aInstanceConfiguration['port'] = $default;
+	}
+	output("\n");
+
+
+	// Check if port already is in use
+
+	$aPortConflicts = array();
+	foreach( getInstances($aConfiguration) as $instance ) {
+
+		if ( ($instance != $aInstanceConfiguration['name']) && ($aInstanceConfiguration['port'] == $aConfiguration[$instance]['port']) ) {
+			array_push($aPortConflicts, $instance);
+		}
+	}
+	if ( count($aPortConflicts) > 0 ) {
+		$insts = implode(', ', $aPortConflicts);
+		output("WARNING: Port " . $aInstanceConfiguration['port'] . " already exists under instance(s) $insts.\n");
+		output("         Please resolve conflict for example by configuring different IP addresses\n");
+		output("         (bind_address=...) or ports (port=...).\n");
+	}
+
+	return $aInstanceConfiguration['port'];
+}
+
+// ---------------------------------------------------------------------
+function addInstanceAutomatized($aOptions, $pMyEnvConfFile)
+// ---------------------------------------------------------------------
+{
+	$rc = OK;
+
+	var_dump($aOptions, $pConfFile);
+
+	// Do some checks for creation
+	/*
+	basedir = /usr
+	instancedir = /home/mysql/database/mysqld1
+	datadir = /home/mysql/database/mysqld1/data
+	installation
+	port = 3306
+	socket /var/run/mysqld/mysql.sock
+	my.cnf = /home/mysql/database/mysqld1/etc/my.cnf
+	strip_comments y
+	angel = y/n 
+	cgroups = y/n
+	stage = production
+  */
+	/*
+	list($ret, $aConfiguration) = getConfiguration($pConfFile);
+
+	// Check if database is still running
+	$ret = checkDatabase($aConfiguration[$aOptions['instance']]);
+
+	if ( $ret == OK ) {
+		$rc = 701;
+		$msg = "Please stop instence first before deleting it (rc=$rc).";
+		error($msg);
+		return $rc;
+	}
+	else {
+		unset($aConfiguration[$aOptions['instance']]);
+		writeConfigurationFile($aConfiguration, $pConfFile);
+	}
+  */
+
+	return $rc;
 }
 
 ?>

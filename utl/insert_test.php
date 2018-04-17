@@ -8,11 +8,6 @@ $lDatabase = 'test';
 $lPort     = '3306';
 $lSocket   = '/var/run/mysqld/mysql.sock';
 
-$lUser     = 'root';
-$lPassword = '';
-$lPort     = '35514';
-
-
 $rc = 0;
 
 $mysqli = new mysqli($lHost, $lUser, $lPassword, $lDatabase, $lPort, $lSocket);

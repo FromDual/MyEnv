@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/bin/php -d variables_order=EGPCS
 <?php
 
 $basedir = dirname(dirname(__FILE__));
@@ -236,14 +236,14 @@ function readOurConfigFile($pConfigurationFile)
 $f = 'mb_strlen';
 if ( ! function_exists($f) ) {
 	$rc = 434;
-	$msg = "PHP function $f is missing. Please install it first.";
+	$msg = "PHP function $f is missing. Please install package php-mbstring first.";
 	fprintf(STDERR, "%s (rc=%d).\n", $msg, $rc);
 	exit($rc);
 }
 
 
 if ( count($argv) == 1 ) {
-	$rc = 405;
+	$rc = 436;
 	printUsage($gMyNameBase, $gDefaults);
 	exit($rc);
 }

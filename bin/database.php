@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/bin/php -d variables_order=EGPCS
 <?php
 
 // start, stop, restart a mysql instance
@@ -20,6 +20,7 @@ $rc = OK;
 
 if ( checkMyEnvRequirements() == ERR ) {
   $rc = 551;
+  error('MyEnv requirements check failed.' . " (rc=$rc)");
   exit($rc);
 }
 
@@ -65,8 +66,8 @@ case 'start':
   $ret = startDatabase($aConfiguration[$lInstance], $lOptions);
   if ( $ret != 0 ) {
     $rc = 545;
-    error("Starting database $lInstance failed (ret=$ret/rc=$rc).");
-    error("Please have a look in the MySQL error log or");
+    error("Starting instance $lInstance failed (ret=$ret/rc=$rc).");
+    error("Please have a look in the Error Log or");
     error("try again with export MYENV_DEBUG=1 if you cannot find any reason...");
   }
   break;
@@ -76,7 +77,7 @@ case 'bootstrap':
   if ( $ret != 0 ) {
     $rc = 506;
     error("Bootstrapping galera node $lInstance failed (ret=$ret/rc=$rc).");
-    error("Please have a look in the MySQL error log or");
+    error("Please have a look in the Error Log or");
     error("try again with export MYENV_DEBUG=1 if you cannot find any reason...");
   }
   break;
@@ -84,26 +85,26 @@ case 'stop':
   $ret = stopDatabase($aConfiguration[$lInstance]);
   if ( $ret != 0 ) {
     $rc = 546;
-    error("Stopping database $lInstance failed (rc=$rc).");
+    error("Stopping instance $lInstance failed (rc=$rc).");
   }
   break;
 case 'status':
   $ret = checkDatabase($aConfiguration[$lInstance]);
   if ( $ret != 0 ) {
     $rc = 547;
-    error("Check on database $lInstance failed (rc=$rc).");
+    error("Check on instance $lInstance failed (rc=$rc).");
   }
   break;
 case 'restart':
   $ret = stopDatabase($aConfiguration[$lInstance]);
   if ( $ret != 0 ) {
     $rc = 548;
-    error("Stopping database $lInstance failed (rc=$rc).");
+    error("Stopping instance $lInstance failed (rc=$rc).");
   }
   $ret = startDatabase($aConfiguration[$lInstance]);
   if ( $ret != 0 ) {
     $rc = 549;
-    error("Starting database $lInstance failed (rc=$rc).");
+    error("Starting instance $lInstance failed (rc=$rc).");
   }
   break;
 default:

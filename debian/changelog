@@ -1,0 +1,61 @@
+myenv (2.0.0-1) wheezy jessie stretch trusty xenial; urgency=low
+
+  * Dummy entry, to propagate the VCS version into the DEB packaging.
+    Please enter all real changes below, with their version info.
+
+ -- FromDual GmbH <info@fromdual.com>  Tue, 12 Sep 2017 19:05:55 +0200
+
+
+myenv (1.3.1.915-1) wheezy jessie stretch trusty xenial; urgency=low
+
+  * Fix the maintainer scripts: no service stop/start on upgrade,
+    no de-install while there are controlled MySQL instances.
+
+ -- FromDual GmbH <info@fromdual.com>  Tue, 12 Sep 2017 19:05:15 +0200
+
+
+myenv (1.3.1.905-1) wheezy jessie stretch trusty xenial; urgency=low
+
+  * Stop including the "packaging/" subdirectory in Debian packages.
+
+ -- FromDual GmbH <info@fromdual.com>  Fri, 04 Aug 2017 16:04:15 +0200
+
+
+myenv (1.3.1.905-1) wheezy jessie stretch trusty xenial; urgency=low
+
+  * Change dependencies to also accept PHP 7 packages (Debian 9, ...)
+
+ -- FromDual GmbH <info@fromdual.com>  Thu, 03 Aug 2017 13:14:15 +0200
+
+
+myenv (1.3.1.904-1) wheezy jessie stretch trusty xenial; urgency=low
+
+  * Maintainer scripts are finished and need testing.
+
+ -- FromDual GmbH <info@fromdual.com>  Wed, 02 Aug 2017 13:30:15 +0200
+
+
+myenv (1.3.1.901-1) wheezy jessie stretch trusty xenial; urgency=low
+
+  * The build tools allow to use the RELEASE variable marked by '%',
+    see 'RRELEASE' in top level 'Makefile'.
+
+ -- FromDual GmbH <info@fromdual.com>  Fri, 21 Jul 2017 16:30:15 +0200
+
+
+myenv (1.3.1.899-1) trusty; urgency=low
+
+  * First release for which Debian/Ubuntu packages are built.
+    Packages should cover _all_ Debian + Ubuntu versions:
+    wheezy = Debian 7
+    jessie = Debian 8
+    stretch = Debian 9
+    trusty = Ubuntu 14.04
+    xenial = Ubuntu 16.04
+
+  * Maintainer scripts are still "under construction",
+    and the startup files (SysV vs systemd) are still missing.
+
+ -- FromDual GmbH <info@fromdual.com>  Wed, 12 Jul 2017 17:34:15 +0200
+
+

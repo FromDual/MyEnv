@@ -5,20 +5,22 @@
 [default]
 
 user                 = mysql
+hideschema           = mysql,performance_schema,lost+found,sys
 ; default              = production
-; hideschema           = mysql,performance_schema,lost+found,sys
 
 ; [production]
 ;
-; basedir              = /home/mysql/product/mysql-5.5.7
-; datadir              = /home/mysql/data/production
-; port                 = 3306
-; socket               = /var/run/mysqld/mysql-3306.sock
-; my.cnf               = /home/mysql/data/production/my.cnf
+; type                 = mysqld
 ; start                = yes
 ; stop                 = yes
+; basedir              = /home/mysql/product/mysql-5.7.21
+; instancedir          = /home/mysql/database/production
+; datadir              = /home/mysql/database/production/data
+; port                 = 3306
+; socket               = /var/run/mysqld/mysql-3306.sock
+; my.cnf               = /home/mysql/database/production/etc/my.cnf
 ; readonly             = no
-; angel                = yes
-; ignore-passive       = yes
+; angel                = no
+; ignore-passive       = no
 ; cgroups              = no
 ; stage                = production

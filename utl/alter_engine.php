@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/bin/php -d variables_order=EGPCS
 <?php
 
 $rc = 0;
@@ -214,7 +214,7 @@ fprintf($fh, "warnings\n\n");
 if ( $aOptions['convert'] == 'simple' ) {
 
 	$sql = sprintf(
-	  "SELECT table_schema, table_name, engine, row_format" . "\n"
+	  "SELECT table_schema AS 'table_schema', table_name AS 'table_name', engine AS 'engine', row_format AS 'row_format'" . "\n"
 	. "  FROM information_schema.tables" . "\n"
 	. " WHERE table_schema NOT IN ('mysql', 'information_schema', 'performance_schema')" . "\n"
 	. "   AND table_type = 'BASE TABLE'"
@@ -254,7 +254,7 @@ if ( $aOptions['convert'] == 'simple' ) {
 elseif ( $aOptions['convert'] == 'advanced' ) {
 
 	$sql = sprintf(
-	  "SELECT table_schema, table_name, engine, row_format" . "\n"
+	  "SELECT table_schema AS 'table_schema', table_name AS 'table_name', engine AS 'engine', row_format AS 'row_format'" . "\n"
 	. "  FROM information_schema.tables" . "\n"
 	. " WHERE table_schema = '%s'" . "\n"
 	. "   AND table_type = 'BASE TABLE'"
@@ -332,7 +332,7 @@ else {
 
 // Find tables without a Primary Key
 
-$sql = "SELECT DISTINCT t.table_schema, t.table_name" . "\n"
+$sql = "SELECT DISTINCT t.table_schema AS 'table_schema', t.table_name AS 'table_name'" . "\n"
 	   . "  FROM information_schema.tables AS t" . "\n"
 	   . "  LEFT JOIN information_schema.columns AS c ON t.table_schema = c.table_schema AND t.table_name = c.table_name AND c.column_key = 'PRI'" . "\n"
 	   . " WHERE t.table_schema NOT IN ('information_schema', 'mysql', 'performance_schema')" . "\n"
@@ -375,7 +375,7 @@ else {
 
 if ( $aOptions['engine-to'] == 'InnoDB' ) {
 
-	$sql = "SELECT c.table_schema, c.table_name, c.column_name, c.column_key, c.extra, kcu.ordinal_position" . "\n"
+	$sql = "SELECT c.table_schema AS 'table_schema ', c.table_name AS 'table_name', c.column_name AS 'column_name', c.column_key AS 'column_key', c.extra AS 'extra', kcu.ordinal_position AS 'ordinal_position'" . "\n"
 			. "  FROM information_schema.columns AS c" . "\n"
 			. "  JOIN information_schema.key_column_usage AS kcu ON kcu.table_schema = c.table_schema AND kcu.table_name = c.table_name AND kcu.column_name = c.column_name" . "\n"
 			. " WHERE c.table_schema NOT IN ('information_schema', 'mysql', 'performance_schema')" . "\n"
@@ -419,8 +419,8 @@ if ( $aOptions['engine-to'] == 'InnoDB' ) {
 
 if ( $aOptions['engine-to'] == 'InnoDB' ) {
 
-	$sql = "SELECT table_schema, table_name
---     , data_type, character_octet_length, column_key
+	$sql = "SELECT table_schema AS 'table_schema', table_name AS 'table_name'
+--     , data_type AS 'data_type', character_octet_length AS 'character_octet_length', column_key AS 'column_key'
 , SUM(IF(data_type = 'varchar', character_octet_length
 		, IF(data_type = 'char', character_octet_length
 		, IF(data_type = 'enum', 2
@@ -433,7 +433,7 @@ if ( $aOptions['engine-to'] == 'InnoDB' ) {
 		, IF(data_type = 'datetime', 8
 		, IF(data_type = 'time', 4
 		, IF(data_type = 'date', 4
-		, NULL))))))))))))) AS column_length
+		, NULL))))))))))))) AS 'column_length'
 	FROM information_schema.columns
 WHERE column_key = 'PRI'
 	AND table_schema NOT IN ('information_schema', 'mysql', 'performance_schema')";
@@ -479,7 +479,7 @@ if ( 'InnoDB' == $aOptions['engine-to'] ) {
 			printf("\n");
 			printf("WARNING: The following tables might have a FULLTEXT index (which is only supported\nin MySQL 5.6 and newer):\n\n");
 
-			$sql = "SELECT table_schema, table_name, column_name" . "\n"
+			$sql = "SELECT table_schema AS 'table_schema', table_name AS 'table_name', column_name AS 'column_name'" . "\n"
 			     . "  FROM information_schema.statistics" . "\n"
 			     . " WHERE index_type = 'FULLTEXT'";
 

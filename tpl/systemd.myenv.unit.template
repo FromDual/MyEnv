@@ -1,0 +1,44 @@
+#
+# /etc/systemd/system/myenv.service (.tar.gz)
+# /usr/lib/systemd/system/myenv.service (.rpm)
+#
+
+# cp /opt/myenv/tpl/systemd.myenv.unit.template /etc/systemd/system/myenv.service
+# sudo chmod 664 /etc/systemd/system/myenv.service
+# sudo systemctl daemon-reload
+# systemctl enable myenv
+# systemctl start myenv
+
+# https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sect-Managing_Services_with_systemd-Unit_Files.html
+
+[Unit]
+
+Description=FromDual Environment for MySQL and MariaDB (myenv)
+Documentation=https://www.fromdual.com/myenv-installation-guide
+After=network.target
+
+
+[Service]
+
+# 'myenv_start_stop.php start' looks like "oneshot", but we don't want to wait for it
+Type=simple
+# Consider the service active even after 'myenv_start_stop.php start' finished
+RemainAfterExit=yes
+# Starting and stopping of many instances can take some time!
+TimeoutSec=300
+# Next line requires a new version (not in RH 7), "ExecStartPre" achieves the same result
+# RuntimeDirectory=myenv
+# true is needed so that "ExecStartPre" is run as 'root'
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p /var/run/myenv /var/run/mysqld
+ExecStartPre=/bin/chown mysql: /var/run/myenv /var/run/mysqld
+User=mysql
+Group=mysql
+ExecStart=/home/mysql/product/myenv/bin/myenv_start_stop.php start
+ExecStop=/home/mysql/product/myenv/bin/myenv_start_stop.php stop
+
+
+[Install]
+
+Alias=myenv
+WantedBy=multi-user.target

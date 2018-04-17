@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/bin/php -d variables_order=EGPCS
 <?php
 
 // Turn error reporting off. We handle it ourself?

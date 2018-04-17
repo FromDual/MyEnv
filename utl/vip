@@ -15,9 +15,9 @@
 
 # Source function library.
 if [ -f /etc/init.d/functions ] ; then
-  . /etc/init.d/functions
+  source /etc/init.d/functions
 elif [ -f /etc/rc.d/init.d/functions ] ; then
-  . /etc/rc.d/init.d/functions
+  source /etc/rc.d/init.d/functions
 else
   exit 1
 fi

@@ -145,7 +145,7 @@ if ( isset($aOptions['debug']) ) {
 }
 $mysqli->query($sql);
 
-$sql = sprintf("SELECT partition_name
+$sql = sprintf("SELECT partition_name AS 'partition_name'
   FROM information_schema.partitions
  WHERE table_schema = '%s'
    AND table_name = '%s'

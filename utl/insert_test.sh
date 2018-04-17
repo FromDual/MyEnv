@@ -9,6 +9,13 @@ database=test
 table=test
 create=0
 
+sleep=''
+
+if [ -n "$MYSQL_TCP_PORT" ]
+then
+    port=$MYSQL_TCP_PORT
+fi
+
 # CREATE TABLE `test` (
 #   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 #   `data` varchar(255) DEFAULT NULL,
@@ -29,6 +36,7 @@ do
     --port )      port=$2 ;     shift ;;
     --database )  database=$2 ; shift ;;
     --table )     table=$2 ;    shift ;;
+    --sleep )     sleep=$2 ;    shift ;;
     --create )    create=1 ;;
     * )           echo "Ignoring unknown argument '$1'" ;;
     esac
@@ -51,9 +59,11 @@ fi
 
 while [ 1 ]
 do
-
-  mysql --user=$user --password=$password --host=$host --port=$port ${database} \
-        -e "insert into ${table} values (NULL, CONCAT('Test data insert from ${client} on ', @@hostname), NULL);" |& grep -v insecure
-  echo -n '.'
-  # sleep 1
+    mysql --user=$user --password=$password --host=$host --port=$port ${database} \
+          -e "insert into ${table} values (NULL, CONCAT('Test data insert from ${client} on ', @@hostname), NULL);" |& grep -v insecure
+    echo -n '.'
+    if [ -n "$sleep" ]
+    then
+        sleep $sleep
+    fi
 done

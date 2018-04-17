@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/bin/php -d variables_order=EGPCS
 <?php
 
 /* 
@@ -200,6 +200,22 @@ if ( count($aDbNames) > 0 ) {
 debug(sprintf("#cols=%d, max_len=%d\n", $lNumberOfColumns, $max_len));
 
 
+// Get longest bind-address
+
+$lIpLength = 1;   // '*' has length of 1
+foreach ( $aDbNames as $db ) {
+
+	list($ret, $aMyCnf) = getConfiguration($aConfiguration[$db]['my.cnf']);
+	if ( $ret == OK ) {
+		foreach ( array('bind_address', 'bind-address', 'bind_addr', 'bind-addr') as $key ) {
+			if ( array_key_exists($key, $aMyCnf['mysqld']) ) {
+				$lIpLength = max($lIpLength, strlen($aMyCnf['mysqld'][$key])); 
+			}
+		}
+	}
+}
+
+
 // Print all instances
 
 foreach ( $aDbNames as $db ) {
@@ -230,27 +246,26 @@ foreach ( $aDbNames as $db ) {
 		// Split the schema output
 		$cnt = 1;
 		
-		foreach ( explode("\n", wordwrap(implode(' ', $aSchema), $lNumberOfColumns-$max_len-13)) as $line ) {
+		foreach ( explode("\n", wordwrap(implode(' ', $aSchema), $lNumberOfColumns-$max_len-$lIpLength-12)) as $line ) {
 
 			if ( $cnt == 1 ) {
 				$ip = '*';
 
 				list($ret, $aMyCnf) = getConfiguration($aConfiguration[$db]['my.cnf']);
 				if ( $ret == OK ) {
-					$ip = array_key_exists('bind_address', $aMyCnf['mysqld']) ?  $aMyCnf['mysqld']['bind_address'] : $ip;
-					$ip = array_key_exists('bind-address', $aMyCnf['mysqld']) ?  $aMyCnf['mysqld']['bind-address'] : $ip;
-					$ip = array_key_exists('bind_addr', $aMyCnf['mysqld']) ?  $aMyCnf['mysqld']['bind_addr'] : $ip;
-					$ip = array_key_exists('bind-addr', $aMyCnf['mysqld']) ?  $aMyCnf['mysqld']['bind-addr'] : $ip;
+					foreach ( array('bind_address', 'bind-address', 'bind_addr', 'bind-addr') as $key ) {
+						$ip = array_key_exists($key, $aMyCnf['mysqld']) ?  $aMyCnf['mysqld'][$key] : $ip;
+					}
 				}
 				else {
 					// Error is already printed here when necessary...
 					// do not exit here. We want to see output for others still...
 				}
 
-				output(sprintf("%-" . $max_len . "s (%s:%-5d) : %s\n", $db, $ip, $aConfiguration[$db]['port'], $line));
+				output(sprintf("%-" . $max_len . "s (%" . $lIpLength . "s:%-5d) : %s\n", $db, $ip, $aConfiguration[$db]['port'], $line));
 			}
 			else {
-				output(sprintf("%s %s\n", str_repeat(' ', $max_len+12), $line));
+				output(sprintf("%s %s\n", str_repeat(' ', $max_len+$lIpLength+11), $line));
 			}
 			$cnt++;
 		}
@@ -290,7 +305,7 @@ if ( $cnt > 0 ) {
 }
 
 debug('Check for old stuff:');
-checkForOldStuff();
+checkForOldStuff($basedir);
 
 exit($rc);
 ?>

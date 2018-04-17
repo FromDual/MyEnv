@@ -14,7 +14,8 @@
 	addDirectoryToPath($lPath, $lDir, $lOldDir, $location = 'left')
 	deleteDirectoryFromPath($lPath, $lDir)
 	getSectionTitles($a)
-	printStartingDatabases()
+	printStartingDatabases($pConfFile)
+	printStoppingDatabases($pConfFile)
 	getCurrentUser()
 	checkMyEnvRequirements()
 	parseConfigFile($pConfigurationFile, $scanner_mode = INI_SCANNER_NORMAL)
@@ -28,6 +29,10 @@
 	getPacketList($pDistribution)
 	noop()
 	parseConnectString($pConnectString)
+	getMachineReadableVersion($pVersion)
+	extractBranch($pVersionComment)
+	getDistributionVersion()
+	simulateLsbReleaseDistributionVersion($pTestFile = null)
 
 */
 
@@ -109,6 +114,12 @@ function getConfiguration($pConfigurationFile)
 
 			// Inherit from default
 			foreach ( $aConfiguration['default'] as $key => $val ) {
+
+				// default is NOT wanted in instance sections!
+				if ( $key == 'default' ) {
+					continue;
+				}
+
 				if ( ! isset($aConfiguration[$db][$key]) ) {
 					$aConfiguration[$db][$key] = $val;
 				}
@@ -147,7 +158,7 @@ function extractVersion($s)
 			else {
 			}
 		}
-		elseif ( ($matches[1] == 'Percona') 
+		elseif ( ($matches[1] == 'Percona')
 					|| ($matches[1] == 'Percona-Server')
 					) {
 			if ( preg_match("/(\d{1,2}\.\d{1,2}\.\d{1,2})/", $s, $matches) ) {
@@ -210,16 +221,37 @@ function startDatabase($aInstance, $pOptions = '')
 
 
 	// Check if mysql.user table exists
+	// or mysql.ibd tablespace in MySQL 8.0
 
-	if ( ! file_exists($aInstance['datadir'] . '/mysql/user.frm') ) {
+	if ( ! (file_exists($aInstance['datadir'] . '/mysql/user.frm')
+	     || file_exists($aInstance['datadir'] . '/mysql/user.ibd')
+	     || file_exists($aInstance['datadir'] . '/mysql.ibd')
+	       ) ) {
 		$rc = 523;
-		error("MySQL user table (user.frm) does not exist. Are you sure you have installed a MySQL instance already? (rc=$rc)");
-		error("Create a MySQL instance with the command: mysql_install_db --datadir=" . $aInstance['datadir'] . " --basedir=" . $aInstance['basedir']);
+		error("User table (\$datadir/mysql/user.{frm|ibd}) or mysql tablespace (\$datadir/mysql.ibd) does not exist.");
+		error("Are you sure you have installed a MySQL/MariaDB instance already? (rc=$rc)");
+		error("Create a database instance with the command:");
+		error("shell> mysql_install_db --user=mysql --datadir=" . $aInstance['datadir'] . " --basedir=" . $aInstance['basedir']);
+		error("or for MySQL 5.7 and newer:");
+		error("shell> mysqld --user=mysql --initialize-insecure --datadir=" . $aInstance['datadir'] . " --basedir=" . $aInstance['basedir']);
+		return $rc;
+	}
+
+	if ( ! array_key_exists('my.cnf', $aInstance) ) {
+		$rc = 552;
+		$msg = 'Key my.cnf is not defined in MyEnv configuration file for instance ' . $aInstance['name'] . '.';
+		error($msg);
 		return $rc;
 	}
 
 	list($ret, $aMyCnf) = parseConfigFile($aInstance['my.cnf'], INI_SCANNER_RAW);
-
+	if ( $ret != OK ) {
+		$rc = 553;
+		$msg = 'Error parsing configuration file ' . $aInstance['my.cnf'] . '.';
+		error($msg);
+		error($aMyCnf);
+		return $rc;
+	}
 
 	// Check if there is any missmatch between my.cnf and myenv.conf
 
@@ -228,7 +260,7 @@ function startDatabase($aInstance, $pOptions = '')
 			if ( $aMyCnf['mysqld'][$key] != $value ) {
 				$rc = 569;
 				$cnf = '/etc/myenv/myenv.conf';
-				print "WARNING: $key differs between " . $aInstance['my.cnf'] . " and " . $cnf . '(' . $aMyCnf['mysqld'][$key] . ' vs. ' . $value . ") (rc=$rc). Please fix this to avoid troubles...\n";
+				print "WARNING: $key differs between " . $aInstance['my.cnf'] . " and " . $cnf . ' (' . $aMyCnf['mysqld'][$key] . ' vs. ' . $value . ") (rc=$rc). Please fix this to avoid troubles...\n";
 			}
 		}
 	}
@@ -281,7 +313,16 @@ function startDatabase($aInstance, $pOptions = '')
 			debug($msg);
 		}
 
-		$lCgroupsFile = $aInstance['datadir'] . '/' . 'cgroups.conf';
+		// Check old cgroups file location
+		$old = $aInstance['datadir'] . '/' . 'cgroups.conf';
+		if ( is_file($old) ) {
+			$msg = "Old location of cgroups configuation $old is used.\n";
+			warn($msg);
+			$msg = "Please move to new location " . $aInstance['instancedir'] . '/etc/' . ".\n";
+			warn($msg);
+		}
+
+		$lCgroupsFile = $aInstance['instancedir'] . '/etc/' . 'cgroups.conf';
 		$aCgroupsParameter = array();
 		if ( is_file($lCgroupsFile) && (is_readable($lCgroupsFile)) ) {
 
@@ -432,7 +473,7 @@ function startDatabase($aInstance, $pOptions = '')
 
 	if ( $rc == OK ) {
 		print " SUCCESS!\n";
-		return($rc);
+		return $rc;
 	}
 	else {
 		$rc = 518;
@@ -443,12 +484,13 @@ function startDatabase($aInstance, $pOptions = '')
 				error("  " . trim($line));
 			}
 		}
-		return($rc);
+		return $rc;
 	}
 }
 
 // ----------------------------------------------------------------------
-function checkDatabase($aInstance)
+function checkDatabaseOld($aInstance)
+// todo: Can be removed later!!!
 // ----------------------------------------------------------------------
 {
 	$rc = OK;
@@ -499,6 +541,70 @@ function checkDatabase($aInstance)
 	return $rc;
 }
 
+// ---------------------------------------------------------------------
+function checkDatabase($aInstance)
+// ---------------------------------------------------------------------
+{
+
+	$rc = OK;
+
+	$lTimeout = 3;
+	$msg = '';
+
+	try {
+
+		// Create a UNIX file socket, protocol must be IP
+		$socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
+
+		if ( $socket === false ) {
+			$rc = 577;
+			$msg = 'socket_create() failed: ' . socket_strerror(socket_last_error()) . " (rc=$rc)";
+			throw new Exception($msg);
+		}
+
+		// Do a non-blocking connect
+		socket_set_nonblock($socket);
+
+		// Timeout
+		$time = time();
+
+		while ( ! @socket_connect($socket, $aInstance['socket']) ) {
+
+			$err = socket_last_error($socket);
+			// Socket file does not exist, so we have to assume instance does not run
+			if ( $err = SOCKET_ENOENT ) {
+				$rc = 581;
+				break;
+			}
+			// 115, 114
+			elseif ( $err == SOCKET_EINPROGRESS || $err == SOCKET_EALREADY ) {
+
+				if ( (time() - $time) >= $lTimeout ) {
+
+					socket_close($socket);
+					$rc = 579;
+					$msg = 'Connection timed out.' . " (rc=$rc)";
+					throw new Exception($msg);
+				}
+				sleep(0.1);
+				continue;
+			}
+
+			$rc = 580;
+			$msg = socket_strerror($err) . " (err=$err / rc=$rc)";
+			throw new Exception($msg);
+		}
+
+		socket_close($socket);
+	}
+	catch ( Exception $e ) {
+		error($msg);
+		return $rc;
+	}
+
+	return $rc;
+}
+
 // ----------------------------------------------------------------------
 function wait_for_pid($lMysqldPid, $pidfile)
 // ----------------------------------------------------------------------
@@ -527,11 +633,11 @@ function wait_for_pid($lMysqldPid, $pidfile)
 
 	if ( $rc == OK ) {
 		print " SUCCESS!\n";
-		return($rc);
+		return $rc;
 	}
 	else {
 		error(" (rc=$rc).");
-		return($rc);
+		return $rc;
 	}
 }
 
@@ -641,7 +747,7 @@ function stopDatabase($aInstance)
 		$lLockFile = $lLockDir . '/mysql';
 
 		if ( is_file($lLockFile) ) {
-		
+
 			if ( is_writeable($lLockFile) ) {
 				unlink($lLockFile);
 			}
@@ -744,17 +850,18 @@ function getSectionTitles($a)
 }
 
 // ----------------------------------------------------------------------
-function printStartingDatabases()
+function printStartingDatabases($pConfFile)
+// Returns an array of all databases which should be started:
+// start = yes
+// Keep in sync with printStoppingDatabases
 // ----------------------------------------------------------------------
 {
 	$rc = OK;
 	$aDbNames = array();
 
 	$lDebug         = isset($_ENV['MYENV_DEBUG']) ? strval($_ENV['MYENV_DEBUG']) : '';
-	$basedir        = $_ENV['MYENV_BASE'];
-	// todo: hard coded here:
-	$lConfFile      = '/etc/myenv/myenv.conf';
-	list($ret, $aConfiguration) = getConfiguration($lConfFile);
+
+	list($ret, $aConfiguration) = getConfiguration($pConfFile);
 	if ( $lDebug ) {
 		var_dump($aConfiguration);
 	}
@@ -768,6 +875,40 @@ function printStartingDatabases()
 			foreach ( $parameter as $key => $value ) {
 
 				if ( ($key == 'start') && ((strtoupper($value) == 'YES' ) || ($value == 1)) ) {
+					array_push($aDbNames, $db);
+				}
+			}
+		}
+	}
+	return array($rc, $aDbNames);
+}
+
+// ----------------------------------------------------------------------
+function printStoppingDatabases($pConfFile)
+// Returns an array of all databases which should be started:
+// stop = yes
+// Keep in sync with printStartingDatabases
+// ----------------------------------------------------------------------
+{
+	$rc = OK;
+	$aDbNames = array();
+
+	$lDebug         = isset($_ENV['MYENV_DEBUG']) ? strval($_ENV['MYENV_DEBUG']) : '';
+
+	list($ret, $aConfiguration) = getConfiguration($pConfFile);
+	if ( $lDebug ) {
+		var_dump($aConfiguration);
+	}
+	if ( $ret != OK ) {
+		return array($ret, $aDbNames);
+	}
+
+	foreach ( $aConfiguration as $db => $parameter ) {
+
+		if ( $db != 'default' ) {
+			foreach ( $parameter as $key => $value ) {
+
+				if ( ($key == 'stop') && ((strtoupper($value) == 'YES' ) || ($value == 1)) ) {
 					array_push($aDbNames, $db);
 				}
 			}
@@ -795,7 +936,7 @@ function getCurrentUser()
 // ----------------------------------------------------------------------
 {
 	list($rc, $output, $stdout, $stderr) = my_exec('whoami');
-	return($output);
+	return $output;
 }
 
 // ----------------------------------------------------------------------
@@ -804,6 +945,14 @@ function checkMyEnvRequirements()
 {
 	$ret = OK;
 	$lDistribution = 'unknown';
+
+	// Must be done before getOs
+	// Happens only on CentOS, not on Ubuntu
+	if ( function_exists('posix_uname') === false ) {
+		error("Function posix_uname() does not exist. Please install with:");
+		error("  shell> sudo yum install php-posix\n");
+		$ret = ERR;
+	}
 
 	$lOs = getOs();
 	if ( $lOs == 'Linux' ) {
@@ -825,22 +974,24 @@ function checkMyEnvRequirements()
 		case 'CentOS':
 		case 'RedHat':
 		case 'Fedora':
+		case 'RedHatEnterpriseServer':
 			$cmd = "sudo vi /etc/php.ini";
-			print "shell> $cmd\n\n";
+			error("shell> $cmd\n\n");
 			break;
 		case 'SUSE':
+		case 'SUSE LINUX':
 		case 'openSUSE project':
 			$cmd = "sudo vi /etc/php5/cli/php.ini";
-			print "shell> $cmd\n\n";
+			error("shell> $cmd\n\n");
 			break;
 		case 'Ubuntu':
 		case 'Debian':
-			$cmd = "sudo vi /etc/php5/cli/php.ini";
-			print "shell> $cmd\n\n";
+			$cmd = "sudo vi /etc/php5/cli/php.ini /etc/php/7.?/cli/php.ini";
+			error("shell> $cmd\n\n");
 			break;
 		default:
-			$cmd = 'echo "Unknown distribution: ' . $lDistribution . '"';
-			print "OS/Distribution $lOs/$lDistribution is not yet supported.\n";
+			error('Unknown distribution: ' . $lDistribution . '.');
+			error("OS/Distribution $lOs/$lDistribution is not supported yet.\n");
 		}
 		return ERR;
 	}
@@ -855,10 +1006,12 @@ function checkMyEnvRequirements()
 		case 'CentOS':
 		case 'RedHat':
 		case 'Fedora':
+		case 'RedHatEnterpriseServer':
 			$cmd = "sudo yum install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
 			break;
 		case 'SUSE':
+		case 'SUSE LINUX':
 		case 'openSUSE project':
 			$cmd = "sudo zypper install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
@@ -882,10 +1035,12 @@ function checkMyEnvRequirements()
 		case 'CentOS':
 		case 'RedHat':
 		case 'Fedora':
+		case 'RedHatEnterpriseServer':
 			$cmd = "sudo yum install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
 			break;
 		case 'SUSE':
+		case 'SUSE LINUX':
 		case 'openSUSE project':
 			$cmd = "sudo zypper install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
@@ -913,10 +1068,12 @@ function checkMyEnvRequirements()
 		case 'CentOS':
 		case 'RedHat':
 		case 'Fedora':
+		case 'RedHatEnterpriseServer':
 			$cmd = "sudo yum install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
 			break;
 		case 'SUSE':
+		case 'SUSE LINUX':
 		case 'openSUSE project':
 			$cmd = "sudo zypper install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
@@ -945,10 +1102,12 @@ function checkMyEnvRequirements()
 		case 'CentOS':
 		case 'RedHat':
 		case 'Fedora':
+		case 'RedHatEnterpriseServer':
 			$cmd = "sudo yum install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
 			break;
 		case 'SUSE':
+		case 'SUSE LINUX':
 		case 'openSUSE project':
 			$cmd = "sudo zypper install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
@@ -983,10 +1142,12 @@ function checkMyEnvRequirements()
 		case 'CentOS Linux':
 		case 'RedHat':
 		case 'Fedora':
+		case 'RedHatEnterpriseServer':
 			$cmd = "sudo yum install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
 			break;
 		case 'SUSE':
+		case 'SUSE LINUX':
 		case 'openSUSE project':
 			$cmd = "sudo zypper install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
@@ -1069,10 +1230,14 @@ function parseConfigFile($pConfigurationFile, $scanner_mode = INI_SCANNER_NORMAL
 		$rc = 530;
 		parse_ini_file($tmp, true, $scanner_mode);
 		$msg = "Troubles reading configuration file $pConfigurationFile (rc=$rc).";
-		unlink($tmp);
+		if ( ! isset($_ENV['MYENV_DEBUG']) ) {
+			unlink($tmp);
+		}
 		return array($rc, $msg);
 	}
-	unlink($tmp);
+	if ( ! isset($_ENV['MYENV_DEBUG']) ) {
+		unlink($tmp);
+	}
 
 	// Check if config file was formed correctly:
 	foreach ( $aConfig as $section => $values ) {
@@ -1131,7 +1296,7 @@ function getMd5sum2($file, $aOptions)
 }
 
 // ----------------------------------------------------------------------
-function checkForOldStuff()
+function checkForOldStuff($pBasedir)
 // ----------------------------------------------------------------------
 {
 	$rc = OK;
@@ -1152,7 +1317,7 @@ function checkForOldStuff()
 		print "Variable MYSQL_HOME is missing in file $file (rc=$rc).\n";
 	}
 
-	if ( ! preg_match('/datadir/', $line) ) {
+	if ( ! preg_match('/datadir/i', $line) ) {
 		$rc = 562;
 		print "Variable MYSQL_HOME is NOT set correctly in file $file (rc=$rc).\n";
 		print $line . "\n";
@@ -1164,15 +1329,36 @@ function checkForOldStuff()
 	// Check that myenv.server template file is same as /etc/init.d/myenv
 
 	$ini = '/etc/init.d/myenv';
-	$tpl = $_ENV['MYENV_BASE'] . '/' . 'bin/myenv.server';
+	if ( file_exists($ini) ) {
+		$tpl = $pBasedir . '/' . 'tpl/myenv.server';
 
-	list($ret, $md5_1) = getMd5sum2($tpl, array());
-	list($ret, $md5_2) = getMd5sum2($ini, array());
-	if ( $md5_1 != $md5_2 ) {
-		$rc = 561;
-		print "File $ini is old and possibly not up to date (rc=$rc).\n";
-		print "Please fix this with the following command:\n\n";
-		print "shell> sudo cp $tpl $ini\n\n";
+		list($ret, $md5_1) = getMd5sum2($tpl, array());
+		list($ret, $md5_2) = getMd5sum2($ini, array());
+		if ( $md5_1 != $md5_2 ) {
+			$rc = 561;
+			print "File $ini is old and possibly not up to date (rc=$rc).\n";
+			print "Please fix this with the following command:\n\n";
+			print "shell> sudo cp $tpl $ini\n\n";
+		}
+	}
+
+
+
+	// Check that systemd.myenv.unit.template file is same as /etc/systemd/system/myenv.service
+
+	$ini = '/etc/systemd/system/myenv.service';
+	if ( file_exists($ini) ) {
+		$tpl = $pBasedir . '/' . 'tpl/systemd.myenv.unit.template';
+
+		list($ret, $md5_1) = getMd5sum2($tpl, array());
+		list($ret, $md5_2) = getMd5sum2($ini, array());
+		if ( $md5_1 != $md5_2 ) {
+			$rc = 519;
+			print "File $ini is old and possibly not up to date (rc=$rc).\n";
+			print "Please fix this with the following command:\n\n";
+			print "shell> sudo cp $tpl $ini\n";
+			print "shell> sudo systemctl daemon-reload\n\n";
+		}
 	}
 
 	return $rc;
@@ -1180,7 +1366,7 @@ function checkForOldStuff()
 
 // ----------------------------------------------------------------------
 function my_exec($pCmd)
-// We have seen some cases, where return values are not return correctly
+// We have seen some cases, where return values are not returned correctly
 // To be really sure also check the stderr!
 // ----------------------------------------------------------------------
 {
@@ -1195,7 +1381,7 @@ function my_exec($pCmd)
 	$fh = fopen($file, 'r');
 	while ( $line = fgets($fh) ) {
 		$line = trim($line);
-	
+
 		// Skip this nasty warning:
 		if ( $line == 'Warning: Using a password on the command line interface can be insecure.' ) {
 			continue;
@@ -1216,11 +1402,11 @@ function getVersionFromMysqld($pBasedir)
 
 	$aExecutables = array('/sbin/mysqld', '/libexec/mysqld', '/bin/mysqld');
 	foreach ( $aExecutables as $e ) {
-	
+
 		// /usr/sbin/mysqld
 		$exe = $pBasedir . $e;
 		if ( is_executable($exe) ) {
-		
+
 			// /usr/sbin/mysqld --version  Ver 5.5.38-0ubuntu0.14.04.1 for debian-linux-gnu on x86_64 ((Ubuntu))
 			$cmd = $exe . ' --version';
 			debug($cmd);
@@ -1245,6 +1431,7 @@ function getOs()
 // ---------------------------------------------------------------------
 {
 	// possibly better use php_uname(...) for Windows compatibility!
+	// php_uname is one line string, posix_uname is array. So posix is better!!!
 	$aUname = posix_uname();
 	return $aUname['sysname'];
 }
@@ -1276,11 +1463,23 @@ function getDistribution()
 			$distribution = simulateLsbRelease();
 		}
 	}
+	elseif ( $lOs == 'Darwin' ) {
+
+		$exe = 'uname';
+		list($ret, $output, $stdout, $stderr) = my_exec("which $exe 2>&1");
+		if ( $ret == OK ) {
+			$cmd = $exe . ' -s';
+			list($ret, $distribution, $stdout, $stderr) = my_exec($cmd);
+		}
+	}
+	else {
+		print "O/S $lOs is not supported yet.\n";
+	}
 	return $distribution;
 }
 
 // ---------------------------------------------------------------------
-function simulateLsbRelease()
+function simulateLsbRelease($lTestFile = null)
 // Simulates lsb_release -s -i if this does not exist
 // ---------------------------------------------------------------------
 {
@@ -1289,19 +1488,26 @@ function simulateLsbRelease()
 	// Ubuntu  : NAME="Ubuntu"
 	// OpenSuSE: NAME=openSUSE
 	// Debian  : NAME="Debian GNU/Linux"
-	$lOsRelease = '/etc/os-release';
+	if ( is_null($lTestFile) ) {
+		$lOsRelease = '/etc/os-release';
+	}
+	else {
+		$lOsRelease = $lTestFile;
+	}
 	if ( file_exists($lOsRelease) && is_readable($lOsRelease) ) {
 
 		if ( $fh = fopen($lOsRelease, 'r') ) {
 
-			while ( ($buffer = fgets($fh, 256)) === true ) {
+			while ( ($buffer = fgets($fh, 256)) !== false ) {
+
+				$buffer = trim($buffer);
 				list($key, $value) = explode('=', $buffer);
 				if ( $key == 'NAME' ) {
 					$distribution = trim($value, '"');
 					break;
 				}
 			}
-			// This seems to be wrong when NAME is reached!!!
+			// Seems to not support well the break above
 			/* if ( feof($fh) === false ) {
 				$rc = 517;
 				error("Unexpected fgets() fail on file $lOsRelease (rc=$rc).");
@@ -1310,7 +1516,7 @@ function simulateLsbRelease()
 			fclose($fh);
 		}
 		else {
-			$rc = 516;
+			$rc = 515;
 			error("Cannot open file $lOsRelease (rc=$rc).");
 			return $distribution;
 		}
@@ -1319,16 +1525,20 @@ function simulateLsbRelease()
 	//           cpe:/o:centos:linux:6:GA
 	else {
 
-		$lSystemReleaseCpe = '/etc/system-release-cpe';
+		if ( is_null($lTestFile) ) {
+			$lSystemReleaseCpe = '/etc/system-release-cpe';
+		}
+		else {
+			$lSystemReleaseCpe = $lTestFile;
+		}
 		if ( file_exists($lSystemReleaseCpe) && is_readable($lSystemReleaseCpe) ) {
 
 			if ( $fh = fopen($lSystemReleaseCpe, 'r') ) {
 
-				while ( ($buffer = fgets($fh, 256)) === true ) {
+				while ( ($buffer = fgets($fh, 256)) !== false ) {
 					$a = explode(':', $buffer);
 					$distribution = $a[2];
 				}
-				// This seems to be wrong when NAME is reached!!!
 				/* if ( ! feof($fh) ) {
 					$rc = 574;
 					error("Unexpected fgets() fail (rc=$rc).");
@@ -1341,7 +1551,12 @@ function simulateLsbRelease()
 				error("Cannot open file $lSystemReleaseCpe (rc=$rc).");
 				return $distribution;
 			}
-
+		}
+		else {
+			$rc = 507;
+			$msg = "File $lSystemReleaseCpe does not exist or is not readable.";
+			error("$msg (rc=$rc)");
+			return $distribution;
 		}
 	}
 
@@ -1354,10 +1569,14 @@ function simulateLsbRelease()
 		$distribution = 'Debian';
 		break;
 	case 'centos':
+	case 'CentOS Linux':
 		$distribution = 'CentOS';
 		break;
+	case 'Ubuntu':
+		$distribution = 'Ubuntu';
+		break;
 	default:
-		null;
+		print "Distribution $distribution is not considered in code.\n";
 	}
 	return $distribution;
 }
@@ -1372,15 +1591,18 @@ function getPacketList($pDistribution)
 	case 'CentOS':
 	case 'RedHat':
 	case 'Fedora':
+	case 'RedHatEnterpriseServer':
 		$lList = 'php-cli php-posix php-pcntl php-mysqli redhat-lsb-core';
 		break;
 	case 'SUSE':
+	case 'SUSE LINUX':
 	case 'openSUSE project':
 		$lList = 'php5 php5-cli php5-posix php5-pcntl php5-mysqli lsb-release';
 		break;
 	case 'Ubuntu':
 	case 'Debian':
-		$lList = 'php5 php5-posix php5-pcntl php5-mysql lsb-release';
+		// taken out: php-posix php-pcntl
+		$lList = 'php php-mysql lsb-release';
 		break;
 	default:
 		$lList = 'unknown distribution ' . $pDistribution;
@@ -1417,7 +1639,7 @@ function parseConnectString($pConnectString)
 	// host
 
 	$aTarget = array();
-	$ret = OK;
+	$rc = OK;
 
 
 	// Split first into user and host part: @ is mandatory
@@ -1425,10 +1647,11 @@ function parseConnectString($pConnectString)
 	$pos = strrpos($pConnectString, '@');
 
 	if ( $pos == 0 ) {
-		$ret = 173;
+		$rc = 173;
 		// This is/was a security issue! Removed: $pConnectString
-		error("Connect string does not match pattern: user/password@host:port (ret=$ret).");
-		return array($ret, $aTarget);
+		$msg = 'Connect string does not match pattern: user/password@host:port.' . " (rc=$rc)";
+		error($msg);
+		return array($rc, $aTarget);
 	}
 
 	$user_part = substr($pConnectString, 0, $pos);
@@ -1458,8 +1681,8 @@ function parseConnectString($pConnectString)
 		else {
 
 			if ( intval($h[1]) == 0 ) {
-				$aTarget['socket'] = $h[1];
 				$aTarget['port']   = 3306;
+				$aTarget['socket'] = $h[1];
 			}
 			else {
 				$aTarget['port']   = intval($h[1]);
@@ -1468,14 +1691,15 @@ function parseConnectString($pConnectString)
 		}
 
 		if ( $aTarget['port'] == 0 ) {
-			$ret = 172;
-			error("Port " . $h[1] . " is zero or not an integer (ret=$ret).");
+			$rc = 172;
+			$msg = 'Port ' . $h[1] . ' is zero or not an integer.' . " (ret=$rc)";
+			error($msg);
 			$aTarget['port'] = '';
-			return array($ret, $aTarget);
+			return array($rc, $aTarget);
 		}
 	}
 
-	return array($ret, $aTarget);
+	return array($rc, $aTarget);
 }
 
 // -------------------------------------------------------------------
@@ -1491,6 +1715,158 @@ function getMachineReadableVersion($pVersion)
 	$mr_version = sprintf("%02d%02d%02d", $matches[1], $matches[2], $matches[3]);
 
 	return array($rc, $mr_version);
+}
+
+// ----------------------------------------------------------------------
+function extractBranch($pVersionComment)
+// SHOW GLOBAL VARIABLES LIKE 'version_comment';
+// ----------------------------------------------------------------------
+{
+	$branch = 'unknown';
+
+	/*
+		Expected patterns:
+
+		MySQL Community Server (GPL)
+		MariaDB Server
+		mariadb.org binary distribution, wsrep_25.10.r4144
+		MariaDB Server
+		Percona Server with XtraDB (GPL), Release rel64.2, Revision 569
+	*/
+
+	if ( preg_match("/^([a-z]+)/i", $pVersionComment, $matches) ) {
+
+		switch ( strtolower($matches[1]) ) {
+		case 'mysql':
+			$branch = 'MySQL';
+			break;
+		case 'mariadb':
+			$branch = 'MariaDB';
+			break;
+		case 'percona':
+			$branch = 'Percona';
+			break;
+		}
+	}
+
+	return $branch;
+}
+
+// ---------------------------------------------------------------------
+function getDistributionVersion()
+// ---------------------------------------------------------------------
+{
+	$distributionVersion = 'unknown';
+	$lOs = getOs();
+	if ( $lOs == 'Linux' ) {
+
+		$exe = 'lsb_release';
+		list($ret, $output, $stdout, $stderr) = my_exec("which $exe 2>&1");
+		if ( $ret == OK ) {
+			$cmd = $exe . ' -r';
+			list($ret, $line, $stdout, $stderr) = my_exec($cmd);
+			if ( preg_match("/\s+(.*)$/", $line, $matches) ) {
+				$distributionVersion = $matches[1];
+			}
+		}
+		else {
+			$distributionVersion = simulateLsbReleaseDistributionVersion();
+		}
+	}
+	else {
+		print "O/S $lOs is not supported yet.\n";
+	}
+	return $distributionVersion;
+}
+
+// ---------------------------------------------------------------------
+function simulateLsbReleaseDistributionVersion($pTestFile = null)
+// ---------------------------------------------------------------------
+{
+	$distributionVersion = 'unknown';
+
+	// Ubuntu  : VERSION_ID="16.04"
+	//           VERSION_ID="14.04"
+	// CentOS  : 6 file does not exist
+	//           VERSION_ID="7"
+
+	if ( is_null($pTestFile) ) {
+		$lOsRelease = '/etc/os-release';
+	}
+	else {
+		$lOsRelease = $pTestFile;
+	}
+
+	if ( file_exists($lOsRelease) && is_readable($lOsRelease) ) {
+
+		if ( $fh = fopen($lOsRelease, 'r') ) {
+
+			while ( ($buffer = fgets($fh, 256)) !== false ) {
+
+				$buffer = trim($buffer);
+				list($key, $value) = explode('=', $buffer);
+				if ( $key == 'VERSION_ID' ) {
+					$distributionVersion = trim($value, '"');
+					break;
+				}
+			}
+			fclose($fh);
+		}
+		else {
+			$rc = 516;
+			error("Cannot open file $lOsRelease (rc=$rc).");
+			return $distributionVersion;
+		}
+	}
+	// CentOS 6
+	else {
+
+		if ( is_null($pTestFile) ) {
+			$lSystemReleaseCpe = '/etc/system-release-cpe';
+		}
+		else {
+			$lSystemReleaseCpe = $pTestFile;
+		}
+		if ( file_exists($lSystemReleaseCpe) && is_readable($lSystemReleaseCpe) ) {
+
+			if ( $fh = fopen($lSystemReleaseCpe, 'r') ) {
+
+				while ( ($buffer = fgets($fh, 256)) !== false ) {
+					$a = explode(':', $buffer);
+					$distributionVersion = $a[4];
+				}
+				fclose($fh);
+			}
+			else {
+				$rc = 576;
+				error("Cannot open file $lSystemReleaseCpe (rc=$rc).");
+				return $distributionVersion;
+			}
+		}
+		else {
+			$rc = 508;
+			$msg = "File $lSystemReleaseCpe does not exist or is not readable.";
+			error("$msg (rc=$rc)");
+			return $distributionVersion;
+		}
+	}
+
+	return $distributionVersion;
+}
+
+// ---------------------------------------------------------------------
+function recursivelyRemoveDirectory($dir)
+// ---------------------------------------------------------------------
+{
+	$rc = OK;
+
+	$files = glob($dir . '/*');
+	foreach ( $files as $file ) {
+		is_dir($file) ? recursivelyRemoveDirectory($file) : unlink($file);
+	}
+	rmdir($dir);
+
+	return $rc;
 }
 
 ?>

@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/bin/php -d variables_order=EGPCS
 <?php
 
 ini_set('date.timezone', 'Europe/Zurich');
@@ -84,7 +84,6 @@ else {
   $lDbName = $aDbNames[0];
 }
 
-debug("database: $lDbName");
 
 $_ENV['INFODIR']         = isset($_ENV['INFODIR']) ? $_ENV['INFODIR'] : '';
 $_ENV['INFOPATH']        = isset($_ENV['INFOPATH']) ? $_ENV['INFOPATH'] : '';
@@ -114,6 +113,10 @@ if ( isset($aConfigurationFile[$lDbName]) ) {
 // If DB is not set just set the first one
 else {
   $aDatabaseParameter    = $aConfigurationFile[$aDbNames[0]];
+}
+
+if ( ! array_key_exists("instancedir", $aDatabaseParameter) ) {
+	$aDatabaseParameter['instancedir'] = $aDatabaseParameter['basedir'];
 }
 
 $file = $aDatabaseParameter['basedir'] . '/my.cnf';
@@ -184,9 +187,16 @@ fwrite($fh, "export MYSQL_UNIX_PORT=" . $aDatabaseParameter['socket'] . "\n");
 fwrite($fh, "export MYSQL_PS1='\u@" . $lDbName . " [\d] SQL> '\n");
 fwrite($fh, "export MYENV_DATABASE=" . $lDbName . "\n");
 fwrite($fh, "export MYENV_DATADIR=" . $aDatabaseParameter['datadir'] . "\n");
-fwrite($fh, "export MYENV_VERSION=" . '1.3.1' . "\n");
+fwrite($fh, "export MYENV_VERSION=" . '2.0.0' . "\n");
 fwrite($fh, "export MYENV_STAGE=" . (isset($aDatabaseParameter['stage']) ? $aDatabaseParameter['stage'] : 'none') . "\n");
 fwrite($fh, "time_off\n");
+
+
+// Search/Replace patterns for variables.conf, my_variables.conf, aliases.conf and my_aliases.conf
+
+$aVarSearch = array('/%MYENV_BASEDIR%/', '/%INSTANCEDIR%/', '/%DATADIR%/', '/%MYSQL_BASEDIR%/', '/%INSTANCE_NAME%/');
+$aVarReplace = array($basedir, $aDatabaseParameter['instancedir'], $aDatabaseParameter['datadir'], $aDatabaseParameter['basedir'], $lDbName);
+
 
 // Add user export variables here
 
@@ -198,42 +208,78 @@ if ( is_readable($conf) ) {
 	foreach ( $aLines as $line) {
 
 		$line = trim($line);
-		// output($line . "\n");
+		// debug($line);
 
 		// Skip commented lines
 		if ( preg_match('/^\s*#/', $line) ) {
 			continue;
 		}
 
-		$code = 'fwrite($fh, "' . $line . '\n");';
-		debug("code: $code");
+		// Check for old style variables.conf
+		if ( preg_match("/addDirectoryToPath/", $line) == 1 ) {
+			$rc = 510;
+			$msg = 'Old style variables.conf is used. Please upgrade from tpl/variables.conf.template as follows: ';
+			error($msg);
+			$msg = 'shell> sudo cp ' . $basedir . '/tpl/variables.conf.template /etc/myenv/variables.conf' . "\n";
+			error($msg);
+		}
 
-		eval($code);
+		$line = preg_replace($aVarSearch, $aVarReplace, $line);
+		debug($line);
+		fwrite($fh, $line . "\n");
 	}
 }
 else {
 	// We do not care if file is not there
 }
 
-// Generic alias
+
+$conf = '/etc/myenv/my_variables.conf';
+if ( is_readable($conf) ) {
+
+	$aLines = file($conf, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+	foreach ( $aLines as $line) {
+
+		$line = trim($line);
+		// debug($line);
+
+		// Skip commented lines
+		if ( preg_match('/^\s*#/', $line) ) {
+			continue;
+		}
+
+		// Check for old style my_variables.conf
+		if ( preg_match("/addDirectoryToPath/", $line) == 1 ) {
+			$rc = 511;
+			$msg = 'Old style my_variables.conf is used. Please remove old style PHP stuff in there (for example addDirectoryToPath).';
+			error($msg);
+		}
+
+		$line = preg_replace($aVarSearch, $aVarReplace, $line);
+		debug($line);
+		fwrite($fh, $line . "\n");
+	}
+}
+else {
+	// We do not care if file is not there
+}
+
+
+// Generic aliases
 
 foreach ( $aDbNames as $dbname ) {
 
-	$alias = "alias $dbname='setMyEnv $dbname'\n";
-	debug("alias: $alias");
-	fwrite($fh, $alias);
+	$alias = "alias $dbname='setMyEnv $dbname'";
+	debug('alias: ' . $alias);
+	fwrite($fh, "$alias\n");
 }
 
 
 // Default myenv aliases
 
-fwrite($fh, "alias cdh='cd " . $aDatabaseParameter['basedir'] . "'\n");
-fwrite($fh, "alias cdb='cd " . $aDatabaseParameter['basedir'] . "'\n");
-fwrite($fh, "alias cdd='cd " . $aDatabaseParameter['datadir'] . "'\n");
-fwrite($fh, "alias cde='cd " . $basedir . "'\n");
-fwrite($fh, "alias v='echo \$MYENV_VERSION - alias v is deprecated! Please use V instead!'\n");
-fwrite($fh, "alias V='echo \$MYENV_VERSION'\n");
-fwrite($fh, "alias cdl='cd " . $basedir . '/log' . "'\n");
+fwrite($fh, "alias v='echo \$MYENV_VERSION - alias v is deprecated! Please use V instead!'" . "\n");
+fwrite($fh, "alias V='" . $basedir . '/bin/showMyEnvVersion.php' .  "'" . "\n");
 
 fwrite($fh, "alias ll='ls -l'\n");
 fwrite($fh, "alias la='ls -la'\n");
@@ -241,6 +287,7 @@ fwrite($fh, "alias la='ls -la'\n");
 // RedHat style is not a bad idea!
 fwrite($fh, "alias rm='rm -i'\n");
 fwrite($fh, "alias mv='mv -i'\n");
+
 
 // Add User alias here
 
@@ -252,17 +299,57 @@ if ( is_readable($conf) ) {
 	foreach ( $aLines as $line) {
 
 		$line = trim($line);
-		// output($line . "\n");
+		// debug($line);
 
 		// Skip commented lines
 		if ( preg_match('/^\s*#/', $line) ) {
 			continue;
 		}
 
-		$code = 'fwrite($fh, "' . $line . '\n");';
-		debug("code: $code");
+		// Check for old style aliases.conf
+		if ( preg_match("/DatabaseParameter/", $line) == 1 ) {
+			$rc = 509;
+			$msg = 'Old style aliases.conf is used. Please upgrade from tpl/aliases.conf.template as follows:';
+			error($msg);
+			$msg = 'shell> sudo cp ' . $basedir . '/tpl/aliases.conf.template /etc/myenv/aliases.conf' . "\n";
+			error($msg);
+		}
 
-		eval($code);
+		$line = preg_replace($aVarSearch, $aVarReplace, $line);
+		debug($line);
+		fwrite($fh, $line . "\n");
+	}
+}
+else {
+	// We do not care if file is not there
+}
+
+
+$conf = '/etc/myenv/my_aliases.conf';
+if ( is_readable($conf) ) {
+
+	$aLines = file($conf, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+	foreach ( $aLines as $line) {
+
+		$line = trim($line);
+		// debug($line);
+
+		// Skip commented lines
+		if ( preg_match('/^\s*#/', $line) ) {
+			continue;
+		}
+
+		// Check for old style my_aliases.conf
+		if ( preg_match("/DatabaseParameter/", $line) == 1 ) {
+			$rc = 512;
+			$msg = 'Old style my_aliases.conf is used. Please remove old style PHP stuff in there (for example DatabaseParameter).';
+			error($msg);
+		}
+
+		$line = preg_replace($aVarSearch, $aVarReplace, $line);
+		debug($line);
+		fwrite($fh, $line . "\n");
 	}
 }
 else {
@@ -271,6 +358,11 @@ else {
 
 fclose($fh);
 
+// This is to make rc clear because bash truncates to 1st byte.
+if ( $rc != OK ) {
+	$msg = "rc=$rc";
+	error($msg);
+}
 exit($rc);
 
 ?>

@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/bin/php -d variables_order=EGPCS
 <?php
 
 date_default_timezone_set('Europe/Zurich');
@@ -43,6 +43,7 @@ $longopts  = array(
   'help'
 , 'operation:'
 , 'instance:'
+, 'purge-data'
 );
 
 $aOptions = getopt($shortopts, $longopts);
@@ -59,6 +60,9 @@ if ( count($argv) > 1 ) {
 		switch ( $aOptions['operation'] ) {
 		case 'delete':
 			$rc = deleteInstanceAutomatized($aOptions, $lConfFile);
+			break;
+		case 'add':
+			$rc = addInstanceAutomatized($aOptions, $lConfFile);
 			break;
 		default:
 			$rc = 729;
@@ -156,11 +160,21 @@ o quit without saving";
 
 	switch ( $key ) {
 	case 'a':
-		addInstance();
+		$rc = addInstance();
+		if ( $rc != OK ) {
+			$q = 'Have you seen the error message? ';
+			$k = answerQuestion($q, array('Y'), 'Y');
+			output("\n");
+		}
 		$lConfigurationChanged = true;
 		break;
 	case 'c':
-		changeInstance2($aInstances);
+		$rc = changeInstance2($aInstances);
+		if ( $rc != OK ) {
+			$q = 'Have you seen the error message? ';
+			$k = answerQuestion($q, array('Y'), 'Y');
+			output("\n");
+		}
 		$lConfigurationChanged = true;
 		break;
 	case 'd':
@@ -219,9 +233,8 @@ $MYENV_HOOK = '/etc/myenv/MYENV_BASE';
 addMyEnvHook($MYENV_HOOK);
 
 
-// Add MyEnv System V init script
-$MYENV_INIT = '/etc/init.d/myenv';
-addMyEnvInitScript($MYENV_INIT);
+// Add MyEnv init script
+addMyEnvInitScript();
 
 
 // Make sure /etc/init.d/{mysql|mysqld|mysqld_multi} is replaced
@@ -230,7 +243,7 @@ replaceInitScripts();
 
 output("\n");
 output("Now source your profile as follows:\n");
-output(". ~/.bash_profile\n");
+output("shell> source ~/.bash_profile\n");
 output("\n");
 output("The README gives some hints how to continue...\n");
 output("\n");

@@ -29,7 +29,7 @@ if [ $ret -ne 0 ] ; then
 	echo
 	echo "RedHat/CentOS: shell> sudo yum install php-cli php-posix php-pcntl php-mysqli redhat-lsb-core";
 	echo "SLES/OpenSuSE: shell> sudo zypper install php5 php5-posix php5-pcntl php5-mysql lsb-release";
-	echo "Ubuntu/Debian: shell> sudo apt-get install php5-cli php5 php5-mysql lsb-release";
+	echo "Ubuntu/Debian: shell> sudo apt-get install php-cli php php-mysql lsb-release";
 	exit $rc
 fi
 
@@ -38,7 +38,7 @@ if [ "$MYENV_DEBUG" != '' ] ; then
 	echo "Starting MyEnv installer: $PHPINSTALLER"
 fi
 
-cmd="$PHP -f $PHPINSTALLER -- $@"
+cmd="$PHP -f $PHPINSTALLER -d variables_order=EGPCS -- $@"
 if [ "$MYENV_DEBUG" != '' ] ; then
 	echo $cmd
 fi

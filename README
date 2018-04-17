@@ -1,20 +1,26 @@
 MyEnv
 =====
 
-MyEnv is a tool to operate MySQL and MariaDB multi-instance set-ups.
+MyEnv is a tool to operate several MySQL and MariaDB instances on one host. We
+call this multi-instance set-ups.
 
-With MyEnv multi-instance set-ups should be easier to handle than with
-mysqld_multi. This type of consolidation has less overhad than virtualization
-solutions. To do proper resource fencing MyEnv provides cgroup integration.
+With MyEnv a multi-instance set-up is more comfortable to handle than with
+mysqld_multi (old) or systemd services (new).
+Using MyEnv does not need the use of the root user to operate MySQL and MariaDB
+databases. Thus it is appropriate for classical enterprise DBA organizations.
+Further multi-instance set-ups is a much more efficient way of consolidating
+MySQL and MariaDB databases an has less overhead than virtualization solutions.
+To do proper resource fencing MyEnv provides cgroup integration (container
+integration is planned for the future).
 
-MyEnv is licensed und the GPL v2: http://www.gnu.org/licenses/gpl-2.0.html
+MyEnv is licensed und the GPL v2: https://www.gnu.org/licenses/gpl-2.0.html
 
-MyEnv is documented here: http://www.fromdual.com/myenv-mysql-basenv
+MyEnv is documented here: https://www.fromdual.com/myenv-mysql-mariadb-basenv
 
 For questions, feedback and comments, please go to the MyEnv forum at:
-http://www.fromdual.com/forum/365.
+https://www.fromdual.com/forum/373.
 
-Bugs and feature request can be reported here: http://support.fromdual.com/bugs/
+Bugs and feature request can be reported here: https://support.fromdual.com/bugs
 
 
 Requirements
@@ -22,35 +28,42 @@ Requirements
 
 You can find the MyEnv requirments under the following link:
 
-http://fromdual.com/myenv-mysql-basenv#requirements
+https://www.fromdual.com/myenv-mysql-mariadb-basenv#requirements
+
+
+Upgrade 1.x -> 2.y and higher
+------------------------------
+
+https://www.fromdual.com/mysql-mariadb-environment-myenv-2.0.0-has-been-released
 
 
 Upgrade 1.1.x -> 1.1.y and higher
 ---------------------------------
 
-http://fromdual.com/mysql-environment-myenv-1.3.0-has-been-released
-http://fromdual.com/mysql-environment-myenv-1.2.2-has-been-released
-http://fromdual.com/mysql-environment-myenv-1.2.1-has-been-released
-http://fromdual.com/mysql-environment-myenv-1.2.0-has-been-released
-http://fromdual.com/mysql-environment-myenv-1.1.4-has-been-released
-http://fromdual.com/mysql-environment-myenv-1.1.3-has-been-released
-http://fromdual.com/mysql-environment-myenv-1.1.2-has-been-released
-http://fromdual.com/mysql-environment-myenv-1.1.1-has-been-released
+https://www.fromdual.com/mysql-environment-myenv-1.3.1-has-been-released
+https://www.fromdual.com/mysql-environment-myenv-1.3.0-has-been-released
+https://www.fromdual.com/mysql-environment-myenv-1.2.2-has-been-released
+https://www.fromdual.com/mysql-environment-myenv-1.2.1-has-been-released
+https://www.fromdual.com/mysql-environment-myenv-1.2.0-has-been-released
+https://www.fromdual.com/mysql-environment-myenv-1.1.4-has-been-released
+https://www.fromdual.com/mysql-environment-myenv-1.1.3-has-been-released
+https://www.fromdual.com/mysql-environment-myenv-1.1.2-has-been-released
+https://www.fromdual.com/mysql-environment-myenv-1.1.1-has-been-released
 
 
 Upgrade 1.0.x -> 1.1.y
 ----------------------
 
-http://fromdual.com/mysql-environment-myenv-1.1.0-has-been-released
+https://www.fromdual.com/mysql-environment-myenv-1.1.0-has-been-released
 
 
 Upgrade 1.0.x -> 1.0.4
 ----------------------
 
-http://fromdual.com/mysql-environment-myenv-1.0.4-has-been-released
+https://www.fromdual.com/mysql-environment-myenv-1.0.4-has-been-released
 
 
 Upgrade 0.x -> 1.y
 ------------------
 
-http://fromdual.com/mysql-environment-myenv-1.0-has-been-released
+https://www.fromdual.com/mysql-environment-myenv-1.0-has-been-released

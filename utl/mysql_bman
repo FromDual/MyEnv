@@ -1,6 +1,6 @@
 #!/bin/bash
 
 echo "ERROR: mysql_bman is NOT included in MyEnv any more. You can find it in" >&2
-echo "the package fromdual_brman on http://fromdual.com/download" >&2
+echo "the package fromdual_brman on https://www.fromdual.com/download" >&2
 
 exit 1

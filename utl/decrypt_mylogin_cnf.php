@@ -92,7 +92,7 @@ while ( ($r = fread($fd, 4)) && (strlen($r) == 4) && (ord($r) > 0) ) {
 
 	for ( $i = 0; $i < $cipher_chunk_length; $i += AES_BLOCK_SIZE ) {
 
-		// sudo apt-get install php5-mcrypt mcrypt
+		// sudo apt-get install php-mcrypt mcrypt
 		// cp /etc/php5/mods-available/mcrypt.ini /etc/php5/cli/conf.d/
 		$dec = trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key_after_xor, $cipher_chunk, MCRYPT_MODE_ECB));
 		printf("%s\n", $dec);

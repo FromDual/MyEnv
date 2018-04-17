@@ -1,13 +1,325 @@
 #
-# FromDual MyEnv (http://fromdual.com/myenv-mysql-basenv)
+# FromDual MyEnv (https://www.fromdual.com/myenv-mysql-mariadb-basenv)
 # CHANGELOG
 #
+
+
+Version 2.0.0
+-------------
+
+Change #966
+* MyEnv: Template fixes for manual installation. CHANGELOG updated and release
+  tagged.
+
+Change #965
+* MyEnv: Docu bugs fixed. Installer Bug fixed.
+
+Change #963
+* MyEnv: README and CHANGELOG updated.
+
+Change #962
+* MyEnv: Tests and bugs fixed, testsuite passed.
+
+Change #958
+* MyEnv: Fixes in new database check function, unix file socket must be used
+  differently.
+
+Change #957
+* MyEnv: mysqladmin ping database health check was replaced by socket probing.
+
+Change #955
+* MyEnv: Variable log_warnings reverted in template for MariaDB.
+
+Change #953
+* MyEnv installer: Cosmetic typo in installer fixed.
+
+Change #952
+* MyEnv: Fix rc numbers.
+
+Change #951
+* Utilities: mysql-create-instance.sh and mysql-remove-instancec.sh removed.
+
+Change #950
+* MyEnv installer: Angel question returned wrong result in installation.
+
+Change #949
+* MyEnv: Adapted build instructions and copyright year.
+
+Change #948
+* MyEnv: showMyEnvVersion finished.
+
+Change #947
+* MyEnv: Some more product versions added.
+
+Change #946
+* MyEnv: Version and revision for myenv implemented.
+
+Change #944
+* MyEnv: Version script added.
+
+Change #942
+* MyEnv installer: Error for failed my.cnf creationg caught and made more vi-
+  sible.
+
+Change #941
+* MyEnv installer: Error on wrong my.cnf location caught. Bug #161
+
+Change #939
+* MyEnv: All package advices adapted for PHP 7 in Ubuntu.
+
+Change #938
+* MyEnv: Bug with systemd unit files fixed.
+
+Change #937
+* MyEnv: More strict MyEnv configuration checking.
+
+Change #936
+* MyEnv: Made all queries on I_S MySQL 8.0 compatible.
+
+Change #935
+* MyEnv packaging: Fistribution terminology for SUSE LINUX added.
+
+Change #934
+* MyEnv: Made variables for MySQL 8.0 ready.
+
+Change #933
+* MyEnv: Ownership problem of log file with systemd solved.
+
+Change #932
+* MyEnv: Error code handling improved.
+
+Change #931
+* MyEnv: Some error handling cosmetics.
+
+Change #930
+* MyEnv: Replace dot / '.' with keyword source to make it more explanatory.
+
+Change #929
+* MyEnv: Missing type mysqld added back.
+
+Change #928
+* MyEnv: Some error message cosmetics and fix of default key in instance sec-
+  tions.
+
+Change #927
+* MyEnv: Check for DD in MySQL 8.0 is fixed.
+
+Change #926
+* MyEnv: Cosmetic typo in myEnv start function fixed.
+
+Change #925
+* MyEnv: Some new variabels for crash safe replication, GTID and Group Repli-
+  cation added to template.
+
+Change #924
+* MyEnv: my.cnf template updated do disallowd memory SE.
+
+Change #921.1.3
+* MyEnv: OEM agent documentation improved
+
+Change #921.1.2
+* MyEnv: OEM agent status grep pattern adapted for OEM 12.
+
+Change #921.1.1
+* MyEnv: GR parameters added to my.cnf template.
+
+Change #922
+* MyEnv packaging: Use current "Makefile" for "last" export, minor cleanup.
+
+Change #920
+* MyEnv packaging: Always use the Makefile of the revision to be exported.
+
+Change #918
+* Utilities: keepalived scripts added.
+
+Change #917
+* Utilities: insert_test.php made more standard complient.
+
+Change #915
+* MyEnv packaging: Protect MySQL instances (DEB packages):
+  No service stop/start on upgrade, and no un-install while there are any.
+* Utilities: utl/insert_test.sh: Let "$MYSQL_TCP_PORT" override the "port" de-
+  fault of 3306, if set.
+
+Change #914
+* Utilities: /insert_test.sh: Add an optional "--sleep" parameter.
+
+Change #913
+* MyEnv packaging: Protect MySQL instances (RPM packages):
+  No service stop/start on upgrade, and no un-install while there are any.
+
+Change #912
+* MyEnv packaging: Include new "bin/getInstanceNames.php" in the distribution,
+  improve alphabetic ordering of file names in "Makefile".
+
+Change #906
+* MyEnv: Systemd unit file gets "mkdir /var/run/mysqld".
+
+Change #901 .. #905
+* MyEnv packaging: Add packaging of DEB format (Debian, Ubuntu).
+  Packages are universal, maintainer scripts check for SysV init vs systemd.
+
+Change #899 .. #900
+* MyEnv packaging: Maintain "NOTES-packaging", include them in the export.
+
+Change #897
+* MyEnv packaging: RPM spec file: Add code to handle an existing 'mysql' user;
+  make distribution strings more general.
+
+Change #896
+* MyEnv packaging: Put a release number into "tpl/profile.template"
+  so that we can verify the ".bash_profile" upgrade.
+
+Change #893
+* MyEnv packaging: RPM spec file: Add upgrade + uninstall handling to the
+  scriptlets,
+  MyEnv unit file: fix service settings.
+
+Change #882 .. #891
+* MyEnv packaging: Add packaging: RPMs for RedHat 6 + 7 and SLES 11 + 12
+  This includes a spec file, (de)installation scriptlets,
+  and fixes to the integration into systemd.
+
+Change #876
+* MyEnv installer: Fix ugly log file name replace in my.cnf replace in instal-
+  ler.
+
+Change #875
+* MyEnv installer: port and socket bugs in installer fixed.
+
+Change #874
+* MyEnv installer: strip bug fixed in installer.
+
+Change #873
+* MyEnv: myenv.inc has debug now for tmp files.
+
+Change #871
+* MyEnv installer: purge-data implemented for delete instance in installer and
+  some better option checks added.
+
+Change #870
+* MyEnv: variables_order is handed over correctly through wrapper now.
+
+Change #869
+* MyEnv: Bug 168 fixed, instance detection is now done on ibd file as well for
+  8.0 compatibilty reasons.
+
+Change #867
+* MyEnv: variables_order was included in the scripts.
+
+Change #866
+* MyEnv: P_S.events_statements_history_long is very good to have so enable id in
+  template.
+
+Change #865
+* Utilities: test table extended.
+
+Change #863
+* MyEnv: my.cnf.template to newest level.
+
+Change #862
+* Utilities: mysqlstat utility added.
+
+Change #857
+* MyEnv installer: Port question fixed.
+
+Change #856
+* MyEnv: my.cnf template broght to the newest state.
+
+Change #855
+* MyEnv: Check for old templates fixed.
+
+Change #852
+* MyEnv: myenv.server move to tpl and various minor bugs fixed.
+
+Change #851
+* MyEnv: Some bugs around aliases/variables fixed.
+
+Change #850
+* MyEnv: Changes from fpmmm merged.
+
+Change #849
+* MyEnv: Fixes to work with PHP 7.
+
+Change #847
+* MyEnv installer: mycg hook implemented.
+
+Change #846
+* MyEnv installer: cgroups integrated into installer.
+
+Change #845
+* MyEnv: aliases.conf and variables.conf made more user friendly.
+
+Change #844
+* MyEnv installer: Angel question and socket check added.
+
+Change #843
+* MyEnv: Aliases changed, templates substitution introduced.
+
+Change #842
+* MyEnv installer: mkdir for new instancedir added.
+
+Change #841
+* MyEnv installer: instancedir introduced.
+
+Change #840
+* MyEnv installer: Port conflict is only reported once during creation.
+
+Change #838
+* MyEnv: Bind address output made nicer for up.
+
+Change #836
+* MyEnv: SystemD integration completed.
+
+Change #830
+* MyEnv installer: Installation should be SystemD aware on CentOS and Ubuntu
+  now.
+
+Change #829
+* MyEnv: Gathering of distribution version added.
+
+Change #828
+* MyEnv: Systemd unit file added.
+
+Change #827
+* MyEnv: Bug in stopping all databases fixed.
+* Testsuite: Tests added.
+
+Change #826
+* MyEnv: MySQL variable innodb_flush_log_at_trx_commit recommendation changed to
+  2 because 0 seems to have no advantage any more.
+
+Change #825
+* MyEnv: Function posix_uname check added to checkMyEnvRequirements.
+
+Change #824
+* Testsuite: Some tests from other project added here.
+
+Change #823
+* MyEnv installer: Fixed two errors (PHP Fatal error:  'break' not in the 'loop'
+  or 'switch' context).
+
+Change #821
+* MyEnv: Function fgets error caugth correctly now.
+
+Change #820
+* MyEnv: Function extractBranch added
+         error messages improved
+         CentOS support improved
+         test case prepared
+
+Change #817
+* MyEnv: MySQL variable innodb_tmpdir added to template
+
+Change #816
+* MyEnv: MySQL variable super_read_only added to the my.cnf template.
+
 
 Version 1.3.1
 -------------
 
-Change #814
-* MyEnv: CHANGELOG updated.
+Change #815
+* MyEnv: CHANGELOG updated and release tagged.
 
 Change #813
 * MyEnv: README updated.
@@ -88,7 +400,7 @@ Change #785
   any more during installation.
 
 Change #784
-* MyEnv: Test for new function added.
+* Testsuite: Test for new function added.
 
 Change #783
 * MyEnv installer: Installer made ready for MySQL 5.7.
@@ -124,7 +436,7 @@ Change #773
 * MyEnv: cgroups conf file path fixed.
 
 Change #772
-*  MyEnv: move from xtrabackup to xtrabackup-v2 in my.cnf template.
+* MyEnv: move from xtrabackup to xtrabackup-v2 in my.cnf template.
 
 Change #771
 * MyEnv: my.cnf template synced with website.
@@ -146,7 +458,7 @@ Change #766
 * MyEnv: CHANGELOG updated and release tagged.
 
 Change #765
-* MyEnv: Automated tests improved and fixed.
+* Testsuite: Automated tests improved and fixed.
 
 Change #762
 * MyEnv installer: Layout stuff fixed in installer.
@@ -221,7 +533,7 @@ Version 1.2.1
 -------------
 
 Change #739
-* MyEnv: CHANGELOG updated and release tagged
+* MyEnv: CHANGELOG updated and release tagged.
 
 Change #736
 * Utilities: alter_engine.php now supports socket.
@@ -260,7 +572,7 @@ Change #707
 * MyEnv: Directory /var/run/mysqld is created by myenv.server
 
 Change #705
-* MyEnv my.cnf.template merged with website.
+* MyEnv: my.cnf.template merged with website.
 
 Change #704
 * MyEnv: Template AUTO_INCREMENT values fixed.
@@ -292,7 +604,7 @@ Version 1.2.0
 -------------
 
 Change #690
-* CHANGELOG updated and release tagged.
+* MyEnv: CHANGELOG updated and release tagged.
 
 Change #689
 * Utilities: compare_status_files.pl added to compare output of 2 SHOW GLOBAL
@@ -369,7 +681,7 @@ Version 1.1.4
 -------------
 
 Change #633
-* CHANGELOG updated and release tagged.
+* MyEnv: CHANGELOG updated and release tagged.
 
 Change #631
 * MyEnv installer: Installer cleans up $basedir/my.cnf now if this file did not
@@ -389,10 +701,10 @@ Version 1.1.3
 -------------
 
 Change #628
-* CHANGELOG updated and release tagged.
+* MyEnv: CHANGELOG updated and release tagged.
 
 Change #627
-* Old test fixed and new tests added.
+* Testsuite: Old test fixed and new tests added.
 
 Change #624
 * Utilities: Contribution of TS added. Very appreciated!
@@ -449,7 +761,7 @@ Change #601
 * MyEnv installer: install advice on SuSE was wrong on runlevels for myenv.
 
 Change #599
-* innodb_strict_mode and innodb_file_format_check added to my.cnf template.
+* MyEnv: innodb_strict_mode and innodb_file_format_check added to my.cnf template.
 
 Change #598
 * MyEnv installer: /tmp as location for socket removed because of RedHat
@@ -460,7 +772,7 @@ Change #597
   fixed.
 
 Change #596
-* MyEnv bug from MGB stopping database with dummy instance fixed.
+* MyEnv: Bug from MGB stopping database with dummy instance fixed.
 
 Change #595
 * MyEnv: cgroups functionality added.
@@ -490,7 +802,7 @@ Version 1.1.2-RC1
 -----------------
 
 Change #588
-* CHANGELOG updated and release tagged.
+* MyEnv: CHANGELOG updated and release tagged.
 
 Change #586
 * MyEnv installer: Version guessing improved for installer.
@@ -636,7 +948,7 @@ Version 1.1.1-RC2
 -----------------
 
 Change #519
-* CHANGELOG updated.
+* MyEnv: CHANGELOG updated.
 
 Change #518
 * MyEnv: checkForOldStuff function has better error messages now.
@@ -669,7 +981,7 @@ Version 1.1.0
 -------------
 
 Change #509
-* MyEnv: CHANGELOG updated
+* MyEnv: CHANGELOG updated.
 
 Change #507
 * MyEnv: Formating of up output is working correctly again
@@ -852,7 +1164,7 @@ Version 1.0.5
 -------------
 
 Change #407
-* CHANGELOG updated.
+* MyEnv: CHANGELOG updated.
 
 Change #406
 * mysql_bman: Cleanup job errors with missing target. Fixed for MGB.
@@ -871,14 +1183,14 @@ Change #400
 * mysql_bman: Binary logs are not cleaned-up because they are not copied with bck_ prefix (Bug #143).
 
 Change #399
-* all: mktime() replaced by time() function.
+* MyEnv: mktime() replaced by time() function.
 
 
 Version 1.0.5-RC3
 -----------------
 
 Change #397
-* CHANGELOG updated
+* MyEnv: CHANGELOG updated.
 
 Change #396
 * mysql_bman: Many tests for mysql_bman test automatizing added.
@@ -920,7 +1232,7 @@ Version 1.0.5-RC2
 -----------------
 
 Change #382
-* CHANGELOG update
+* MyEnv: CHANGELOG updated.
 
 Change #381
 * mysql_bman: Schema backup in mysql_bman had wrong hexblob option. Fixed to hex-blob.
@@ -933,7 +1245,7 @@ Version 1.0.5-RC1
 -----------------
 
 Change #378
-* CHANGELOG update
+* MyEnv: CHANGELOG updated.
 
 Change #376
 * MyEnv: instance output is split correctly similar to up/down display.
@@ -1007,7 +1319,7 @@ Version 1.0.3-RC3
 -----------------
 
 Change #344
-* CHANGELOG updated
+* CHANGELOG updated.
 * Tag and release version v1.0.3-RC3
 
 Change #343
@@ -1020,7 +1332,7 @@ Change #341
 * Cleanup still used target and failed. Fixed.
 
 Change #340
-* CHANGELOG updated, testautomatization improved
+* CHANGELOG updated, testautomatization improved.
 
 Change #339
 * Help more verbose, write permission problems for tee captured more nicely.

@@ -1,0 +1,26 @@
+Source: myenv
+Section: database
+Priority: optional
+Maintainer: FromDual GmbH <info@fromdual.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.5
+Homepage: https://www.fromdual.com/myenv-mysql-mariadb-basenv
+
+Package: myenv
+Architecture: all
+Depends: php5-cli | php-cli, php5-mysql | php-mysql
+Description: Managing multiple MySQL versions and instances on a single machine
+ MyEnv is a tool to operate MySQL and MariaDB multi-instance set-ups.
+ .
+ With MyEnv multi-instance set-ups should be easier to handle than with
+ mysqld_multi. This type of consolidation has less overhead than virtualization
+ solutions. To do proper resource fencing MyEnv provides cgroup integration.
+ .
+ MyEnv is licensed under the GPL v2: https://www.gnu.org/licenses/gpl-2.0.html
+ .
+ MyEnv is documented here: https://www.fromdual.com/myenv-mysql-mariadb-basenv
+ .
+ For questions, feedback and comments, please go to the MyEnv forum at:
+ https://www.fromdual.com/forum/373.
+ .
+ Bugs and feature request can be reported here: https://support.fromdual.com/bugs

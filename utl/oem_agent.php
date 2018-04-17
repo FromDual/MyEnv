@@ -1,10 +1,22 @@
-#!/usr/bin/php
+#!/usr/bin/php -d variables_order=EGPCS
 <?php
 
 $gOratab = '/etc/oratab';
 
 $basedir = dirname(dirname(__FILE__));
 require_once($basedir . '/lib/Constants.inc');
+
+/*
+
+	printUsage()
+	getOratab( $pOratab )
+	getAgents( $aOratab )
+	startAgent( $aAgent )
+	stopAgent( $aAgent )
+	getAgentStatus( $aAgent )
+	getAgentStatusV2( $aAgent )
+
+*/
 
 // ---------------------------------------------------------------------
 function printUsage()
@@ -197,13 +209,27 @@ function getAgentStatusV2( $aAgent )
 
 		// /m00/mysql96a/AGENT12/core/12.1.0.2.0/jdk/bin/java -Xmx128M -XX:MaxPermSize=96M -server -Djava.security.egd=file:///dev/./urandom -Dsun.lang.ClassLoader.allowArraySyntax=true -XX:+UseLinuxPosixThreadCPUClocks -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+UseCompressedOops -Dwatchdog.pid=25116 -cp /m00/mysql96a/AGENT12/core/12.1.0.2.0/jdbc/lib/ojdbc5.jar:/m00/mysql96a/AGENT12/core/12.1.0.2.0/ucp/lib/ucp.jar:/m00/mysql96a/AGENT12/core/12.1.0.2.0/modules/oracle.http_client_11.1.1.jar:/m00/mysql96a/AGENT12/core/12.1.0.2.0/lib/xmlparserv2.jar:/m00/mysql96a/AGENT12/core/12.1.0.2.0/lib/jsch.jar:/m00/mysql96a/AGENT12/core/12.1.0.2.0/lib/optic.jar:/m00/mysql96a/AGENT12/core/12.1.0.2.0/modules/oracle.dms_11.1.1/dms.jar:/m00/mysql96a/AGENT12/core/12.1.0.2.0/modules/oracle.odl_11.1.1/ojdl.jar:/m00/mysql96a/AGENT12/core/12.1.0.2.0/modules/oracle.odl_11.1.1/ojdl2.jar:/m00/mysql96a/AGENT12/core/12.1.0.2.0/sysman/jlib/log4j-core.jar:/m00/mysql96a/AGENT12/core/12.1.0.2.0/jlib/gcagent_core.jar:/m00/mysql96a/AGENT12/core/12.1.0.2.0/sysman/jlib/emagentSDK-intg.jar:/m00/mysql96a/AGENT12/core/12.1.0.2.0/sysman/jlib/emagentSDK.jar oracle.sysman.gcagent.tmmain.TMMain
 
-		$cmd = "ps -ef -www | grep -P --color '$lAgentBase\/core\/[\d\.]+\/jdk\/bin\/java .*oracle.sysman.gcagent'";
+		$cnt = 0;
+
+		// Old OEM 12c pattern
+		// /m00/mysql97a/AGENT12/core/12.1.0.4.0/jdk/bin/java
+		// -P only supports a single pattern
+		$cmd = "ps -ef -www | grep -P '$lAgentBase\/core\/[\d\.]+\/jdk\/bin\/java .*oracle.sysman.gcagent'";
 		$output = exec($cmd, $stdout, $rc);
 		// var_dump($rc, $output, $stdout);
+		$cnt .= count($stdout);
+
+		// New OEM 13c pattern
+		// /m00/mysql97a/AGENT13/agent_13.2.0.0.0/oracle_common/jdk/bin/java
+		// -P only supports a single pattern
+		$cmd = "ps -ef -www | grep -P '$lAgentBase\/agent_[\d\.]+\/oracle_common\/\/bin\/java .*oracle.sysman.gcagent'";
+		$output = exec($cmd, $stdout, $rc);
+		// var_dump($rc, $output, $stdout);
+		$cnt .= count($stdout);
 
 		// Agent is Running and Ready
 		$state = '';
-		if ( count($stdout) > 0 ) {
+		if ( $cnt > 0 ) {
 			$state = 'up';
 		}
 		// Agent is Not Running

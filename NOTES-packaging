@@ -1,0 +1,132 @@
+              NOTES on packaging "myenv" 
+
+Status: 2017-July-21
+Jörg Brühe, FromDual GmbH
+
+
+RPM packages of "myenv"
+=======================
+
+Platforms supported by RPM packages
+-----------------------------------
+
+Myenv is a PHP application which does not bring any binaries, so the RPMs
+are "noarch" RPMs which would in theory fit any platform.
+
+In practice, there are platform-specific differences which make the RPMs
+platform-specific:
+1) The code uses some PHP features, so the RPMs have "Requires:" dependencies
+   on the PHP packages providing these features. Those package names differ
+   between the distributions, so the RPMs differ in their dependencies.
+2) Myenv is meant to run as a service, so that the user/DBA may configure
+   MySQL instances for autostart via myenv. This requires different files
+   depending on the startup mechanism used, SysV init or systemd.
+
+Currently (July 2017), FromDual plans to provide myenv RPMs for
+- RedHat / Oracle / CentOS / Scientific Linux 7, labeled "el7"
+- RedHat / Oracle / CentOS / Scientific Linux 6, labeled "el6"
+- SuSE Enterprise / OpenSuSE 12, labeled "suse12"
+- SuSE Enterprise / OpenSuSE 11, labeled "suse11"
+The spec file also supports Fedora, labeled "fc", but the demand for this
+platform is so low that there is no decision yet whether packages will be
+provided.
+
+Building the RPMs
+-----------------
+
+As the packages do not contain any binaries, and all dependencies are
+listed explicitly, there is no need to build the RPMs in an environment
+that is (or simulates) the target platform.
+
+While the spec file will analyze the build platform and set it as the
+target platform by default, this can be overridden: A call
+
+    rpmbuild --define="distro_releasetag STRING" PATH/TO/myenv.spec
+
+will bypass the platform analysis and set the target platform from STRING.
+STRING must be one of the labels listed above, or else the build will abort.
+To support further target platforms, they must be added to the platform:
+- The "%if" cascade checking "%{distro_releasetag}" must be extended.
+- Auto-recognition via "/etc/DISTRO-release" should be added.
+
+Build platform
+--------------
+
+As RPM details tend to change over time, the build platform should best
+be an old one, so that the packages do not use newer features than 
+available on the installation machine.
+In practice, RPMs built on Fedora 23 could be installed on CentOS 6.5
+and 7 and also on openSuSE 13 without issues.
+The RPM format is correct for SLES 12 (but PHP was unavailable for tests).
+They produced warnings on SLES 11 about "rpmlib(FileDigests)",
+but installation succeeded using the option "--nodeps".
+
+Installation
+------------
+
+Myenv is intended to be run by user "mysql", because it is meant to run
+one or more MySQL (generic, includes MariaDB and Percona) instances,
+and "mysql" is by convention the user running the MySQL server.
+
+To support this, the myenv RPMs create both the user and the group "mysql".
+If the group already exists, it will be used.
+If the user "mysql" already exists, the installation scriptlet will check
+the user's login shell and home directory.
+
+If the login shell is not set or is"/bin/false" or "/usr/sbin/nologin",
+it will be changed to "/bin/bash". Other settings will not be changed.
+If it is any other program, chances are myenv will not work.
+
+If the home directory is anything other than "/home/mysql", the installation
+scriptlet will try to change it to that value. Changing the home directory
+is impossible if any process is running for user "mysql". The scriptlet
+will recognize that and fail during pre-installation, so the RPM cannot
+be installed. It is left to the user to stop that process and then repeat
+the installation.
+
+
+DEB packages of "myenv"
+=======================
+
+Platforms supported by DEB packages
+-----------------------------------
+
+Myenv is a PHP application which does not bring any binaries, so the DEBs
+are "independent" DEBs which fit any platform: Debian and Ubuntu.
+
+Because Ubuntu follows Debian, the dependencies have the same package names.
+
+The different startup mechanisms of older (SysV) and newer distributions
+(systemd) can be handled by the maintainer scripts.
+This way, the packages have no dependencies on the startup mechanism packages
+and check the current situation at (de)installation time.
+
+Currently (July 2017), FromDual plan expects the myenv DEBs to work on
+- Debian 7, 8, and 9 = wheezy, jessie, and stretch
+- Ubuntu 14.04 LTS and 16.04 LTS = trusty and xenial
+and the intermediate Ubuntu releases (not tested).
+
+Building the DEBs
+-----------------
+
+As the packages do not contain any binaries, there is no need to build the
+DEBs in a specific environment.
+
+Until signature keys are introduced, these build commands are used:
+
+    tar xzf myenv-VERSION.tar.gz
+    cd myenv-VERSION
+    dpkg-buildpackage -S -uc -us   # the source package
+    dpkg-buildpackage -A -uc -us   # the "binary" package
+
+Typically, a DEB build takes "debhelper" scripts from the build environment
+and inserts them into the maintainer scripts {pre,post}{inst,rm}.
+As this would make the package contents depend on the build environment,
+it includes the risk that the maintainer scripts may fail in the installation
+environment. To protect against that risk, the (unified) "debhelper" scripts
+of Ubuntu 14.04 and 16.04 have been inserted verbatim into the maintainer
+scripts.
+When newer distributions introduce new requirements, these snippets may
+need adjustment.
+
+

@@ -1,0 +1,35 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+# from http://pkg-perl.alioth.debian.org/debhelper.html#note_on_paths
+PACKAGE   = $(shell dh_listpackages)
+BUILDROOT = $(CURDIR)/debian/$(PACKAGE)
+
+# from https://www.debian.org/doc/manuals/debmake-doc/ch05.en.html#variablesrules
+# This will provide:
+# DEB_SOURCE DEB_VERSION DEB_VERSION_EPOCH_UPSTREAM DEB_VERSION_UPSTREAM_REVISION DEB_VERSION_UPSTREAM DEB_DISTRIBUTION
+include /usr/share/dpkg/pkg-info.mk
+
+%:
+	dh $@ 
+
+# https://www.debian.org/doc/manuals/maint-guide/dother.de.html -> 5.10 Paket.init
+override_dh_installinit:
+	dh_installinit --onlyscripts
+
+# we have no 'Makefile' with an "install" target ...
+MYSQL_HOME = /home/mysql
+override_dh_auto_install:
+	install -v -d $(BUILDROOT)/$(MYSQL_HOME)/product/$(PACKAGE)-$(DEB_VERSION_UPSTREAM)
+	rsync -a [a-ce-zCR]* $(BUILDROOT)/$(MYSQL_HOME)/product/$(PACKAGE)-$(DEB_VERSION_UPSTREAM)
+	rm -fr $(BUILDROOT)/$(MYSQL_HOME)/product/$(PACKAGE)-$(DEB_VERSION_UPSTREAM)/packaging
+	install -v -d $(BUILDROOT)/etc/$(PACKAGE)
+	install -D tpl/aliases.conf.template   $(BUILDROOT)/etc/$(PACKAGE)/aliases.conf
+	install -D tpl/myenv.conf.template     $(BUILDROOT)/etc/$(PACKAGE)/myenv.conf
+	install -D tpl/variables.conf.template $(BUILDROOT)/etc/$(PACKAGE)/variables.conf
+	install -D etc/MYENV_BASE              $(BUILDROOT)/etc/$(PACKAGE)/MYENV_BASE
+	install -d -m 0755 $(BUILDROOT)/var/run/myenv
+

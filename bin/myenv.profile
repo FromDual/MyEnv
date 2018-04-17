@@ -45,7 +45,6 @@ function start()
     else
       $MYENV_BASE/bin/database.php $1 start
     fi
-
   elif [ $# -ge 2 ] ; then
     $MYENV_BASE/bin/database.php $1 start $2
   fi

@@ -136,7 +136,7 @@ $mysqli->query($sql);
 
 // select table_name, partition_name, PARTITION_ORDINAL_POSITION, PARTITION_DESCRIPTION, from_unixtime(PARTITION_DESCRIPTION) from partitions where TABLE_NAME = 'history';
 
-$sql = sprintf("SELECT partition_name, MAX(partition_ordinal_position) AS ptn
+$sql = sprintf("SELECT partition_name AS 'partition_name', MAX(partition_ordinal_position) AS 'ptn'
   FROM information_schema.partitions
  WHERE table_schema = '%s'
    AND table_name = '%s'

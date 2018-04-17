@@ -130,7 +130,7 @@ if ( mysqli_connect_error() ) {
 $mysqli->query('SET NAMES utf8');
 
 $sql = sprintf("
-SELECT partition_name, partition_description
+SELECT partition_name AS 'partition_name', partition_description AS 'partition_description'
   FROM information_schema.partitions
  WHERE table_schema = '%s'
    AND table_name = '%s'
