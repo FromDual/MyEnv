@@ -70,6 +70,16 @@ case 'start':
     error("try again with export MYENV_DEBUG=1 if you cannot find any reason...");
   }
   break;
+case 'bootstrap':
+  $lOptions .= ' --wsrep-new-cluster';
+  $ret = startDatabase($aConfiguration[$lInstance], $lOptions);
+  if ( $ret != 0 ) {
+    $rc = 506;
+    error("Bootstrapping galera node $lInstance failed (ret=$ret/rc=$rc).");
+    error("Please have a look in the MySQL error log or");
+    error("try again with export MYENV_DEBUG=1 if you cannot find any reason...");
+  }
+  break;
 case 'stop':
   $ret = stopDatabase($aConfiguration[$lInstance]);
   if ( $ret != 0 ) {

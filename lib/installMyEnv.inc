@@ -41,7 +41,7 @@
 function getInstanceBlackList()
 // ---------------------------------------------------------------------
 {
-	return array('mysql', 'mysqld');
+	return array('mysql', 'mysqld', 'default');
 }
 
 // ---------------------------------------------------------------------
@@ -100,7 +100,7 @@ function addInstance()
 		if ( $name == $instance ) {
 			$rc = 718;
 			error("Instance name $instance is on blacklist (rc=$rc).");
-			readline("Press Enter choose an other one...");
+			readline("Press Enter to choose an other one...");
 			return $rc;
 		}
 	}
@@ -1721,7 +1721,7 @@ Options:
 
 Examples:
 
-  $script --operation=delete --intance=test
+  $script --operation=delete --instance=test
 
 ";
 }

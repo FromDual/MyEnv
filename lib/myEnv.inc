@@ -175,6 +175,27 @@ function startDatabase($aInstance, $pOptions = '')
 	$rc = OK;
 	global $lDebug;
 
+	debug('startDatabase: ' . $aInstance['name'] . ', options:');
+	debug($pOptions);
+
+	// Do option check and correction
+
+	$aOptions = explode(' ', $pOptions);
+	$key = array_search('--new-cluster', $aOptions);
+	if ( $key !== FALSE ) {
+		unset($aOptions[$key]);
+		array_push($aOptions, '--wsrep-new-cluster');
+	}
+	$key = array_search('--bootstrap', $aOptions);
+	if ( $key !== FALSE ) {
+		unset($aOptions[$key]);
+		array_push($aOptions, '--wsrep-new-cluster');
+	}
+	$pOptions = implode(' ', $aOptions);
+
+	debug('options after check and correction:');
+	debug($pOptions);
+
 	// Check if db is started with correct user
 	// Also root should be allowed to start DB (Bug #99)
 
@@ -183,7 +204,7 @@ function startDatabase($aInstance, $pOptions = '')
 		&& ($lCurrentUser != 'root')
 	   ) {
 		$rc = 522;
-		error("Database is started with the wrong user ($lCurrentUser) but should should be strated with " . $aInstance['user'] . " (rc=$rc).");
+		error("Database is started with the wrong user ($lCurrentUser) but should should be started with " . $aInstance['user'] . " (rc=$rc).");
 		return $rc;
 	}
 

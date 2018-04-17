@@ -51,6 +51,11 @@ function start()
   fi
 }
 
+function bootstrap()
+{
+  start $@ --bootstrap
+}
+
 function stop()
 {
   if [ -z "$1" ] ; then

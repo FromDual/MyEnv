@@ -3,6 +3,62 @@
 # CHANGELOG
 #
 
+Version 1.3.1
+-------------
+
+Change #814
+* MyEnv: CHANGELOG updated.
+
+Change #813
+* MyEnv: README updated.
+
+Change #812
+* MyEnv: Bash function bootstrap added.
+
+Change #811
+* MyEnv: Galera options --bootstrap --new-cluster  and start methode bootstrap
+  was implemented. Typo fixed.
+
+Change #810
+* MyEnv installer: Default as instance name set to blacklist.
+
+Change #809
+* MyEnv: New 5.7 variables added and 5.6 variables to avoid nasty warnings in
+  the error log added to the my.cnf template. Further new file system structure
+  was prepared.
+
+Change #808
+* MyEnv: MySQL 5.7 variables for error log behaviour added.
+
+Change #807
+* MyEnv: Comment for log_bin added to my.cnf template.
+
+Change #806
+* MyEnv: Ulimit problem fixed rude in myenv init script.
+
+Change #805
+* Utilities: insert_test.sh now has optional parameters for user, host etc.
+
+Change #804
+* MyEnv: Wsrep_provider for CentOS added in my.cnf template.
+
+Change #803
+* Utilities: Test table prepared for explicit_defaults_for_timestamp configura-
+  tion.
+
+Change #801
+* MyEnv installer: Typo fixed in help of installMyEnv.
+
+Change #799
+* MyEnv: Cgroup template imporved.
+
+Change #798
+* MyEnv: Typo fixed.
+
+Change #794
+* MyEnv: Cgroup howto improved and config example added.
+
+
 Version 1.3.0
 -------------
 

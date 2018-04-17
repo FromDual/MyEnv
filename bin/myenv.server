@@ -44,6 +44,8 @@ fi
 mkdir -p /var/run/mysqld
 chown $user: /var/run/mysqld
 
+ulimit -n 65535
+
 su -c "$MYENV_BASE/bin/myenv_start_stop.php $1" $user
 if [ $? -eq 0 ] ; then
   log_success_msg "myenv $1 OK"

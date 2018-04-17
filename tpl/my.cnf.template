@@ -40,9 +40,12 @@ port                           = %PORT%
 socket                         = %SOCKET%
 basedir                        = %BASEDIR%
 datadir                        = %DATADIR%
+# tmpdir                         = '%INSTANCEDIR%/tmp'
 
 max_allowed_packet             = 16M
-default_storage_engine         = InnoDB                              # Defaults since 5.5
+default_storage_engine         = InnoDB
+# explicit_defaults_for_timestamp = 1                                  # MySQL 5.6, test carefully! This can have an impact on application.
+
 
 # character_set_server           = utf8                                # If you prefer utf8
 # collation_server               = utf8_general_ci
@@ -78,7 +81,9 @@ table_open_cache               = 512                                 # connectio
 # MySQL error log
 
 log_error                      = %UNAME%_%INSTANCE%error.log
+# log_timestamps                 = SYSTEM                              # MySQL 5.7, equivalent to old behaviour
 log_warnings                   = 2
+# log_error_verbosity            = 3                                   # MySQL 5.7, equivalent to log_warnings = 2
 # innodb_print_all_deadlocks     = 1
 # wsrep_log_conflicts            = 1                                   # for Galera only!
 
@@ -87,7 +92,7 @@ log_warnings                   = 2
 
 slow_query_log_file            = %UNAME%_%INSTANCE%slow.log
 slow_query_log                 = 0
-log_queries_not_using_indexes  = 1
+log_queries_not_using_indexes  = 0
 long_query_time                = 0.5
 min_examined_row_limit         = 100
 
@@ -101,8 +106,8 @@ general_log                    = 0
 # Binary logging and Replication
 
 server_id                      = %SERVERID%
-log_bin                        = %UNAME%_%INSTANCE%binlog
-# master_verify_checksum         = ON                                  # Since 5.6
+log_bin                        = %UNAME%_%INSTANCE%binlog            # Locate outside of datadir
+# master_verify_checksum         = ON                                  # MySQL 5.6
 binlog_cache_size              = 1M
 binlog_stmt_cache_size         = 1M
 max_binlog_size                = 128M                                # Make bigger for high traffic to reduce number of files
@@ -118,7 +123,11 @@ binlog_format                  = ROW                                 # Use MIXED
 
 log_slave_updates              = 1                                   # Use if Slave is used for Backup and PiTR
 read_only                      = 0                                   # Set to 1 to prevent writes on Slave
-skip_slave_start               = 0                                   # To avoid start of Slave threads
+# skip_slave_start               = 1                                   # To avoid start of Slave thread
+# relay_log                      = %UNAME%_%INSTANCE%relay-bin
+# relay_log_info_repository      = table                               # MySQL 5.6
+# master_info_repository         = table                               # MySQL 5.6
+# slave_load_tmpdir              = '%INSTANCEDIR%/tmp'
 
 
 # Security variables
@@ -127,12 +136,14 @@ skip_slave_start               = 0                                   # To avoid 
 # secure_auth                    = 1                                   # If you are security aware
 # sql_mode                       = TRADITIONAL,ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER   # Be careful changing this afterwards
 # skip_name_resolve              = 0                                   # Set to 1 if you do not trust your DNS or experience problems
+# secure_file_priv               = '%INSTANCEDIR%/tmp'                   # chmod 750
 
 
 # MyISAM variables
 
 key_buffer_size                = 8M                                  # Set to 25 - 33 % of RAM if you still use MyISAM
 myisam_recover_options         = 'BACKUP,FORCE'
+# disabled_storage_engines       = 'MyISAM'                            # MySQL 5.7, do NOT during/before mysql_upgrade
 
 
 # MEMORY variables
@@ -172,7 +183,8 @@ innodb_log_file_size           = 256M                                # Bigger me
 # WSREP parameter
 
 # wsrep_provider                 = none                                # Start mysqld without Galera
-# wsrep_provider                 = /usr/lib/galera/libgalera_smm.so    # Location of Galera Plugin
+# wsrep_provider                 = /usr/lib/galera/libgalera_smm.so    # Location of Galera Plugin on Ubuntu ?
+# wsrep_provider                 = /usr/lib64/galera-3/libgalera_smm.so   # Location of Galera Plugin on CentOS 7
 # wsrep_provider_options         = 'gcache.size = 1G'                  # Depends on you workload, WS kept for IST
 
 # wsrep_cluster_name             = "My cool Galera Cluster"            # Same Cluster name for all nodes

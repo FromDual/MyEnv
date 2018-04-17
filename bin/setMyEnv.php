@@ -184,7 +184,7 @@ fwrite($fh, "export MYSQL_UNIX_PORT=" . $aDatabaseParameter['socket'] . "\n");
 fwrite($fh, "export MYSQL_PS1='\u@" . $lDbName . " [\d] SQL> '\n");
 fwrite($fh, "export MYENV_DATABASE=" . $lDbName . "\n");
 fwrite($fh, "export MYENV_DATADIR=" . $aDatabaseParameter['datadir'] . "\n");
-fwrite($fh, "export MYENV_VERSION=" . '1.3.0' . "\n");
+fwrite($fh, "export MYENV_VERSION=" . '1.3.1' . "\n");
 fwrite($fh, "export MYENV_STAGE=" . (isset($aDatabaseParameter['stage']) ? $aDatabaseParameter['stage'] : 'none') . "\n");
 fwrite($fh, "time_off\n");
 

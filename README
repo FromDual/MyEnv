@@ -1,17 +1,20 @@
 MyEnv
 =====
 
-MyEnv is a set of scripts to run and handle multi-instance database set-ups.
+MyEnv is a tool to operate MySQL and MariaDB multi-instance set-ups.
 
-With MyEnv multi-instance database set-ups should be easier to handle. This type of consolidation has less overhad than virtualization solutions.
+With MyEnv multi-instance set-ups should be easier to handle than with
+mysqld_multi. This type of consolidation has less overhad than virtualization
+solutions. To do proper resource fencing MyEnv provides cgroup integration.
 
-The whole software is under GPL v2: http://www.gnu.org/licenses/gpl-2.0.html
+MyEnv is licensed und the GPL v2: http://www.gnu.org/licenses/gpl-2.0.html
 
 MyEnv is documented here: http://www.fromdual.com/myenv-mysql-basenv
 
-For questions, feedback and comments, please go to our MyEnv forum on: http://www.fromdual.com/forum/365.
+For questions, feedback and comments, please go to the MyEnv forum at:
+http://www.fromdual.com/forum/365.
 
-Bug reports and feature request can be noted here: http://support.fromdual.com/bugs/
+Bugs and feature request can be reported here: http://support.fromdual.com/bugs/
 
 
 Requirements
@@ -22,11 +25,17 @@ You can find the MyEnv requirments under the following link:
 http://fromdual.com/myenv-mysql-basenv#requirements
 
 
-Upgrade 1.1.x -> 1.1.y
-----------------------
+Upgrade 1.1.x -> 1.1.y and higher
+---------------------------------
 
-http://fromdual.com/mysql-environment-myenv-1.1.1-has-been-released
+http://fromdual.com/mysql-environment-myenv-1.3.0-has-been-released
+http://fromdual.com/mysql-environment-myenv-1.2.2-has-been-released
+http://fromdual.com/mysql-environment-myenv-1.2.1-has-been-released
+http://fromdual.com/mysql-environment-myenv-1.2.0-has-been-released
+http://fromdual.com/mysql-environment-myenv-1.1.4-has-been-released
+http://fromdual.com/mysql-environment-myenv-1.1.3-has-been-released
 http://fromdual.com/mysql-environment-myenv-1.1.2-has-been-released
+http://fromdual.com/mysql-environment-myenv-1.1.1-has-been-released
 
 
 Upgrade 1.0.x -> 1.1.y
