@@ -33,6 +33,17 @@
 	extractBranch($pVersionComment)
 	getDistributionVersion()
 	simulateLsbReleaseDistributionVersion($pTestFile = null)
+	getInstanceInfo($pVersion, $pVersionComment)
+
+*/
+
+/*
+
+Do NOT use: MOD(256)
+
+$rc = 256;
+$rc = 512;
+$rc = 768;
 
 */
 
@@ -131,14 +142,14 @@ function getConfiguration($pConfigurationFile)
 }
 
 // ----------------------------------------------------------------------
-function extractVersion($s)
-// $s = basedir
+function extractVersion($pBasedir)
+// Extracts MariaDB/MySQL version from basedir (/home/mysql/product/mariadb-10.3.5)
 // ----------------------------------------------------------------------
 {
 	$version = 'unknown';
 
 	// Expected patterns: see tst/extractVersion.php
-	if ( preg_match("/([a-zA-Z]+)\d?\-/", $s, $matches) ) {
+	if ( preg_match("/([a-zA-Z]+)\d?\-/", $pBasedir, $matches) ) {
 
 		if ( ($matches[1] == 'mysql')
 			|| ($matches[1] == 'MySQL')
@@ -146,13 +157,13 @@ function extractVersion($s)
 			|| ($matches[1] == 'mariadb')
 				) {
 
-			if ( preg_match("/(\d{1,2}\.\d{1,2}\.\d{1,2})/", $s, $matches) ) {
+			if ( preg_match("/(\d{1,2}\.\d{1,2}\.\d{1,2})/", $pBasedir, $matches) ) {
 				$version = $matches[1];
 			}
-			elseif ( preg_match("/(\d{1,2}\.\d{1,2}\.\d{1,2}\-ndb\-\d{1,2}\.\d{1,2}\.\d{1,2}[a-z]?)/", $s, $matches) ) {
+			elseif ( preg_match("/(\d{1,2}\.\d{1,2}\.\d{1,2}\-ndb\-\d{1,2}\.\d{1,2}\.\d{1,2}[a-z]?)/", $pBasedir, $matches) ) {
 				$version = $matches[1];
 			}
-			elseif ( preg_match("/(\d{1,2}\.\d{1,2})/", $s, $matches) ) {
+			elseif ( preg_match("/(\d{1,2}\.\d{1,2})/", $pBasedir, $matches) ) {
 				$version = $matches[1];
 			}
 			else {
@@ -161,7 +172,7 @@ function extractVersion($s)
 		elseif ( ($matches[1] == 'Percona')
 					|| ($matches[1] == 'Percona-Server')
 					) {
-			if ( preg_match("/(\d{1,2}\.\d{1,2}\.\d{1,2})/", $s, $matches) ) {
+			if ( preg_match("/(\d{1,2}\.\d{1,2}\.\d{1,2})/", $pBasedir, $matches) ) {
 				$version = $matches[1];
 			}
 		}
@@ -171,7 +182,7 @@ function extractVersion($s)
 	}
 	else {
 		// Case: 5.6.12
-		if ( preg_match("/(\d{1,2}\.\d{1,2}\.\d{1,2})/", $s, $matches) ) {
+		if ( preg_match("/(\d{1,2}\.\d{1,2}\.\d{1,2})/", $pBasedir, $matches) ) {
 			$version = $matches[1];
 		}
 	}
@@ -229,7 +240,7 @@ function startDatabase($aInstance, $pOptions = '')
 	       ) ) {
 		$rc = 523;
 		error("User table (\$datadir/mysql/user.{frm|ibd}) or mysql tablespace (\$datadir/mysql.ibd) does not exist.");
-		error("Are you sure you have installed a MySQL/MariaDB instance already? (rc=$rc)");
+		error("Are you sure you have installed a MariaDB/MySQL instance already? (rc=$rc)");
 		error("Create a database instance with the command:");
 		error("shell> mysql_install_db --user=mysql --datadir=" . $aInstance['datadir'] . " --basedir=" . $aInstance['basedir']);
 		error("or for MySQL 5.7 and newer:");
@@ -499,7 +510,7 @@ function checkDatabaseOld($aInstance)
 
 	// Sometimes it can happen, that mysqladmin is missing (Galera)
 	// In some situations (sudo) the origin user (oli->mysql) is used giving some
-	// warnings in the mysql error log when log_warnings is set to 2.
+	// warnings in the error log when log_warnings is set to 2.
 	// [Warning] Access denied for user 'oli'@'localhost' (using password: NO)
 	// todo: This seems to be not critical but has to be fixed later!
 
@@ -730,13 +741,13 @@ function stopDatabase($aInstance)
 
 		if ( posix_kill($lMysqldPid, SIG_IGN) === true ) {
 
-			// print 'Shutting down MySQL';
+			// print 'Shutting down MariaDB/MySQL instance';
 			posix_kill($lMysqldPid, SIGTERM);
 			// mysqld should remove the PID file when it exits, so wait for it.
 			$rc = wait_for_pid($lMysqldPid, $lMysqldPidFile);
 		}
 		else {
-			print "MySQL server process $lMysqldPid is not running or you have not the right to stop it!\n";
+			print "MariaDB/MySQL server process $lMysqldPid is not running or you have not the right to stop it!\n";
 			if ( is_writeable(dirname($lMysqldPidFile)) ) {
 				unlink($lMysqldPidFile);
 			}
@@ -760,7 +771,7 @@ function stopDatabase($aInstance)
 	}
 	else {
 		$rc = 531;
-		print "MySQL server PID file could not be found at $lMysqldPidFile. Database already\nstopped? (rc=$rc)!\n";
+		print "MariaDB/MySQL server PID file could not be found at $lMysqldPidFile. Database already\nstopped? (rc=$rc)!\n";
 		return $rc;
 	}
 
@@ -981,6 +992,7 @@ function checkMyEnvRequirements()
 		case 'SUSE':
 		case 'SUSE LINUX':
 		case 'openSUSE project':
+		case 'openSUSE Leap':
 			$cmd = "sudo vi /etc/php5/cli/php.ini";
 			error("shell> $cmd\n\n");
 			break;
@@ -999,13 +1011,14 @@ function checkMyEnvRequirements()
 	// Check if posix functions are installed
 
 	if ( ! function_exists('posix_kill') ) {
-		print "WARNING: The function posix_kill is not installed. You cannot stop MySQL\n";
+		print "WARNING: The function posix_kill is not installed. You cannot stop MySQL/MariaDB\n";
 		print "instances without. Please install the package containing posix_kill:\n\n";
 
 		switch ($lDistribution) {
 		case 'CentOS':
 		case 'RedHat':
 		case 'Fedora':
+		case 'CloudLinux':
 		case 'RedHatEnterpriseServer':
 			$cmd = "sudo yum install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
@@ -1013,6 +1026,7 @@ function checkMyEnvRequirements()
 		case 'SUSE':
 		case 'SUSE LINUX':
 		case 'openSUSE project':
+		case 'openSUSE Leap':
 			$cmd = "sudo zypper install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
 			break;
@@ -1035,6 +1049,7 @@ function checkMyEnvRequirements()
 		case 'CentOS':
 		case 'RedHat':
 		case 'Fedora':
+		case 'CloudLinux':
 		case 'RedHatEnterpriseServer':
 			$cmd = "sudo yum install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
@@ -1042,6 +1057,7 @@ function checkMyEnvRequirements()
 		case 'SUSE':
 		case 'SUSE LINUX':
 		case 'openSUSE project':
+		case 'openSUSE Leap':
 			$cmd = "sudo zypper install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
 			break;
@@ -1059,7 +1075,7 @@ function checkMyEnvRequirements()
 
 	if ( (! defined('SIG_IGN')) || (! defined('SIGTERM')) ) {
 		print "WARNING: The constants SIG_IGN and/or SIGTERM are not known. You cannot stop\n";
-		print "MySQL instances without. Please install the package containing these constants\n";
+		print "MariaDB/MySQL instances without. Please install the package containing these constants\n";
 		print "first:\n";
 		print "Try to install the package php5-pcntl. We will help you in the meanwhile with a\n";
 		print "fake...\n\n";
@@ -1068,6 +1084,7 @@ function checkMyEnvRequirements()
 		case 'CentOS':
 		case 'RedHat':
 		case 'Fedora':
+		case 'CloudLinux':
 		case 'RedHatEnterpriseServer':
 			$cmd = "sudo yum install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
@@ -1075,6 +1092,7 @@ function checkMyEnvRequirements()
 		case 'SUSE':
 		case 'SUSE LINUX':
 		case 'openSUSE project':
+		case 'openSUSE Leap':
 			$cmd = "sudo zypper install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
 			break;
@@ -1094,14 +1112,16 @@ function checkMyEnvRequirements()
 
 	// Check if php-mysqli is installed (for fromdual_bman)
 
-	if ( ! in_array('mysqli', get_loaded_extensions()) ) {
-		print "WARNING: The PHP extension mysqli is not installed. You cannot run some tools\n";
-		print "without it. Please install the package containing mysqli first:\n\n";
+	$ext = 'mysqli';
+	if ( ! in_array($ext, get_loaded_extensions()) ) {
+		print "WARNING: The PHP extension $ext is not installed. You cannot run some tools\n";
+		print "without it. Please install the package containing $ext first:\n\n";
 
 		switch ($lDistribution) {
 		case 'CentOS':
 		case 'RedHat':
 		case 'Fedora':
+		case 'CloudLinux':
 		case 'RedHatEnterpriseServer':
 			$cmd = "sudo yum install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
@@ -1109,6 +1129,7 @@ function checkMyEnvRequirements()
 		case 'SUSE':
 		case 'SUSE LINUX':
 		case 'openSUSE project':
+		case 'openSUSE Leap':
 			$cmd = "sudo zypper install " . getPacketList($lDistribution);
 			print "shell> $cmd\n\n";
 			break;
@@ -1137,30 +1158,32 @@ function checkMyEnvRequirements()
 			print "of MyEnv.\n";
 			print "Try to install the package lsb_release as follows:\n\n";
 
-		switch ($lDistribution) {
-		case 'CentOS':
-		case 'CentOS Linux':
-		case 'RedHat':
-		case 'Fedora':
-		case 'RedHatEnterpriseServer':
-			$cmd = "sudo yum install " . getPacketList($lDistribution);
-			print "shell> $cmd\n\n";
-			break;
-		case 'SUSE':
-		case 'SUSE LINUX':
-		case 'openSUSE project':
-			$cmd = "sudo zypper install " . getPacketList($lDistribution);
-			print "shell> $cmd\n\n";
-			break;
-		case 'Ubuntu':
-		case 'Debian':
-			$cmd = "sudo apt-get install " . getPacketList($lDistribution);
-			print "shell> $cmd\n\n";
-			break;
-		default:
-			$cmd = 'echo "Unknown distribution: ' . $lDistribution . '"';
-			print "OS/Distribution $lOs/$lDistribution is not yet supported.\n";
-		}
+			switch ($lDistribution) {
+			case 'CentOS':
+			case 'CentOS Linux':
+			case 'RedHat':
+			case 'Fedora':
+			case 'CloudLinux':
+			case 'RedHatEnterpriseServer':
+				$cmd = "sudo yum install " . getPacketList($lDistribution);
+				print "shell> $cmd\n\n";
+				break;
+			case 'SUSE':
+			case 'SUSE LINUX':
+			case 'openSUSE project':
+			case 'openSUSE Leap':
+				$cmd = "sudo zypper install " . getPacketList($lDistribution);
+				print "shell> $cmd\n\n";
+				break;
+			case 'Ubuntu':
+			case 'Debian':
+				$cmd = "sudo apt-get install " . getPacketList($lDistribution);
+				print "shell> $cmd\n\n";
+				break;
+			default:
+				$cmd = 'echo "Unknown distribution: ' . $lDistribution . '"';
+				print "OS/Distribution $lOs/$lDistribution is not yet supported.\n";
+			}
 			$ret = WARN;
 		}
 	}
@@ -1172,8 +1195,8 @@ function checkMyEnvRequirements()
 function parseConfigFile($pConfigurationFile, $scanner_mode = INI_SCANNER_NORMAL)
 /*
 
-	we have different problems parsing mysql config files:
-	parse_ini_file() seems to be not a good idea to use with mysql my.cnf files
+	We have different problems parsing MariaDB/MySQL config files:
+	parse_ini_file() seems to be not a good idea to use with MariaDB/MySQL my.cnf files
 	Comments starting with '#' are deprecated in /home/mysql/data/mysql-5.6.15/my.cnf on line 42 in /home/mysql/product/myenv-rev392/lib/myEnv.inc on line 365
 	Comments starting with '#' are deprecated in /home/mysql/data/mysql-5.6.15/my.cnf on line 42 in /home/mysql/product/myenv-rev392/lib/myEnv.inc on line 166
 	syntax error, unexpected '!' in /etc/mysql/my.cnf on line 127 (rc=164)
@@ -1396,6 +1419,7 @@ function my_exec($pCmd)
 
 // ----------------------------------------------------------------------
 function getVersionFromMysqld($pBasedir)
+// Gets version from mysqld --version
 // ----------------------------------------------------------------------
 {
 	$version = 'unknown';
@@ -1446,6 +1470,7 @@ function getDistribution()
 	$distribution == 'Debian'
 	$distribution == 'SUSE'
 	$distribution == 'openSUSE project'
+	$distribution == 'openSUSE Leap'
 */
 // ---------------------------------------------------------------------
 {
@@ -1563,6 +1588,7 @@ function simulateLsbRelease($lTestFile = null)
 	// Normalize data
 	switch ($distribution) {
 	case 'openSUSE':
+	case 'openSUSE Leap':
 		$distribution .= ' project';
 		break;
 	case 'Debian GNU/Linux':
@@ -1570,6 +1596,7 @@ function simulateLsbRelease($lTestFile = null)
 		break;
 	case 'centos':
 	case 'CentOS Linux':
+	case 'CloudLinux':
 		$distribution = 'CentOS';
 		break;
 	case 'Ubuntu':
@@ -1591,13 +1618,15 @@ function getPacketList($pDistribution)
 	case 'CentOS':
 	case 'RedHat':
 	case 'Fedora':
+	case 'CloudLinux':
 	case 'RedHatEnterpriseServer':
 		$lList = 'php-cli php-posix php-pcntl php-mysqli redhat-lsb-core';
 		break;
 	case 'SUSE':
 	case 'SUSE LINUX':
 	case 'openSUSE project':
-		$lList = 'php5 php5-cli php5-posix php5-pcntl php5-mysqli lsb-release';
+	case 'openSUSE Leap':
+		$lList = 'php5 php5-cli php5-posix php5-pcntl php5-mysqli lsb-release php-sockets';
 		break;
 	case 'Ubuntu':
 	case 'Debian':
@@ -1621,17 +1650,19 @@ function noop()
 function parseConnectString($pConnectString)
 // ----------------------------------------------------------------------
 {
+	// todo: Use parse_url instead!
+
 	// Connect string style:
-	// user/password@host:port
+	// user:password@host:port
 
 	// http://en.wikipedia.org/wiki/URI_scheme
-	// foo://username:password@example.com:8042
+	// foo://user:password@example.com:8042
 
 	// Use the last @ for splitting host and user
 	// Use the first / or : for splitting user and password
 	// Characters like : @ and / are allowed in password!
 	// Allowed combinations for user are:
-	// user/password
+	// user/password (deprecated)
 	// user:password
 	// user
 	// Allowed combinations for host are:
@@ -1647,9 +1678,9 @@ function parseConnectString($pConnectString)
 	$pos = strrpos($pConnectString, '@');
 
 	if ( $pos == 0 ) {
-		$rc = 173;
+		$rc = 583;
 		// This is/was a security issue! Removed: $pConnectString
-		$msg = 'Connect string does not match pattern: user/password@host:port.' . " (rc=$rc)";
+		$msg = 'Connect string does not match pattern: user:password@host:port.' . " (rc=$rc)";
 		error($msg);
 		return array($rc, $aTarget);
 	}
@@ -1691,7 +1722,7 @@ function parseConnectString($pConnectString)
 		}
 
 		if ( $aTarget['port'] == 0 ) {
-			$rc = 172;
+			$rc = 582;
 			$msg = 'Port ' . $h[1] . ' is zero or not an integer.' . " (ret=$rc)";
 			error($msg);
 			$aTarget['port'] = '';
@@ -1867,6 +1898,42 @@ function recursivelyRemoveDirectory($dir)
 	rmdir($dir);
 
 	return $rc;
+}
+
+// ---------------------------------------------------------------------
+function getInstanceInfo($pVersion, $pVersionComment)
+/*
+  SHOW GLOBAL VARIABLES WHERE variable_name IN ('version_comment', 'version');
+  version         | 10.3.3-MariaDB
+  version_comment | MariaDB Server
+  version         | 5.7.21-log
+  version_comment | MySQL Community Server (GPL)
+*/
+// ---------------------------------------------------------------------
+{
+	$rc = OK;
+	$aInstanceInfo = array();
+
+	// Version
+
+	if ( preg_match("/(\d{1,2}\.\d{1,2}\.\d{1,2}).*/", $pVersion, $matches) ) {
+		$aInstanceInfo['version'] = $matches[1];
+	}
+	else {
+		$rc = 578;
+	}
+
+
+	// MR Version
+
+	list($rc, $aInstanceInfo['mr_version']) = getMachineReadableVersion($aInstanceInfo['version']);
+
+
+	// Version comment
+
+	$aInstanceInfo['branch'] = extractBranch($pVersionComment);
+
+	return array($rc, $aInstanceInfo);
 }
 
 ?>

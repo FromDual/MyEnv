@@ -90,6 +90,15 @@ function addInstance()
 		$instance = $default;
 	}
 
+	// Check if instance name contains '.' character
+	if ( strstr($instance, '.') !== false ) {
+		$rc = 703;
+		$msg = "Instance name $instance cannot contain '.' caracter." . " (rc=$rc)" . "\n";
+		error($msg);
+		return $rc;
+	}
+
+
 	// Check for existing instance name here!
 	foreach ( $aConfiguration as $instances ) {
 		if ( $instances == $instance ) {
@@ -154,8 +163,8 @@ function changeInstance($pInstance)
 
 	if ( $aConfiguration[$pInstance]['basedir'] == '/usr' ) {
 		output("\n");
-		output("You have choosen the default package location of MySQL basedir.\n");
-		output("Please install MySQL with your package manager if not done yet.\n");
+		output("You have choosen the default package location of MariaDB/MySQL basedir.\n");
+		output("Please install MariaDB/MySQL with your package manager if not done yet.\n");
 	}
 	elseif ( (is_dir($aConfiguration[$pInstance]['basedir'])
 	  && (count(glob($aConfiguration[$pInstance]['basedir'] . '/*')) == 0))
@@ -163,7 +172,7 @@ function changeInstance($pInstance)
 	   ) {
 
 		output("\n");
-		$question = 'Shall I download and install MySQL binaries under ' . $aConfiguration[$pInstance]['basedir'] . ' (Y/n)? ';
+		$question = 'Shall I download and install MariaDB/MySQL binaries under ' . $aConfiguration[$pInstance]['basedir'] . ' (Y/n)? ';
 		$key = answerQuestion($question, array('y', 'n'), 'y');
 		if ( $key == 'y' ) {
 
@@ -389,7 +398,7 @@ function installInstance($aConfiguration)
 	if ( is_dir($aConfiguration['datadir']) && (count(glob($aConfiguration['datadir'] . '/mysql/*')) == 0) ) {
 
 		output("\n");
-		$question = "Shall I install a MySQL database under " . $aConfiguration['datadir'] . " (Y/n)? ";
+		$question = "Shall I install a MariaDB/MySQL instance under " . $aConfiguration['datadir'] . " (Y/n)? ";
 		$key = answerQuestion($question, array('y', 'n'), 'y');
 		if ( $key == 'y' ) {
 
@@ -536,7 +545,7 @@ function installInstance($aConfiguration)
 			}
 
 			if ( file_exists($bin) && is_executable($bin) ) {
-				output("Installing MySQL instance. Please be patient, this can take a while...\n\n");
+				output("Installing MariaDB/MySQL instance. Please be patient, this can take a while...\n\n");
 
 				// Check if $basedir/my.cnf exists already
 				// if not delete it afterwards again.
@@ -878,10 +887,20 @@ function askForBasedir($aConfiguration)
 		$default = '/usr';
 	}
 
+	// Cleanup
 	$aBasedirCandidates = array_unique($aBasedirCandidates);
 
+	foreach ( $aBasedirCandidates as $key => $basedir ) {
+
+		// No mysqld exists so no candiate
+		if ( ! file_exists($basedir . '/bin/mysqld') ) {
+			unset($aBasedirCandidates[$key]);
+		}
+	}
+
+
 	output("\n");
-	output("Set basedir. The basedir is the directory where your MySQL binaries are located.\n");
+	output("Set basedir. The basedir is the directory where your MariaDB/MySQL binaries are located.\n");
 	output("Example: \n");
 	foreach ( $aBasedirCandidates as $basedir ) {
 		if ( $basedir == $default ) {
@@ -1014,7 +1033,7 @@ function askForDatadir($aConfiguration)
 	$aDatadirCandidates = array_unique($aDatadirCandidates);
 
 	output("\n");
-	output("Set datadir. The datadir is the directory where your MySQL data are located.\n");
+	output("Set datadir. The datadir is the directory where your MariaDB/MySQL data are located.\n");
 	output("\n");
 	output("Example: ");
 
@@ -2010,7 +2029,7 @@ function askForInstancedir($aConfiguration)
 	$aInstancedirCandidates = array_unique($aInstancedirCandidates);
 
 	output("\n");
-	output("Set instancedir. The instancedir is the directory where your MySQL data directory (datadir) is located.\n");
+	output("Set instancedir. The instancedir is the directory where your MariaDB/MySQL data directory (datadir) is located.\n");
 	output("\n");
 	output("Example: ");
 
@@ -2188,7 +2207,7 @@ function addInstanceAutomatized($aOptions, $pMyEnvConfFile)
 	$ret = checkDatabase($aConfiguration[$aOptions['instance']]);
 
 	if ( $ret == OK ) {
-		$rc = 701;
+		$rc = 756;
 		$msg = "Please stop instence first before deleting it (rc=$rc).";
 		error($msg);
 		return $rc;

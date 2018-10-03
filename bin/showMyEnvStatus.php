@@ -262,7 +262,18 @@ foreach ( $aDbNames as $db ) {
 					// do not exit here. We want to see output for others still...
 				}
 
-				output(sprintf("%-" . $max_len . "s (%" . $lIpLength . "s:%-5d) : %s\n", $db, $ip, $aConfiguration[$db]['port'], $line));
+				// Color is bad for grep!
+				if ( array_key_exists($db, $aUp) ) {
+
+					$open = "(";
+					$close = ")";
+				}
+				else {
+					$open = '[';
+					$close = ']';
+				}
+
+				output(sprintf("%-" . $max_len . "s %s%" . $lIpLength . "s:%-5d%s : %s\n", $db, $open, $ip, $aConfiguration[$db]['port'], $close, $line));
 			}
 			else {
 				output(sprintf("%s %s\n", str_repeat(' ', $max_len+$lIpLength+11), $line));

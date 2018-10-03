@@ -4,6 +4,86 @@
 #
 
 
+Version 2.0.1
+-------------
+
+Change #997
+* README updated and release tagged.
+
+Change #996
+* rc fixed and Makefile adapted
+
+Change #995
+* All tests fixed.
+
+Change #994
+* TestCounter added to test suite.
+
+Change #992
+* basedir withouth bin/mysqld is stripped outf from intaller overview.
+
+Change #990
+* Instancename with dot "." in it is not allowed any more.
+
+Change #989
+* OpenSUSE Leap 42.3 support added.
+
+Change #988
+* Missing instancedir configuration is complaining now. This could be a left
+  over from 1.x to 2.y migration.
+
+Change #987
+* MyEnv should not complain any more when default my.cnf is used.
+
+Change #986
+* mysqlstat.php php7 compatibility problem fixed.
+
+Change #985
+* Remove old user/password schema from code and updated to now URI scheme.
+
+Change #982
+* Script setMyEnv.sh added to set environment for instance easier.
+
+Change #981
+* Error messages made more flexible.
+
+Change #980
+* MariaDB and MySQL are now treated equivalent in wording.
+
+Change #979
+* Syntax made standard conform.
+
+Change #978
+* Introduced different brackets for up and down mysql instances in Up output.
+
+Change #977
+* New alert levels added.
+
+Change #976
+* Error codes fixed and note for mod 256 added.
+
+Change #975
+* Connect string URI updated to new scheme.
+
+Change #974
+* Function getInstanceInfo added to myEnv library.
+
+Change #973
+* MyEnv library function extractVersion and getVersionFromMysqld cleaned a bit.
+  Better parameter names.
+
+Change #971
+* Github files LICENSE and README.md added.
+
+Change #970
+* Utilities cluster_conflict.php, cluster_conflict.sh, galera_monitor.sh,
+  haproxy_maint.sh, group_replication_monitor.sh for Galera and Group
+  Replication cluster added.
+
+Change #969
+* CloudLinux added as a supported distribution.
+
+
 Version 2.0.0
 -------------
 
@@ -77,7 +157,7 @@ Change #936
 * MyEnv: Made all queries on I_S MySQL 8.0 compatible.
 
 Change #935
-* MyEnv packaging: Fistribution terminology for SUSE LINUX added.
+* MyEnv packaging: Distribution terminology for SUSE LINUX added.
 
 Change #934
 * MyEnv: Made variables for MySQL 8.0 ready.

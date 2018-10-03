@@ -42,9 +42,14 @@ debug("tmp file: $tmp");
 debug("database: $pDatabaseName");
 
 foreach ( array('/etc/my.cnf', '/etc/mysql/my.cnf', '/usr/local/mysql/etc/my.cnf', "~/.my.cnf") as $file ) {
-  if ( file_exists($file) ) {
-    output("Warning: $file exists. This can screw up myenv. Please remove the file.\n");
-  }
+	if ( file_exists($file) ) {
+
+		list($ret, $md5) = getMd5sum2($file, array());
+		// empty file, Oracle default on Ubuntu
+		if ( ! in_array($md5, array('d41d8cd98f00b204e9800998ecf8427e', 'ef3a3e2aba5f02734846bfaa08ae14f4')) ) {
+			output("Warning: $file exists. This can screw up myenv. Please remove the file.\n");
+		}
+	}
 }
 
 $lConfigurationFile = '/etc/myenv/myenv.conf';
@@ -116,12 +121,13 @@ else {
 }
 
 if ( ! array_key_exists("instancedir", $aDatabaseParameter) ) {
+	output("Warning: instancedir is not configured in " . $lConfigurationFile . ". Please fix configuration.\n");
 	$aDatabaseParameter['instancedir'] = $aDatabaseParameter['basedir'];
 }
 
 $file = $aDatabaseParameter['basedir'] . '/my.cnf';
 if ( file_exists($file) ) {
-  output("Warning: $file exists. This can screw up myenv.\n");
+  output("Warning: $file exists. This can screw up myenv. Please remove the file.\n");
 }
 
 // Check if my.cnf file is readable for group or others for security reasons
@@ -187,7 +193,7 @@ fwrite($fh, "export MYSQL_UNIX_PORT=" . $aDatabaseParameter['socket'] . "\n");
 fwrite($fh, "export MYSQL_PS1='\u@" . $lDbName . " [\d] SQL> '\n");
 fwrite($fh, "export MYENV_DATABASE=" . $lDbName . "\n");
 fwrite($fh, "export MYENV_DATADIR=" . $aDatabaseParameter['datadir'] . "\n");
-fwrite($fh, "export MYENV_VERSION=" . '2.0.0' . "\n");
+fwrite($fh, "export MYENV_VERSION=" . '2.0.1' . "\n");
 fwrite($fh, "export MYENV_STAGE=" . (isset($aDatabaseParameter['stage']) ? $aDatabaseParameter['stage'] : 'none') . "\n");
 fwrite($fh, "time_off\n");
 
@@ -342,7 +348,7 @@ if ( is_readable($conf) ) {
 
 		// Check for old style my_aliases.conf
 		if ( preg_match("/DatabaseParameter/", $line) == 1 ) {
-			$rc = 512;
+			$rc = 584;
 			$msg = 'Old style my_aliases.conf is used. Please remove old style PHP stuff in there (for example DatabaseParameter).';
 			error($msg);
 		}

@@ -8,6 +8,7 @@ port=3306
 database=test
 table=test
 create=0
+range=50
 
 sleep=''
 
@@ -60,7 +61,7 @@ fi
 while [ 1 ]
 do
     mysql --user=$user --password=$password --host=$host --port=$port ${database} \
-          -e "INSERT INTO ${table} VALUES (NULL, CONCAT('Test data insert from ${client} on ', @@hostname), CURRENT_TIMESTAMP());" |& grep -v insecure
+          -e "UPDATE ${table} SET ts = CURRENT_TIMESTAMP() WHERE id = $(($RANDOM % $range))" |& grep -v insecure
     echo -n '.'
     if [ -n "$sleep" ]
     then

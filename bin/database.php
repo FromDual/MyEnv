@@ -1,7 +1,7 @@
 #!/usr/bin/php -d variables_order=EGPCS
 <?php
 
-// start, stop, restart a mysql instance
+// Start, stop, restart a MySQL/MariaDB instance
 
 // Caution $_ENV variables are not be known here yet when variables_order
 // does NOT contain E!!!

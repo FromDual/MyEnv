@@ -131,7 +131,7 @@
 
 # Confusion:
 # 'release' = '%%{release}'   is a RPM feature, the spec file version, set manually
-# 'Version' = '%%{version}' = '%2.0.0%'  is the software version, set during export
+# 'Version' = '%%{version}' = '%2.0.1%'  is the software version, set during export
 
 %global release         1
 
@@ -142,7 +142,7 @@ BuildArchitectures: noarch
 Requires:       %{distro_requires}
 
 Name:           myenv
-Version:        2.0.0
+Version:        2.0.1
 Release:        %{release}.%{distro_releasetag}
 Distribution:   %{distro_description} (or compatible)
 
