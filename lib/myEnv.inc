@@ -34,6 +34,7 @@
 	getDistributionVersion()
 	simulateLsbReleaseDistributionVersion($pTestFile = null)
 	getInstanceInfo($pVersion, $pVersionComment)
+	searchExecutable($pBasedir, $aExecutables)
 
 */
 
@@ -401,8 +402,8 @@ function startDatabase($aInstance, $pOptions = '')
 	}
 
 
-	$cmd = '';
-	$cmd .= 'cd ' . $aInstance['basedir'] . " ; ";
+	$cmd  = '';
+	$cmd .= 'cd ' . $aInstance['basedir'] . ' ; ';
 
 	$err = '/tmp' . '/' . posix_getpid() . '.err';
 
@@ -422,7 +423,19 @@ function startDatabase($aInstance, $pOptions = '')
 	else {
 		// Should be better redirected to the error log!
 
-		$cmd .= $cgexec . ' ' . $aInstance['basedir'] . '/bin/mysqld --defaults-file=' . $aInstance['my.cnf'] . ' --basedir=' . $aInstance['basedir'] . ' --datadir=' . $aInstance['datadir'] . ' --user=' . $aInstance['user']. ' ' . $pOptions;
+		$aExecutables = array('sbin/mysqld', 'libexec/mysqld', 'bin/mysqld');
+		$exe = searchExecutable($aInstance['basedir'], $aExecutables);
+		debug($exe);
+		if ( $exe == '' ) {
+			$rc = 585;
+			$msg = 'Executable mysqld does not exist.' . " (rc=$rc)";
+			error($msg);
+			return $rc;
+		}
+		// strip basedir again
+    $exe = substr($exe, strlen($aInstance['basedir'] . '/'));
+
+		$cmd .= $cgexec . ' ' . $exe . ' --defaults-file=' . $aInstance['my.cnf'] . ' --basedir=' . $aInstance['basedir'] . ' --datadir=' . $aInstance['datadir'] . ' --user=' . $aInstance['user']. ' ' . $pOptions;
 
 		if ( $lDebug != '' ) {
 			$cmd .= ' & echo $!';
@@ -440,6 +453,13 @@ function startDatabase($aInstance, $pOptions = '')
 	//   $rc = 572;
 	//   // no return here
 	// }
+
+
+	$lStartTimeout = 60;
+	if ( isset($aInstance['start-timeout']) ) {
+		$lStartTimeout = intval($aInstance['start-timeout']);
+	}
+	print 'Timeout is ' . $lStartTimeout . ' seconds: ';
 
 	// it takes some time until $err is filled
 	sleep(1);
@@ -469,8 +489,7 @@ function startDatabase($aInstance, $pOptions = '')
 
 	$lDebugOrig = $lDebug;
 	$lDebug = '';
-	$timeout = 60;
-	for ( $i = 1; $i <= $timeout ; $i++ ) {
+	for ( $i = 1; $i <= $lStartTimeout ; $i++ ) {
 
 		sleep(1);
 		echo ".";
@@ -609,8 +628,7 @@ function checkDatabase($aInstance)
 		socket_close($socket);
 	}
 	catch ( Exception $e ) {
-		error($msg);
-		return $rc;
+		error($e->getMessage());
 	}
 
 	return $rc;
@@ -1424,22 +1442,18 @@ function getVersionFromMysqld($pBasedir)
 {
 	$version = 'unknown';
 
-	$aExecutables = array('/sbin/mysqld', '/libexec/mysqld', '/bin/mysqld');
-	foreach ( $aExecutables as $e ) {
+	$aExecutables = array('sbin/mysqld', 'libexec/mysqld', 'bin/mysqld');
+	$exe = searchExecutable($pBasedir, $aExecutables);
 
-		// /usr/sbin/mysqld
-		$exe = $pBasedir . $e;
-		if ( is_executable($exe) ) {
+	if ( $exe != '' ) {
 
-			// /usr/sbin/mysqld --version  Ver 5.5.38-0ubuntu0.14.04.1 for debian-linux-gnu on x86_64 ((Ubuntu))
-			$cmd = $exe . ' --version';
-			debug($cmd);
-			list($rc, $output, $stderr, $stdout) = my_exec($cmd);
-			// var_dump($rc, $output, $stderr, $stdout);
-			if ( preg_match("/(\d{1,2}\.\d{1,2}\.\d{1,2})/", $output, $matches) ) {
-				$version = $matches[1];
-				break;
-			}
+		// /usr/sbin/mysqld --version  Ver 5.5.38-0ubuntu0.14.04.1 for debian-linux-gnu on x86_64 ((Ubuntu))
+		$cmd = $exe . ' --version';
+		debug($cmd);
+		list($rc, $output, $stderr, $stdout) = my_exec($cmd);
+		// var_dump($rc, $output, $stderr, $stdout);
+		if ( preg_match("/(\d{1,2}\.\d{1,2}\.\d{1,2})/", $output, $matches) ) {
+			$version = $matches[1];
 		}
 	}
 
@@ -1934,6 +1948,26 @@ function getInstanceInfo($pVersion, $pVersionComment)
 	$aInstanceInfo['branch'] = extractBranch($pVersionComment);
 
 	return array($rc, $aInstanceInfo);
+}
+
+// ----------------------------------------------------------------------
+function searchExecutable($pBasedir, $aExecutables)
+// First matches
+// ----------------------------------------------------------------------
+{
+	$executable = '';
+
+	foreach ( $aExecutables as $e ) {
+
+		// /usr/sbin/mysqld
+		$exe = $pBasedir . '/' . $e;
+		if ( is_executable($exe) ) {
+			$executable = $exe;
+			break;
+		}
+	}
+
+	return $executable;
 }
 
 ?>

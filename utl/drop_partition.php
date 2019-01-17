@@ -34,6 +34,31 @@ if ( isset($aOptions['help']) ) {
   exit($rc);
 }
 
+if ( (count($argv) - 1) != count($aOptions) ) {
+
+	$rc = 443;
+
+	fwrite(STDERR, "ERROR: Options were not entered correctly. Please fix it (rc=$rc).\n");
+	
+	// Check and show which variables are not correct
+
+	// Remove 1st option which is the filename
+	unset($argv[0]);
+	// Remove all options which were detected corretly from argv
+	foreach ( $aOptions as $option => $v ) {
+		foreach ( $argv as $key => $value ) {
+		  $pattern = "/^\-\-$option/";
+			if ( preg_match($pattern, $value) ) {
+				unset($argv[$key]);
+			}
+		}
+	}
+
+	fwrite(STDERR, "       I could not interprete the following options:\n");
+	fwrite(STDERR, print_r($argv, true));
+	exit($rc);
+}
+
 if ( isset($aOptions['debug']) ) {
 	print_r($argv);
 }

@@ -1,4 +1,4 @@
-# Copyright (c) 2017 - 2018, FromDual GmbH. All rights reserved.
+# Copyright (c) 2017 - 2019, FromDual GmbH. All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -131,7 +131,7 @@
 
 # Confusion:
 # 'release' = '%%{release}'   is a RPM feature, the spec file version, set manually
-# 'Version' = '%%{version}' = '%2.0.1%'  is the software version, set during export
+# 'Version' = '%%{version}' = '%2.0.2%'  is the software version, set during export
 
 %global release         1
 
@@ -142,7 +142,7 @@ BuildArchitectures: noarch
 Requires:       %{distro_requires}
 
 Name:           myenv
-Version:        2.0.1
+Version:        2.0.2
 Release:        %{release}.%{distro_releasetag}
 Distribution:   %{distro_description} (or compatible)
 
@@ -397,7 +397,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 ##############################################################################
 # The spec file changelog only includes changes made to the spec file
 # itself - note that they must be ordered by date (important when
-# merging BZR trees)
+# merging GIT trees)
 ##############################################################################
 %changelog
 * Wed Aug 23 2017 Jörg Brühe <joerg.bruehe@fromdual.com>

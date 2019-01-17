@@ -49,21 +49,9 @@ if ( $ret != OK ) {
 }
 $aDbNames = getSectionTitles($aConfiguration);
 
-// Get available release versions
-
-$aReleaseVersion = array();
-foreach ( glob("$lHome/*", GLOB_ONLYDIR) as $dir ) {
-	$v = extractVersion($dir);
-	if ( $v == 'unknown' ) {
-		$v = getVersionFromMysqld('/usr');
-	}
-	array_push($aReleaseVersion, $v);
-}
-$aReleaseVersion = array_unique($aReleaseVersion, SORT_REGULAR);
-
-debug(print_r($aReleaseVersion, true));
 
 // Get version of each instance
+
 foreach ( $aConfiguration as $db => $value ) {
 
 	if ( $db != 'default' ) {
@@ -97,12 +85,9 @@ else {
 debug("Number of Columns: $lNumberOfColumns\n");
 
 
-// Releases does not make sense anymore with all the differnce forks
-// output("\n");
-// output("Releases : " . implode(' ', $aReleaseVersion) . "\n");
-output("\n");
-
 // Display up and down instances
+
+output("\n");
 
 $aUp      = array();
 $aDown    = array();
@@ -209,7 +194,9 @@ foreach ( $aDbNames as $db ) {
 	if ( $ret == OK ) {
 		foreach ( array('bind_address', 'bind-address', 'bind_addr', 'bind-addr') as $key ) {
 			if ( array_key_exists($key, $aMyCnf['mysqld']) ) {
-				$lIpLength = max($lIpLength, strlen($aMyCnf['mysqld'][$key])); 
+				if ( $aMyCnf['mysqld'][$key] != '0.0.0.0' ) {
+					$lIpLength = max($lIpLength, strlen($aMyCnf['mysqld'][$key])); 
+				}
 			}
 		}
 	}
@@ -245,7 +232,11 @@ foreach ( $aDbNames as $db ) {
 	else {
 		// Split the schema output
 		$cnt = 1;
-		
+
+		$grn = "\033[1;32m";
+		$red = "\033[1;31m";
+		$rst = "\033[0m";
+
 		foreach ( explode("\n", wordwrap(implode(' ', $aSchema), $lNumberOfColumns-$max_len-$lIpLength-12)) as $line ) {
 
 			if ( $cnt == 1 ) {
@@ -255,6 +246,9 @@ foreach ( $aDbNames as $db ) {
 				if ( $ret == OK ) {
 					foreach ( array('bind_address', 'bind-address', 'bind_addr', 'bind-addr') as $key ) {
 						$ip = array_key_exists($key, $aMyCnf['mysqld']) ?  $aMyCnf['mysqld'][$key] : $ip;
+						if ( $ip == '0.0.0.0' ) {
+							$ip = '*';
+						}
 					}
 				}
 				else {
@@ -265,15 +259,16 @@ foreach ( $aDbNames as $db ) {
 				// Color is bad for grep!
 				if ( array_key_exists($db, $aUp) ) {
 
-					$open = "(";
-					$close = ")";
+					$open = $grn . '(' . $rst;
+					$close = $grn . ')' . $rst;
 				}
 				else {
-					$open = '[';
-					$close = ']';
+					$open = $red . '[' . $rst;
+					$close = $red . ']' . $rst;
 				}
 
-				output(sprintf("%-" . $max_len . "s %s%" . $lIpLength . "s:%-5d%s : %s\n", $db, $open, $ip, $aConfiguration[$db]['port'], $close, $line));
+				$s = sprintf("%-" . $max_len . "s ", $db) . $open . sprintf("%" . $lIpLength . "s:%-5d", $ip, $aConfiguration[$db]['port']) . $close . sprintf(" : %s\n", $line);
+				output($s);
 			}
 			else {
 				output(sprintf("%s %s\n", str_repeat(' ', $max_len+$lIpLength+11), $line));

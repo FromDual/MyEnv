@@ -4,84 +4,198 @@
 #
 
 
+Version 2.0.2
+-------------
+
+Commit: xxxxx
+* MyEnv: CHANGELOG, README and rc updated.
+
+Commit: cef0db3
+* MyEnv: Not used aReleaseVersion removed, side effect to not have performance
+  issues any more on up.
+
+Commit: 1d93eb8
+* MyEnv: Slash from basedir is stripped as well.
+
+Commit: bb10c1f
+* MyEnv: Strip basedir from start stop command to have old behaviour again.
+
+Commit: 5346541
+* MyEnv: Avoid EGPCS error messages during myenv start/stop.
+
+Commit: 043a556
+* MyEnv: mysqld is consistently search in sbin, bin and libexec now for CentOS 7
+  compatibility.
+
+Commit: ad0c9a0
+* MyEnv: Default MariaDB my.cnf hash added to avoid complaints.
+
+Commit: 678c4ea
+* MyEnv: Warning omitted for missing link if user has no privilege to see file.
+
+Commit: ceec28c
+* MyEnv: Copyright updated to 2019.
+
+Commit: f4cc72f
+* MyEnv: Build works with git now. No backwards compatibility!
+
+Commit: ddae4ed
+* MyEnv: All build stuff changed from bzr to git.
+
+Commit: a34f220
+* MyEnv: Migrated from Bazaar to Git.
+
+Commit: 0e495e7
+* MyEnv: Commits 6af9f88 and 5fa8e2c merged.
+
+Commit: 6af9f88
+* Utilities: Option check made more careful and timestamp problem fixed for year
+  change in split_partition.php.
+
+Commit: 0bdb699
+* Utilities: Option check made more careful for drop_partition.php and
+  merge_partition.php.
+
+Commit: 0ee1514
+* Utilities: galera_monitor.sh and slave_monitor.sh made smoother.
+
+Commit: d75b63b
+* MyEnv: CHANGELOG, README and rc updated.
+
+Change #1020
+* MyEnv installer: Purge of database is done from instancedir and not datadir
+  any more.
+
+Change #1019
+* MyEnv: Start should not complain if file is there instead of link.
+
+Change #1018
+* MyEnv: start-timeout is a new configuration variable. Important for Galera
+  SST.
+
+Change #1017
+* MyEnv: Complain on missing symbolic link to my.cnf.
+
+Change #1016
+* MyEnv installer: Create symlink to datadir for my.cnf.
+
+Change #1014
+* MyEnv: Up and down state is colored now.
+
+Change #1013
+* MyEnv: bind_address 0.0.0.0 is optimized to *.
+
+Change #1012
+* MyEnv installer: myenv.conf backup file has a correct timestamp now.
+
+Change #1011
+* MyEnv installer: Blacklist fixed.
+
+Change #1010
+* MyEnv installer: Default is "q" on error and instance name and blacklist name
+  check is fixed.
+
+Change #1009
+* MyEnv installer: Try and catch for existing config file improved.
+
+Change #1008
+* MyEnv installer: Answer question on previous error message works now.
+
+Change #1007
+* Utilities: Script slave_monitor.sh added.
+
+Change #1001
+* Utilities: Scrip az_test.php added, initial test found already bug in MariaDB
+  10.3.
+
+Change #1000
+* MyEnv: Error message fixed.
+
+Change #999
+* Utilities: galera_monitor.sh output made nicer.
+
+
 Version 2.0.1
 -------------
 
 Change #997
-* README updated and release tagged.
+* MyEnv: README updated and release tagged.
 
 Change #996
-* rc fixed and Makefile adapted
+* MyEnv: rc fixed and Makefile adapted.
 
 Change #995
-* All tests fixed.
+* Testsuite: All tests fixed.
 
 Change #994
-* TestCounter added to test suite.
+* Testsuite: TestCounter added to test suite.
 
 Change #992
-* basedir withouth bin/mysqld is stripped outf from intaller overview.
+* MyEnv installer: basedir withouth bin/mysqld is stripped out from installer
+  overview.
 
 Change #990
-* Instancename with dot "." in it is not allowed any more.
+* MyEnv installer: Instancename with dot "." in it is not allowed any more.
 
 Change #989
-* OpenSUSE Leap 42.3 support added.
+* MyEnv: OpenSUSE Leap 42.3 support added.
 
 Change #988
-* Missing instancedir configuration is complaining now. This could be a left
-  over from 1.x to 2.y migration.
+* MyEnv: Missing instancedir configuration is complaining now. This could be a
+  left over from 1.x to 2.y migration.
 
 Change #987
-* MyEnv should not complain any more when default my.cnf is used.
+* MyEnv: MyEnv should not complain any more when default my.cnf is used.
 
 Change #986
-* mysqlstat.php php7 compatibility problem fixed.
+* Utilities: mysqlstat.php php7 compatibility problem fixed.
 
 Change #985
-* Remove old user/password schema from code and updated to now URI scheme.
+* MyEnv: Remove old user/password schema from code and updated to now URI
+  scheme.
 
 Change #982
-* Script setMyEnv.sh added to set environment for instance easier.
+* MyEnv: Script setMyEnv.sh added to set environment for instance easier.
 
 Change #981
-* Error messages made more flexible.
+* MyEnv: Error messages made more flexible.
 
 Change #980
-* MariaDB and MySQL are now treated equivalent in wording.
+* MyEnv: MariaDB and MySQL are now treated equivalent in wording.
 
 Change #979
-* Syntax made standard conform.
+* Utilities: Syntax made standard conform.
 
 Change #978
-* Introduced different brackets for up and down mysql instances in Up output.
+* MyEnv: Introduced different brackets for up and down mysql instances in Up
+  output.
 
 Change #977
-* New alert levels added.
+* MyEnv: New alert levels added.
 
 Change #976
-* Error codes fixed and note for mod 256 added.
+* MyEnv: Error codes fixed and note for mod 256 added.
 
 Change #975
-* Connect string URI updated to new scheme.
+* MyEnv: Connect string URI updated to new scheme.
 
 Change #974
-* Function getInstanceInfo added to myEnv library.
+* MyEnv: Function getInstanceInfo added to myEnv library.
 
 Change #973
-* MyEnv library function extractVersion and getVersionFromMysqld cleaned a bit.
+* MyEnv: Library function extractVersion and getVersionFromMysqld cleaned a bit.
   Better parameter names.
 
 Change #971
-* Github files LICENSE and README.md added.
+* MyEnv: Github files LICENSE and README.md added.
 
 Change #970
-* Utilities cluster_conflict.php, cluster_conflict.sh, galera_monitor.sh,
+* Utilities: cluster_conflict.php, cluster_conflict.sh, galera_monitor.sh,
   haproxy_maint.sh, group_replication_monitor.sh for Galera and Group
   Replication cluster added.
 
 Change #969
-* CloudLinux added as a supported distribution.
+* MyEnv: CloudLinux added as a supported distribution.
 
 
 Version 2.0.0

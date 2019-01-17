@@ -41,12 +41,19 @@ $pDatabaseName = isset($argv[2]) ? strval($argv[2]) : '';
 debug("tmp file: $tmp");
 debug("database: $pDatabaseName");
 
+$aDefaultMyCnfHashes = array(
+  'd41d8cd98f00b204e9800998ecf8427e'
+, 'ef3a3e2aba5f02734846bfaa08ae14f4'
+, '46a0151b3b022b225cabb97e6d1ad947'   # MariaDB 5.5 from CentOS 7 repo
+, 'ae873e9306d052531b9b75e9559deccf'   # MariaDB 10.1 from MariaDB repo
+);
 foreach ( array('/etc/my.cnf', '/etc/mysql/my.cnf', '/usr/local/mysql/etc/my.cnf', "~/.my.cnf") as $file ) {
+
 	if ( file_exists($file) ) {
 
 		list($ret, $md5) = getMd5sum2($file, array());
 		// empty file, Oracle default on Ubuntu
-		if ( ! in_array($md5, array('d41d8cd98f00b204e9800998ecf8427e', 'ef3a3e2aba5f02734846bfaa08ae14f4')) ) {
+		if ( ! in_array($md5, $aDefaultMyCnfHashes) ) {
 			output("Warning: $file exists. This can screw up myenv. Please remove the file.\n");
 		}
 	}
@@ -127,15 +134,24 @@ if ( ! array_key_exists("instancedir", $aDatabaseParameter) ) {
 
 $file = $aDatabaseParameter['basedir'] . '/my.cnf';
 if ( file_exists($file) ) {
-  output("Warning: $file exists. This can screw up myenv. Please remove the file.\n");
+	output("Warning: $file exists. This can screw up myenv. Please remove the file.\n");
 }
 
 // Check if my.cnf file is readable for group or others for security reasons
 // output("%o\n", fileperms($file));
-$lConfFile = $aDatabaseParameter['datadir'] . '/my.cnf';
+$lConfFile = $aDatabaseParameter['my.cnf'];
 
 if ( file_exists($lConfFile) && ((fileperms($lConfFile) & 0x001c) > 0) ) {
-  output("Warning: File $lConfFile is writeable for group or readable for others. Please fix with: chmod g-w,o-rw $lConfFile\n");
+	output("Warning: File $lConfFile is writeable for group or readable for others. Please fix with: chmod g-w,o-rw $lConfFile\n");
+}
+
+// Check if link to datadir/my.cnf exits.
+$lLink = $aDatabaseParameter['datadir'] . '/my.cnf';
+// Omit check if we are not allowed to read directory to avoid false positive warnings
+if ( is_dir("/home/mysql/database/mariadb-103/data") === true ) {
+	if ( ! (is_link($lLink) || is_file($lLink)) ) {
+		output("Warning: Link $lLink does not exist. Please create link with: ln -s " . $aDatabaseParameter['my.cnf'] . " $lLink" . "\n");
+	}
 }
 
 // to avoid a complete mess:
@@ -193,7 +209,7 @@ fwrite($fh, "export MYSQL_UNIX_PORT=" . $aDatabaseParameter['socket'] . "\n");
 fwrite($fh, "export MYSQL_PS1='\u@" . $lDbName . " [\d] SQL> '\n");
 fwrite($fh, "export MYENV_DATABASE=" . $lDbName . "\n");
 fwrite($fh, "export MYENV_DATADIR=" . $aDatabaseParameter['datadir'] . "\n");
-fwrite($fh, "export MYENV_VERSION=" . '2.0.1' . "\n");
+fwrite($fh, "export MYENV_VERSION=" . '2.0.2' . "\n");
 fwrite($fh, "export MYENV_STAGE=" . (isset($aDatabaseParameter['stage']) ? $aDatabaseParameter['stage'] : 'none') . "\n");
 fwrite($fh, "time_off\n");
 

@@ -33,6 +33,31 @@ if ( isset($aOptions['help']) ) {
   exit($rc);
 }
 
+if ( (count($argv) - 1) != count($aOptions) ) {
+
+	$rc = 445;
+
+	fwrite(STDERR, "ERROR: Options were not entered correctly. Please fix it (rc=$rc).\n");
+	
+	// Check and show which variables are not correct
+
+	// Remove 1st option which is the filename
+	unset($argv[0]);
+	// Remove all options which were detected corretly from argv
+	foreach ( $aOptions as $option => $v ) {
+		foreach ( $argv as $key => $value ) {
+		  $pattern = "/^\-\-$option/";
+			if ( preg_match($pattern, $value) ) {
+				unset($argv[$key]);
+			}
+		}
+	}
+
+	fwrite(STDERR, "       I could not interprete the following options:\n");
+	fwrite(STDERR, print_r($argv, true));
+	exit($rc);
+}
+
 if ( isset($aOptions['debug']) ) {
 	print_r($argv);
 }
@@ -165,8 +190,10 @@ if ( isset($aOptions['debug']) ) {
 }
 
 # Do some calculations
-$ts  = date('Y-m-d', strtotime('+14 day')) . ' 00:00:00';
-$ptn = 'p' . date('Y') . '_kw' . sprintf("%02d", date('W')+1);
+$ts  = strtotime(date('Y-m-d', strtotime('+14 day')) . ' 00:00:00');
+// $ts = strtotime('2019-01-14 00:00:00');
+$dt  = date('Y-m-d H:i:s', $ts);
+$ptn = 'p' . date('Y', $ts) . '_kw' . sprintf("%02d", date('W', $ts));
 
 $sql = sprintf("ALTER TABLE %s.%s
 REORGANIZE PARTITION %s
@@ -175,7 +202,7 @@ INTO (
 , PARTITION %s VALUES LESS THAN (MAXVALUE)
 )"
 , $aOptions['schema'], $aOptions['table'], $record['partition_name']
-, $ptn, $ts, $record['partition_name']);
+, $ptn, $dt, $record['partition_name']);
 
 print date('Y-m-d H:i:s') . "\n";
 print $sql . "\n";

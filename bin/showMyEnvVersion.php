@@ -23,7 +23,7 @@ $productdir = dirname($basedir);
 output("\n");
 output('The following FromDual Toolbox Packages are installed:' . "\n");
 output('------------------------------------------------------------------------' . "\n");
-output('MyEnv:           2.0.1 (997) ' . "\n");
+output('MyEnv:           2.0.2 (75bae702313d639fe41d4970b3a215863dc80641) ' . "\n");
 
 // todo: Check in releases what names and versions are available
 $aLocations = array('brman', 'fromdual_bman', 'fromdual_brman', 'fromdual_brman');

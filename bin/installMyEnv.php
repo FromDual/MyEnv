@@ -162,8 +162,9 @@ o quit without saving";
 	case 'a':
 		$rc = addInstance();
 		if ( $rc != OK ) {
-			$q = 'Have you seen the error message? ';
-			$k = answerQuestion($q, array('Y'), 'Y');
+			$q = 'Have you seen the error message? [Y] ';
+			$k = answerQuestion($q, array('y'), 'y');
+			// $default = 'q';
 			output("\n");
 		}
 		$lConfigurationChanged = true;
@@ -171,8 +172,9 @@ o quit without saving";
 	case 'c':
 		$rc = changeInstance2($aInstances);
 		if ( $rc != OK ) {
-			$q = 'Have you seen the error message? ';
-			$k = answerQuestion($q, array('Y'), 'Y');
+			$q = 'Have you seen the error message? [Y] ';
+			$k = answerQuestion($q, array('y'), 'y');
+			// $default = 'q';
 			output("\n");
 		}
 		$lConfigurationChanged = true;

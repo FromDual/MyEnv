@@ -77,54 +77,57 @@ function addInstance()
 	global $aConfiguration;
 	$rc = OK;
 
-	// todo: check if default already exists!
-	$default = 'mysqld1';
-// 	output("\n");
-	output("You have to enter a new instance name. An instance name can consist of 0-9, a-z, A-Z, - and _.\n");
-	output("\n");
-	output("Examples: test, prod, dev, [$default] mysqld-3306\n");
-	output("\n");
+	try {
 
-	$instance = readline("Enter a new instance name: ");
-	if ( $instance == '' ) {
-		$instance = $default;
-	}
+		// todo: check if default already exists!
+		$default = 'mysqld1';
+		// output("\n");
+		output("You have to enter a new instance name. An instance name can consist of 0-9, a-z, A-Z, - and _.\n");
+		output("\n");
+		output("Examples: test, prod, dev, [$default] mysqld-3306\n");
+		output("\n");
 
-	// Check if instance name contains '.' character
-	if ( strstr($instance, '.') !== false ) {
-		$rc = 703;
-		$msg = "Instance name $instance cannot contain '.' caracter." . " (rc=$rc)" . "\n";
-		error($msg);
-		return $rc;
-	}
-
-
-	// Check for existing instance name here!
-	foreach ( $aConfiguration as $instances ) {
-		if ( $instances == $instance ) {
-			$rc = 717;
-			error("Instance name $instance already exists (rc=$rc).\n");
-			return $rc;
+		$instance = readline("Enter a new instance name: ");
+		if ( $instance == '' ) {
+			$instance = $default;
 		}
-	}
 
-	// Check if instance name is on black list:
-	$aBlackList = getInstanceBlackList();
-	foreach ( $aBlackList as $name ) {
-		if ( $name == $instance ) {
+		// Check if instance name contains '.' character
+		if ( strstr($instance, '.') !== false ) {
+			$rc = 703;
+			$msg = "Instance name $instance cannot contain '.' caracter." . " (rc=$rc)";
+			throw new Exception($msg);
+		}
+
+		// Check if instance name is on black list:
+		$aBlackList = getInstanceBlackList();
+		if ( in_array($instance, $aBlackList) ) {
 			$rc = 718;
 			error("Instance name $instance is on blacklist (rc=$rc).");
 			readline("Press Enter to choose an other one...");
-			return $rc;
+			$msg = '';
+			throw new Exception($msg);
+		}
+
+		// Check for existing instance name here!
+		if ( array_key_exists($instance, $aConfiguration) ) {
+			$rc = 717;
+			$msg = "Instance name $instance already exists." . " (rc=$rc)";
+			throw new Exception($msg);
+		}
+
+		$aConfiguration[$instance]               = array();
+		$aConfiguration[$instance]['start']      = 'yes';
+		$aConfiguration[$instance]['stop']       = 'yes';
+		$aConfiguration[$instance]['hideschema'] = 'mysql,performance_schema,lost+found,sys';
+		$aConfiguration[$instance]['type']       = 'mysqld';
+		$rc = changeInstance($instance);
+	}
+	catch ( Exception $e ) {
+		if ( $e->getMessage() != '' ) {
+			error($e->getMessage() . "\n");
 		}
 	}
-
-	$aConfiguration[$instance]               = array();
-	$aConfiguration[$instance]['start']      = 'yes';
-	$aConfiguration[$instance]['stop']       = 'yes';
-	$aConfiguration[$instance]['hideschema'] = 'mysql,performance_schema,lost+found,sys';
-	$aConfiguration[$instance]['type']       = 'mysqld';
-	$rc = changeInstance($instance);
 
 	return $rc;
 }
@@ -691,94 +694,111 @@ function askForMyCnf($aConfiguration)
 	}
 	output("\n");
 
-	if ( $aConfiguration['my.cnf'] == '' ) {
-		output("WARNING: empty my.cnf!\n");
-		output("Please create manually.\n");
-	}
-	// Create my.cnf if not exits
-	elseif ( ! is_file($aConfiguration['my.cnf']) ) {
+	try {
 
-		output("INFO: There is no such file " . $aConfiguration['my.cnf'] . " yet.\n");
-
-		$etcdir = dirname($aConfiguration['my.cnf']);
-		// directory does not exist yet
-		if ( file_exists($etcdir) === false ) {
-			output("Creating directory " . $etcdir . "\n");
-			if ( @mkdir($etcdir, 0750, true) === false ) {
-				$rc = 755;
-				error("Failed to create directory " . $etcdir);
-				$a = error_get_last();
-				$msg = "Reason: " . $a['message'] . " (rc=$rc).";
-				error($msg);
-				output("Skipping...\n");
-				return array($rc, $aConfiguration['my.cnf']);
-			}
+		if ( $aConfiguration['my.cnf'] == '' ) {
+			output("WARNING: empty my.cnf!\n");
+			output("Please create manually.\n");
 		}
-		// touch of my.cnf comes further down
+		// Create my.cnf if not exits
+		elseif ( ! is_file($aConfiguration['my.cnf']) ) {
 
+			output("INFO: There is no such file " . $aConfiguration['my.cnf'] . " yet.\n");
 
-		// Ask for stripping
-
-		output("\n");
-		$question = 'Shall I strip comments from the configuration file (Y/n)? ';
-		$key = answerQuestion($question, array('y', 'n'), 'y');
-		$lStrip = 'yes';
-		if ( strtolower($key) == 'n' ) {
-			$lStrip = 'no';
-		}
-
-
-		// todo: would be better to get it from outside!
-		$basedir = dirname(dirname(__FILE__));
-
-
-		// read our template and create my.cnf
-
-		// Substitue all %VARIABLES%
-
-		$aSearch = array('%MYCNF%', '%PORT%', '%SOCKET%', '%BASEDIR%', '%DATADIR%', '%SERVERID%', '%UNAME%', '%INSTANCEDIR%', '%INSTANCE%', '__');
-		$aReplace = array($aConfiguration['my.cnf'], $aConfiguration['port'], $aConfiguration['socket'], $aConfiguration['basedir'], $aConfiguration['datadir'], $aConfiguration['port'], php_uname('n'), $aConfiguration['instancedir'], $aConfiguration['name'], '_');
-
-		$aVarSearch  = array('/^# wsrep_/', '/^# WSREP parameter/');
-		$aVarReplace = array('', '');
-
-		$lTemplateFile = $basedir . '/tpl/my.cnf.template';
-		$srcFh = fopen($lTemplateFile, 'r');
-		ini_set('track_errors', 1);
-		// touch file
-		output("Creating file " . $aConfiguration['my.cnf'] . "\n");
-		$newFh = @fopen($aConfiguration['my.cnf'], 'w');
-		if ( $newFh === false ) {
-			$rc = 753;
-			$msg = 'Opening file ' . $aConfiguration['my.cnf'] . ' for writing failed. ' . "(rc=$rc)";
-			error($msg);
-			return array($rc, $aConfiguration['my.cnf']);
-		}
-		while( ($line = fgets($srcFh)) !== false ) {
-
-			$line = str_replace($aSearch, $aReplace, $line);
-			if ( 'yes' == $lStrip ) {
-				// Use preg_replace for array search. preg_match would also do the job
-				// but only for strings!
-				$lNewLine = preg_replace($aVarSearch, $aVarReplace, $line);
-				// We got a match, skip/strip the line
-				if ( $line != $lNewLine ) {
-					continue;
+			$etcdir = dirname($aConfiguration['my.cnf']);
+			// directory does not exist yet
+			if ( file_exists($etcdir) === false ) {
+				output("Creating directory " . $etcdir . "\n");
+				if ( @mkdir($etcdir, 0750, true) === false ) {
+					$rc = 755;
+					error("Failed to create directory " . $etcdir);
+					$a = error_get_last();
+					$msg = "Reason: " . $a['message'] . " (rc=$rc).";
+					output("Skipping...\n");
+					throw new Exception($msg);
 				}
 			}
-			fputs($newFh, $line);
-		}
-		fclose($newFh);
-		chmod($aConfiguration['my.cnf'], 0600);
-		fclose($srcFh);
-	}
-	// Opening my.cnf for writing failed (e.g. /etc/my.cnf)
-	else {
-		$rc = 706;
-		error("Writing to file " . $aConfiguration['my.cnf'] . " failed (rc=$rc)");
-		// Does not exist in this context here: error($php_errormsg);
-	}
+			// touch of my.cnf comes further down
 
+
+			// Ask for stripping
+
+			output("\n");
+			$question = 'Shall I strip comments from the configuration file (Y/n)? ';
+			$key = answerQuestion($question, array('y', 'n'), 'y');
+			$lStrip = 'yes';
+			if ( strtolower($key) == 'n' ) {
+				$lStrip = 'no';
+			}
+
+
+			// todo: would be better to get it from outside!
+			$basedir = dirname(dirname(__FILE__));
+
+
+			// read our template and create my.cnf
+
+			// Substitue all %VARIABLES%
+
+			$aSearch = array('%MYCNF%', '%PORT%', '%SOCKET%', '%BASEDIR%', '%DATADIR%', '%SERVERID%', '%UNAME%', '%INSTANCEDIR%', '%INSTANCE%', '__');
+			$aReplace = array($aConfiguration['my.cnf'], $aConfiguration['port'], $aConfiguration['socket'], $aConfiguration['basedir'], $aConfiguration['datadir'], $aConfiguration['port'], php_uname('n'), $aConfiguration['instancedir'], $aConfiguration['name'], '_');
+
+			$aVarSearch  = array('/^# wsrep_/', '/^# WSREP parameter/');
+			$aVarReplace = array('', '');
+
+			$lTemplateFile = $basedir . '/tpl/my.cnf.template';
+			$srcFh = fopen($lTemplateFile, 'r');
+			ini_set('track_errors', 1);
+			// touch file
+			output("Creating file " . $aConfiguration['my.cnf'] . "\n");
+			$newFh = @fopen($aConfiguration['my.cnf'], 'w');
+			if ( $newFh === false ) {
+				$rc = 753;
+				$msg = 'Opening file ' . $aConfiguration['my.cnf'] . ' for writing failed. ' . "(rc=$rc)";
+				throw new Exception($msg);
+			}
+			while( ($line = fgets($srcFh)) !== false ) {
+
+				$line = str_replace($aSearch, $aReplace, $line);
+				if ( 'yes' == $lStrip ) {
+					// Use preg_replace for array search. preg_match would also do the job
+					// but only for strings!
+					$lNewLine = preg_replace($aVarSearch, $aVarReplace, $line);
+					// We got a match, skip/strip the line
+					if ( $line != $lNewLine ) {
+						continue;
+					}
+				}
+				fputs($newFh, $line);
+			}
+			fclose($newFh);
+			chmod($aConfiguration['my.cnf'], 0600);
+			fclose($srcFh);
+
+
+			// Create link in datadir/my.cnf if no file is there
+
+			$md = $aConfiguration['datadir'] . '/' . 'my.cnf';
+			// Symlink pointing to non existing file will return false!
+			if ( file_exists($md) === false ) {
+				output("Link my.cnf to datadir.");
+				if ( symlink($aConfiguration['my.cnf'], $md) === false ) {
+					$rc = 757;
+					$mst = 'Cannot create symlink ' . $md . '.' . " (rc=$rc)";
+					throw new Exception($msg);
+				}
+			}
+		}
+		// my.cnf already exists!
+		else {
+			$rc = 706;
+			$msg = 'File ' . $aConfiguration['my.cnf'] . ' already exists.' . " (rc=$rc)";
+			throw new Exception($msg);
+		}
+	}
+	catch ( Exception $e ) {
+		error($e->getMessage());
+	}
 	output("\n");
 
 	return array($rc, $aConfiguration['my.cnf']);
@@ -893,7 +913,9 @@ function askForBasedir($aConfiguration)
 	foreach ( $aBasedirCandidates as $key => $basedir ) {
 
 		// No mysqld exists so no candiate
-		if ( ! file_exists($basedir . '/bin/mysqld') ) {
+		$aExecutables = array('sbin/mysqld', 'libexec/mysqld', 'bin/mysqld');
+		$exe = searchExecutable($basedir, $aExecutables);
+		if ( $exe == '' ) {
 			unset($aBasedirCandidates[$key]);
 		}
 	}
@@ -1424,7 +1446,7 @@ function writeConfigurationFile($aConfiguration, $pConfFile)
 	// Writing the configuration file
 	output("\nWriting the configuration file...\n");
 
-	$lConfFileBak      = $pConfFile . '.' . date("Y-m-d-h-i-s");
+	$lConfFileBak      = $pConfFile . '.' . date("Y-m-d-H-i-s");
 
 	if ( file_exists($lConfFileBak) ) {
 		unlink($lConfFileBak);
@@ -1960,10 +1982,9 @@ function deleteInstanceAutomatized($aOptions, $pMyEnvConfFile)
 	}
 
 	// Purge database
-	// We should better clean-up instance-dir
 	if ( isset($aOptions['purge-data']) ) {
-		output('Purging data of instance ' . $aOptions['instance'] . ' from ' . $lInstanceConfigBackup['datadir'] . "\n");
-		$rc = recursivelyRemoveDirectory($lInstanceConfigBackup['datadir']);
+		output('Purging data of instance ' . $aOptions['instance'] . ' from ' . $lInstanceConfigBackup['instancedir'] . "\n");
+		$rc = recursivelyRemoveDirectory($lInstanceConfigBackup['instancedir']);
 	}
 
 	return $rc;

@@ -73,7 +73,7 @@ case 'start':
 		foreach ( $databases as $db ) {
 			fputs($handle, date("Y-m-d H:i:s") . "   Starting instance: $db\n");
 			$stdout = array();
-			list($rc, $output, $stdout, $stderr) = my_exec("$PHP -f $basedir/bin/database.php $db " . $argv[1] . " 2>&1");
+			list($rc, $output, $stdout, $stderr) = my_exec("$PHP -d variables_order=EGPCS -f $basedir/bin/database.php $db " . $argv[1] . " 2>&1");
 			if ( count($stderr) > 0 ) {
 				fputs($handle, date("Y-m-d H:i:s") . ' ' . implode("\n", $stderr) . "\n");
 			}
@@ -99,7 +99,7 @@ case 'stop':
 		foreach ( $databases as $db ) {
 			fputs($handle, date("Y-m-d H:i:s") . "   Stopping instance: $db\n");
 			$stdout = array();
-			list($rc, $output, $stdout, $stderr) = my_exec("$PHP -f $basedir/bin/database.php $db " . $argv[1] . " 2>&1");
+			list($rc, $output, $stdout, $stderr) = my_exec("$PHP -d variables_order=EGPCS -f $basedir/bin/database.php $db " . $argv[1] . " 2>&1");
 			if ( count($stderr) > 0 ) {
 				fputs($handle, date("Y-m-d H:i:s") . ' ' . implode("\n", $stderr) . "\n");
 			}
