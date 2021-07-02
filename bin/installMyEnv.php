@@ -44,6 +44,8 @@ $longopts  = array(
 , 'operation:'
 , 'instance:'
 , 'purge-data'
+, 'port:'
+, 'socket:'
 );
 
 $aOptions = getopt($shortopts, $longopts);
@@ -127,7 +129,7 @@ do {
 
 	if ( count($aInstances) > 0 ) {
 		output("The following instances are available:\n\n");
-		// todo: Do output nicer here!
+		// TODO: Do output nicer here!
 		foreach ($aInstances as $instance) {
 			output($instance . ' ');
 		}

@@ -57,13 +57,24 @@ then
 EOF
 fi
 
+function inject_password()
+{
+  cat << _EOF
+[client]
+user     = ${user}
+password = ${password}
+_EOF
+}
+
+
 while [ 1 ]
 do
-    mysql --user=$user --password=$password --host=$host --port=$port ${database} \
-          -e "INSERT INTO ${table} VALUES (NULL, CONCAT('Test data insert from ${client} on ', @@hostname), CURRENT_TIMESTAMP());" |& grep -v insecure
+    mysql --defaults-extra-file=<(inject_password) --host=$host --port=$port ${database} \
+          -e "INSERT INTO ${table} (id, data, ts) VALUES (NULL, CONCAT('Test data insert from ${client} on ', @@hostname), CURRENT_TIMESTAMP());"
     echo -n '.'
     if [ -n "$sleep" ]
     then
         sleep $sleep
     fi
 done
+

@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013 - 2019 FromDual GmbH
+// Copyright (c) 2013 - 2020 FromDual GmbH
 //
 // This software is licensed under GPL v2: http://www.gnu.org/licenses/gpl-2.0.html
 //
@@ -11,9 +11,12 @@ define('OK', 0);
 // LogLevel Old
 
 define('ERR',  1);
+define('ERROR',  1);
 define('WARN', 2);
+define('WARNING', 2);
 define('INFO', 3);
 define('DBG',  4);
+define('DEBUG', 4);
 
 // LogLevel New
 // https://en.wikipedia.org/wiki/Syslog

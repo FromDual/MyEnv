@@ -8,7 +8,7 @@ Homepage: https://www.fromdual.com/myenv-mysql-mariadb-basenv
 
 Package: myenv
 Architecture: all
-Depends: php5-cli | php-cli, php5-mysql | php-mysql
+Depends: php-cli, php-mysql
 Description: Managing multiple MySQL versions and instances on a single machine
  MyEnv is a tool to operate MySQL and MariaDB multi-instance set-ups.
  .

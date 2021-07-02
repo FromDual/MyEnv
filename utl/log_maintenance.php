@@ -435,7 +435,7 @@ foreach ( $aLines as $line ) {
 		$aOptions[$key] = $value;
 	}
 
-	// todo: Check options possibly should better be done here...
+	// TODO: Check options possibly should better be done here...
 
 	$mysqli = @new mysqli($aOptions['host'], $aOptions['user'], $aOptions['password'], null, $aOptions['port'], $aOptions['socket']);
 
@@ -595,7 +595,7 @@ foreach ( $aLines as $line ) {
 		break;
 	case 'truncate':
 
-		// todo: archive as well???
+		// TODO: archive as well???
 
 		$tmp = $lFile . '.tmp';
 		if ( isset($aOptions['debug']) ) {

@@ -23,9 +23,9 @@ $productdir = dirname($basedir);
 output("\n");
 output('The following FromDual Toolbox Packages are installed:' . "\n");
 output('------------------------------------------------------------------------' . "\n");
-output('MyEnv:           2.0.2 (75bae702313d639fe41d4970b3a215863dc80641) ' . "\n");
+output('MyEnv:           2.0.3 (2decca847d904dce9363fe68869897ab5a39dadb) ' . "\n");
 
-// todo: Check in releases what names and versions are available
+// TODO: Check in releases what names and versions are available
 $aLocations = array('brman', 'fromdual_bman', 'fromdual_brman', 'fromdual_brman');
 $aExecutables = array('bman', 'brman', 'fromdual_bman', 'fromdual_brman');
 $version = 'not found';
@@ -55,7 +55,7 @@ output('OpsCenter:       ' . $version . "\n");
   https://127.0.0.1/focmm/api/version.json request -> json
 */
 
-// todo: Check in releases what names and versions are available
+// TODO: Check in releases what names and versions are available
 $aLocations = array('/opt/fpmmm', $productdir . '/fpmmm', '/opt/mpm', $productdir . '/mpm');
 $aExecutables = array('fpmmm', 'mpm');
 

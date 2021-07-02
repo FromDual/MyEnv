@@ -5,7 +5,7 @@
 [default]
 
 user                 = mysql
-hideschema           = mysql,performance_schema,lost+found,sys
+hideschema           = mysql,performance_schema,lost+found,sys,#innodb_temp
 ; default              = production
 
 ; [production]

@@ -24,7 +24,7 @@ if ( $ret != OK ) {
 }
 
 $aDbNames = getSectionTitles($aConfiguration);
-print implode(' ', $aDbNames) . "\n";
+output(implode(' ', $aDbNames) . "\n");
 
 exit($rc);
 ?>

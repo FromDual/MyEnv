@@ -4,11 +4,184 @@
 #
 
 
+Version 2.0.3
+-------------
+
+Commit: 122e4d6
+* Testing: Tests fixed.
+
+Commit: ed14733
+* Utilities: Some utilities improved with password handover.
+
+Commit: 9c05c5b
+* Utilities: Nasty message removed from insert_test.sh
+
+Commit: e8ac63a
+* Utilities: Using a password on the command line hack replace by better so-
+  lution.
+
+Commit: f14b9db
+* General: rc made unique.
+
+Commit: f4ee3c9
+* MyEnv: MariaDB 10.6 my.cnf hash added and bug in stop instance for fqdn
+  fixed.
+
+Commit: e539471
+* Testing: Some more tests fixed.
+
+Commit: d497dbc
+* General: CHANGELOG updated, tests fixed and improved.
+
+Commit: 84649fc
+* MyEnv: Instance proposal is now checked if it already exists in add instance
+  in installMyEnv.
+
+Commit: daf8b8b
+* MyEnv: On Debian systems now systemd unit file advice is shown as well in-
+  stead of initV files advice in installMyEnv.
+
+Commit: e9290e3
+* MyEnv: Function print replaced by output() function.
+
+Commit: 508a337
+* MyEnv: Function checkDataseOld function removed.
+
+Commit: 0e9ce3c
+* MyEnv: Functions: checkDatabase, startDatabase and stopDatabase replaced by
+  their Instance analogon.
+
+Commit: d2b0485
+* MyEnv: Skipping init script is possible now in installMyEnv.
+
+Commit: fcc93c5
+* MyEnv: Feature: CDPATH added to variables.conf.template pointing to instance-
+  dir.
+
+Commit: 751a4a2
+* MyEnv: Function print replaced by output in function checkMyEnvRequirements.
+
+Commit: 810f352
+* Packaging: php5 dependencies removed for debian.
+
+Commit: b81337c
+* MyEnv: log_warnings commented out in my.cnf.template to make it work with My-
+  SQL 8.0.
+
+Commit: e87c935
+* MyEnv: Debug information improved.
+
+Commit: 71078c4
+* MyEnv: my.cnf updated with new 8.0 findings.
+
+Commit: 9bc0304
+* Testing: Test added for extractBranch.
+
+Commit: 40f3134
+* MyEnv: Ubuntu tag fixed.
+
+Commit: d7b0116
+* Packaging: Packaging NOTES updated and unified, Ubuntu variant of MySQL added
+  to branch determination function.
+
+Commit: 1817a7d
+* MyEnv: Variable gcache.recover added to template.
+
+Commit: d2ea0cf
+* Packaging: Build instructions move from other projects here to unifiy infor-
+  mation.
+
+Commit: 41d1526
+* Utilities: pcs_standby_node.sh added.
+
+Commit: fb6b687
+* Utilities: connect_times.php added, galera_monitor added, mixed_test time-
+  stamp updated to microseconds.
+
+Commit: 13fba07
+* Utilities: connect_times.php, mixed_test.php, binlog_push and binlog_apply
+  added.
+
+Commit: 2414fa3
+* MyEnv: Error handling changed from procedural style to OO style.
+
+Commit: 9f10ef1
+* MyEnv: Naming of return values fixed,
+
+Commit: 7bbaec5
+* MyEnv: Function my_exec made variable naming more clear.
+
+Commit: b6df6c3
+* Utilities: VIP v2 start stop script added.
+
+Commit: 7cb00bd
+* MyEnv: InnoDB monitor enabled by default.
+
+Commit: 04f3981
+* Packaging: Missing utilities added to make file.
+
+Commit: cb1bd75
+* Utilities: netstat.php added.
+* MyEnv: Constants made more humand readable.
+
+Commit: 327d234
+* MyEnv: Variable sync_binlog in my.cnf template adjusted to reasonable value.
+
+Commit: 694588f
+* Utilities: insert_test.sh made more flexible to run modify column command.
+
+Commit: ea9479a
+* MyEnv: my.cnf template updated to newest state.
+
+Commit: 8e731d8
+* MyEnv: New MySQL 5.7 Ubuntu repo hash for my.cnf added.
+
+Commit: dd69f40
+* MyEnv: Package php-posix replaced by php-process on Redgat/CentOS.
+
+Commit: c9e93d0
+* Utilities: insert_test.bat added and is working now like on Linux.
+
+Commit: 5b03f3f
+* MyEnv: Branch Homebrew added to extract Branch for MacOS.
+
+Commit: 1281c5d
+* Utilities: connect_test.php added.
+
+Commit: 8138d79
+* Testing: Test for function formatTime added as well.
+
+Commit: efd8abe
+* MyEnv: Function formatTime added
+         Comments changed from php5 to php7.
+
+Commit: 63d01d7
+* Utilities: insert_test-php made ready for new 5.7/8.0 timestamp behaviour.
+
+Commit: b97a2e2
+* Utilities: MySQL Group Replication monitor made configurable.
+
+Commit: 5ae745d
+* Utilities: MySQL Group Replication monitor output made nicer.
+
+Commit: 11c6f0e
+* MyEnv: New mysql 8.0 tmp schema #innodb_temp added to hideschema parameter.
+
+Commit: cfc3efd
+* MyEnv: Socket is right now when port is not 3306.
+
+Commit: 3bd1434
+* MyEnv: New interfaces for start/stopping instances and code cleaned up.
+
+
 Version 2.0.2
 -------------
 
-Commit: xxxxx
-* MyEnv: CHANGELOG, README and rc updated.
+Commit: 75bae70
+* Packaging: Final Make changes checked in for release.
+
+Commit: ff9e548
+* General: CHANGELOG updated, rc fixed, tests added and fixed.
 
 Commit: cef0db3
 * MyEnv: Not used aReleaseVersion removed, side effect to not have performance

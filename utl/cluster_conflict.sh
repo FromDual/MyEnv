@@ -45,9 +45,20 @@ do
 done
 client=$(hostname -s)
 
+
+function inject_password()
+{
+  cat << _EOF
+[client]
+user     = ${user}
+password = ${password}
+_EOF
+}
+
+
 if [ ${create} ]
 then
-    mysql --user=$user --password=$password --host=$host --port=$port <<EOF
+    mysql --defaults-extra-file=<(inject_password) --host=${host} --port=${port} <<EOF
         create database if not exists ${database} ;
         create table if not exists ${database}.${table} (
                 \`id\` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -60,11 +71,11 @@ fi
 
 while [ 1 ]
 do
-    mysql --user=$user --password=$password --host=$host --port=$port ${database} \
-          -e "UPDATE ${table} SET ts = CURRENT_TIMESTAMP() WHERE id = $(($RANDOM % $range))" |& grep -v insecure
+    mysql --defaults-extra-file=<(inject_password) --host=${host} --port=${port} ${database} \
+          -e "UPDATE ${table} SET ts = CURRENT_TIMESTAMP() WHERE id = $(($RANDOM % $range))"
     echo -n '.'
-    if [ -n "$sleep" ]
+    if [ -n "${sleep}" ]
     then
-        sleep $sleep
+        sleep ${sleep}
     fi
 done

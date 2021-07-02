@@ -67,7 +67,7 @@ my %options = (
 GetOptions( \%options, "maxfail=i");
 
 my $cnt = 0;
-# todo: This looks odd and thus wrong!
+# TODO: This looks odd and thus wrong!
 foreach ( @ARGV ) {
 #for ( my $i=0; $i <= 2; $i++) {
 

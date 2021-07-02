@@ -63,7 +63,7 @@ if ( ! array_key_exists($lInstance, $aConfiguration) ) {
 
 switch ( $lCommand ) {
 case 'start':
-  $ret = startDatabase($aConfiguration[$lInstance], $lOptions);
+  $ret = startInstance($aConfiguration[$lInstance], $lOptions);
   if ( $ret != 0 ) {
     $rc = 545;
     error("Starting instance $lInstance failed (ret=$ret/rc=$rc).");
@@ -73,7 +73,7 @@ case 'start':
   break;
 case 'bootstrap':
   $lOptions .= ' --wsrep-new-cluster';
-  $ret = startDatabase($aConfiguration[$lInstance], $lOptions);
+  $ret = startInstance($aConfiguration[$lInstance], $lOptions);
   if ( $ret != 0 ) {
     $rc = 506;
     error("Bootstrapping galera node $lInstance failed (ret=$ret/rc=$rc).");
@@ -82,26 +82,26 @@ case 'bootstrap':
   }
   break;
 case 'stop':
-  $ret = stopDatabase($aConfiguration[$lInstance]);
+  $ret = stopInstance($aConfiguration[$lInstance]);
   if ( $ret != 0 ) {
     $rc = 546;
     error("Stopping instance $lInstance failed (rc=$rc).");
   }
   break;
 case 'status':
-  $ret = checkDatabase($aConfiguration[$lInstance]);
+  $ret = checkInstance($aConfiguration[$lInstance]);
   if ( $ret != 0 ) {
     $rc = 547;
     error("Check on instance $lInstance failed (rc=$rc).");
   }
   break;
 case 'restart':
-  $ret = stopDatabase($aConfiguration[$lInstance]);
+  $ret = stopInstance($aConfiguration[$lInstance]);
   if ( $ret != 0 ) {
     $rc = 548;
     error("Stopping instance $lInstance failed (rc=$rc).");
   }
-  $ret = startDatabase($aConfiguration[$lInstance]);
+  $ret = startInstance($aConfiguration[$lInstance]);
   if ( $ret != 0 ) {
     $rc = 549;
     error("Starting instance $lInstance failed (rc=$rc).");

@@ -28,7 +28,7 @@ if [ $ret -ne 0 ] ; then
 	echo "Please install PHP as follows:"
 	echo
 	echo "RedHat/CentOS: shell> sudo yum install php-cli php-posix php-pcntl php-mysqli redhat-lsb-core";
-	echo "SLES/OpenSuSE: shell> sudo zypper install php5 php5-posix php5-pcntl php5-mysql lsb-release";
+	echo "SLES/OpenSuSE: shell> sudo zypper install php php-posix php-pcntl php-mysql lsb-release";
 	echo "Ubuntu/Debian: shell> sudo apt-get install php-cli php php-mysql lsb-release";
 	exit $rc
 fi

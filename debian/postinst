@@ -25,7 +25,7 @@ function configure_files ()
 {
 cd ${MYSQL_HOME}/product
 rm -f myenv                   # On upgrade, old files are already deleted, but myenv-RELEASE/log still exists
-ln -s myenv-2.0.2 myenv   # Remove symlink, then set it again.
+ln -s myenv-2.0.3 myenv   # Remove symlink, then set it again.
 
 # Make the "myenv" functions accessible in the user's shell
 ed ${MYSQL_HOME}/.bash_profile <<EOF 2>/dev/null || :

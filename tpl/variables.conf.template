@@ -10,6 +10,7 @@ export MYSQL_PS1='\u@%INSTANCE_NAME% [\d] SQL> '
 export MYENV_DATABASE=%INSTANCE_NAME%
 export MYENV_DATADIR=%DATADIR%
 export MYSQL_HOME=%DATADIR%
+export CDPATH="%INSTANCEDIR%"
 
 #
 # Add your own variables here: /etc/myenv/my_variables.conf

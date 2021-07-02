@@ -46,6 +46,8 @@ $aDefaultMyCnfHashes = array(
 , 'ef3a3e2aba5f02734846bfaa08ae14f4'
 , '46a0151b3b022b225cabb97e6d1ad947'   # MariaDB 5.5 from CentOS 7 repo
 , 'ae873e9306d052531b9b75e9559deccf'   # MariaDB 10.1 from MariaDB repo
+, 'cfe2bc1819d5e200eca8ca6912f714af'   # MySQL 5.7 from Ubuntu repo
+, '723727cb0572654bc5143e28115e3ed3'   # MariaDB 10.6 from MariaDB repo
 );
 foreach ( array('/etc/my.cnf', '/etc/mysql/my.cnf', '/usr/local/mysql/etc/my.cnf', "~/.my.cnf") as $file ) {
 
@@ -196,7 +198,7 @@ if ( $fh === false ) {
 }
 
 // Add generic variables here
-// todo: is redundant with variables.conf.template check why and if needed?
+// TODO: is redundant with variables.conf.template check why and if needed?
 
 fwrite($fh, "export PATH=$path\n");
 fwrite($fh, "export INFODIR=" . addDirectoryToPath($_ENV['INFODIR'], $aDatabaseParameter['basedir'] . "/docs", $aDatabaseParameter['basedir'] . "/docs") . "\n");
@@ -209,7 +211,7 @@ fwrite($fh, "export MYSQL_UNIX_PORT=" . $aDatabaseParameter['socket'] . "\n");
 fwrite($fh, "export MYSQL_PS1='\u@" . $lDbName . " [\d] SQL> '\n");
 fwrite($fh, "export MYENV_DATABASE=" . $lDbName . "\n");
 fwrite($fh, "export MYENV_DATADIR=" . $aDatabaseParameter['datadir'] . "\n");
-fwrite($fh, "export MYENV_VERSION=" . '2.0.2' . "\n");
+fwrite($fh, "export MYENV_VERSION=" . '2.0.3' . "\n");
 fwrite($fh, "export MYENV_STAGE=" . (isset($aDatabaseParameter['stage']) ? $aDatabaseParameter['stage'] : 'none') . "\n");
 fwrite($fh, "time_off\n");
 

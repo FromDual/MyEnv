@@ -1,14 +1,14 @@
 #
 # FromDual configuration file template for MySQL, Galera Cluster, MariaDB and Percona Server
 # Location: %MYCNF%
-# This template is intended to work with MySQL 5.6 and newer and MariaDB 10.0 and newer
+# This template is intended to work with MySQL 5.7 and newer and MariaDB 10.3 and newer
 # Get most recent updated from here:
 # https://www.fromdual.com/mysql-configuration-file-sample
 #
 
 [client]
 
-port                           = %PORT%
+port                           = %PORT%                              # default 3306
 socket                         = %SOCKET%                            # Use mysqld.sock on Ubuntu, conflicts with AppArmor otherwise
 
 
@@ -36,31 +36,30 @@ log-error                      = %INSTANCEDIR%/log/%UNAME%_%INSTANCE%_error.log 
 
 # Connection and Thread variables
 
-port                           = %PORT%
+port                           = %PORT%                                # default 3306
 socket                         = %SOCKET%                              # Use mysqld.sock on Ubuntu, conflicts with AppArmor otherwise
 basedir                        = %BASEDIR%
 datadir                        = %DATADIR%
 # tmpdir                         = '%INSTANCEDIR%/tmp'
-# innodb_tmpdir                  = '%INSTANCEDIR%/tmp'                 # MySQL 5.7
 
 max_allowed_packet             = 16M
 default_storage_engine         = InnoDB
-# explicit_defaults_for_timestamp = 1                                  # MySQL 5.6, test carefully! This can have an impact on application.
+# explicit_defaults_for_timestamp = 1                                  # MySQL 5.6 ff. default in MySQL 8.0, test carefully! This can have an impact on application.
 # disable_partition_engine_check  = true                               # Since MySQL 5.7.17 to 5.7.20. To get rid of nasty message in error log
 
-# character_set_server           = utf8                                # If you prefer utf8
-# collation_server               = utf8_general_ci
+# character_set_server           = utf8mb4                             # For modern applications, default in MySQL 8.0
+# collation_server               = utf8mb4_general_ci
 
 
-max_connections                = 505                                 # Values < 1000 are typically good
-max_user_connections           = 500                                 # Limit one specific user/application
-thread_cache_size              = 505                                 # Up to max_connections makes sense
+max_connections                = 151                                 # Values < 1000 are typically good
+max_user_connections           = 145                                 # Limit one specific user/application
+thread_cache_size              = 151                                 # Up to max_connections makes sense
 
 
 # Query Cache (does not exist in MySQL 8.0 any more!)
 
-# query_cache_type               = 1                                   # Set to 0 to avoid global QC Mutex
-# query_cache_size               = 32M                                 # Avoid too big (> 128M) QC because of QC clean-up lock!
+# query_cache_type               = 1                                   # Set to 0 to avoid global QC Mutex, removed in MySQL 8.0
+# query_cache_size               = 32M                                 # Avoid too big (> 128M) QC because of QC clean-up lock!, removed in MySQL 8.0
 
 
 # Session variables
@@ -84,8 +83,8 @@ table_open_cache_instances     = 16                                  # New defau
 
 log_error                      = %INSTANCEDIR%/log/%UNAME%_%INSTANCE%_error.log   # Adjust AppArmor configuration: /etc/apparmor.d/local/usr.sbin.mysqld
 # log_timestamps                 = SYSTEM                              # MySQL 5.7, equivalent to old behaviour
-log_warnings                   = 2                                   # MySQL 5.6, equivalent to log_error_verbosity = 3
-# log_error_verbosity            = 3                                   # MySQL 5.7, equivalent to log_warnings = 2, MariaDB does NOT support this!
+# log_warnings                   = 2                                   # MariaDB equivalent to log_error_verbosity = 3, MySQL does NOT support this any more!
+# log_error_verbosity            = 3                                   # MySQL 5.7 ff., equivalent to log_warnings = 2, MariaDB does NOT support this!
 innodb_print_all_deadlocks     = 1
 # wsrep_log_conflicts            = 1                                   # for Galera only!
 
@@ -94,7 +93,7 @@ innodb_print_all_deadlocks     = 1
 
 slow_query_log_file            = %INSTANCEDIR%/log/%UNAME%_%INSTANCE%_slow.log   # Adjust AppArmor configuration: /etc/apparmor.d/local/usr.sbin.mysqld
 slow_query_log                 = 0
-log_queries_not_using_indexes  = 0
+log_queries_not_using_indexes  = 0                                   # Interesting on developer systems!
 long_query_time                = 0.5
 min_examined_row_limit         = 100
 
@@ -107,36 +106,37 @@ general_log                    = 0
 
 # Performance Schema
 
-# performance_schema             = ON                                  # on some older MariaDB 10 releases
-performance_schema_consumer_events_statements_history_long = ON      # MySQL 5.6 and newer
+# performance_schema             = ON                                  # for MariaDB 10 releases
+performance_schema_consumer_events_statements_history_long = ON      # MySQL 5.6/MariaDB 10 and newer
 
 
 # Binary logging and Replication
 
-server_id                      = %SERVERID%
+server_id                      = %SERVERID%                            # Must be set on MySQL 5.7 and newer if binary log is enabled!
 log_bin                        = %INSTANCEDIR%/binlog/%UNAME%_%INSTANCE%_binlog            # Locate outside of datadir, adjust AppArmor configuration: /etc/apparmor.d/local/usr.sbin.mysqld
-# master_verify_checksum         = ON                                  # MySQL 5.6
-binlog_cache_size              = 1M
-binlog_stmt_cache_size         = 1M
+# master_verify_checksum         = ON                                  # MySQL 5.6 / MariaDB 10.2
+# binlog_cache_size              = 1M                                    # For each connection!
+# binlog_stmt_cache_size         = 1M                                    # For each connection!
 max_binlog_size                = 128M                                # Make bigger for high traffic to reduce number of files
-sync_binlog                    = 0                                   # Set to 1 or higher to reduce potential loss of binary-log data
-expire_logs_days               = 5                                   # We will survive easter holidays
-binlog_format                  = ROW                                 # Use MIXED if you experience some troubles
-# binlog_row_image               = MINIMAL                             # Since 5.6
+sync_binlog                    = 1                                   # Set to 0 or higher to get better write performance, default since MySQL 5.7
+expire_logs_days               = 5                                   # We will survive Easter holidays
+# binlog_expire_logs_seconds     = 432000                              # MySQL 8.0, 5 days * 86400 seconds
+binlog_format                  = ROW                                 # Use MIXED if you want to experience some troubles, default since MySQL 5.7, MariaDB default is MIXED
+# binlog_row_image               = MINIMAL                             # Since 5.6, MariaDB 10.1
 # auto_increment_increment       = 2                                   # For Master/Master set-ups use 2 for both nodes
 # auto_increment_offset          = 1                                   # For Master/Master set-ups use 1 and 2
 
 
 # Slave variables
 
-log_slave_updates              = 1                                   # Use if Slave is used for Backup and PiTR
+log_slave_updates              = 1                                   # Use if Slave is used for Backup and PiTR, default since MySQL 8.0
 read_only                      = 0                                   # Set to 1 to prevent writes on Slave
-# super_read_only                = 0                                   # Set to 1 to prevent writes on Slave for users with SUPER privilege. Since 5.7
+# super_read_only                = 0                                   # Set to 1 to prevent writes on Slave for users with SUPER privilege. Since 5.7, not in MariaDB
 # skip_slave_start               = 1                                   # To avoid start of Slave thread
 # relay_log                      = %UNAME%_%INSTANCE%_relay-bin
-# relay_log_info_repository      = table                               # MySQL 5.6
-# master_info_repository         = table                               # MySQL 5.6
-# slave_load_tmpdir              = '%INSTANCEDIR%/tmp'
+# relay_log_info_repository      = TABLE                               # MySQL 5.6, default since MySQL 8.0, MySQL only
+# master_info_repository         = TABLE                               # MySQL 5.6, default since MySQL 8.0, MySQL only
+# slave_load_tmpdir              = '%INSTANCEDIR%/tmp'                 # defaults to tmpdir
 
 
 # Crash-safe replication Master
@@ -148,18 +148,18 @@ read_only                      = 0                                   # Set to 1 
 
 # Crash-safe replication Slave
 
-# master_info_repository         = TABLE
-# relay_log_info_repository      = TABLE
+# relay_log_info_repository      = TABLE                               # MySQL 5.6, default since MySQL 8.0, MySQL only
+# master_info_repository         = TABLE                               # MySQL 5.6, default since MySQL 8.0, MySQL only
 # relay_log_recovery             = 1
-# sync_relay_log_info            = 1
+# sync_relay_log_info            = 1                                   # default 10000
 # relay_log_purge                = 1                                   # default
 # slave_sql_verify_checksum      = 1                                   # default
 
 
 # GTID replication
 
-# gtid_mode                        = ON                                  # Master and Slave
-# enforce_gtid_consistency         = 1                                   # Master and Slave
+# gtid_mode                        = ON                                  # MySQL only, Master and Slave
+# enforce_gtid_consistency         = 1                                   # MySQL only, Master and Slave
 
 # log_bin                          = %INSTANCEDIR%/binlog/%UNAME%_%INSTANCE%_binlog   # In 5.6 also on Slave
 # log_slave_updates                = 1                                   # In 5.6 also on Slave
@@ -188,10 +188,8 @@ max_heap_table_size            = 64M                                 # Should be
 
 # InnoDB variables
 
-innodb_strict_mode             = ON
-# innodb_file_format_check       = 1                                   # Desupported in MySQL 8.0
-# innodb_file_format             = Barracuda                           # For dynamic and compressed InnoDB tables, default in 5.7
-innodb_buffer_pool_size        = 128M                                # Go up to 80% of your available RAM
+innodb_strict_mode             = ON                                  # Default since MySQL 5.7, and MariaDB 10.4
+innodb_buffer_pool_size        = 128M                                # Go up to 75% of your available RAM
 innodb_buffer_pool_instances   = 8                                   # Bigger if huge InnoDB Buffer Pool or high concurrency
 
 innodb_file_per_table          = 1                                   # Is the recommended way nowadays
@@ -201,8 +199,11 @@ innodb_file_per_table          = 1                                   # Is the re
 # innodb_io_capacity             = 1000                                # If you have a strong I/O system or SSD
 
 innodb_flush_log_at_trx_commit = 2                                   # 1 for durability, 0 or 2 for performance
-innodb_log_buffer_size         = 8M                                  # Bigger if innodb_flush_log_at_trx_commit = 0
+innodb_log_buffer_size         = 16M                                 # Bigger if innodb_flush_log_at_trx_commit = 0
 innodb_log_file_size           = 256M                                # Bigger means more write throughput but longer recovery time
+
+                                                                     # Since MariaDB 10.0 and MySQL 5.6
+innodb_monitor_enable = all                                          # Overhead < 1% according to PeterZ/Percona
 
 
 # Galera specific MySQL parameter
@@ -211,21 +212,23 @@ innodb_log_file_size           = 256M                                # Bigger me
 # innodb_flush_log_at_trx_commit = 2                                 # Durability is achieved by committing to the Group
 # innodb_autoinc_lock_mode       = 2                                 # For parallel applying
 # binlog_format                  = row                               # Galera only works with RBR
-# query_cache_type               = 0                                 # Use QC with Galera only in a Master/Slave set-up
-# query_cache_size               = 0
+# query_cache_type               = 0                                 # Use QC with Galera only in a Master/Slave set-up, removed in MySQL 8.0
+# query_cache_size               = 0                                 # removed in MySQL 8.0
+# log_slave_updates              = ON                                # Must be enabled on ALL Galera nodes if binary log is enabled!
+# server_id                      = ...                               # Should be equal on all Galera nodes according to Codership CTO if binary log is enabled.
 
 
 # WSREP parameter
 
 # wsrep_on                       = on                                  # Only MariaDB >= 10.1
-# wsrep_provider                 = none                                # Start mysqld without Galera
 # wsrep_provider                 = /usr/lib/galera/libgalera_smm.so    # Location of Galera Plugin on Ubuntu ?
-# wsrep_provider                 = /usr/lib64/galera-3/libgalera_smm.so   # Location of Galera Plugin on CentOS 7
+# wsrep_provider                 = /usr/lib64/galera-3/libgalera_smm.so   # Location of Galera v3 Plugin on CentOS 7
+# wsrep_provider                 = /usr/lib64/galera-4/libgalera_smm.so   # Location of Galera v4 Plugin on CentOS 7
 # wsrep_provider_options         = 'gcache.size = 1G'                  # Depends on you workload, WS kept for IST
+# wsrep_provider_options         = 'gcache.recover = on'               # Since 3.19, tries to avoid SST after crash
 
 # wsrep_cluster_name             = "My cool Galera Cluster"            # Same Cluster name for all nodes
-# wsrep_cluster_address          = "gcomm://"                          # Old bootstrap method
-# wsrep_cluster_address          = "gcomm://192.168.0.2,192.168.0.3"   # Start other nodes like this
+# wsrep_cluster_address          = "gcomm://192.168.0.1,192.168.0.2,192.168.0.3"   # Start other nodes like this
 
 # wsrep_node_name                = "Node A"                            # Unique node name
 # wsrep_node_address             = 192.168.0.1                         # Our address where replication is done
@@ -235,7 +238,7 @@ innodb_log_file_size           = 256M                                # Bigger me
 
 # wsrep_sst_method               = rsync                               # SST method (initial full sync): mysqldump, rsync, rsync_wan, xtrabackup-v2
 # wsrep_sst_auth                 = sst:secret                          # Username/password for sst user
-# wsrep_sst_receive_address      = 192.168.0.1                         # Our address where to receive SST
+# wsrep_sst_receive_address      = 192.168.2.1                         # Our address where to receive SST
 
 
 # Group Replication parameter
@@ -263,4 +266,3 @@ innodb_log_file_size           = 256M                                # Bigger me
 # loose-group_replication_group_seeds         = "192.168.0.1,192.168.0.2,192.168.0.3"   # All nodes of Cluster
 # loose-group_replication_bootstrap_group     = OFF
 # loose-group_replication_single_primary_mode = FALSE                  # = multi-primary
-

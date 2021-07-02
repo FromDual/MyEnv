@@ -12,14 +12,14 @@ $rc = 0;
 
 $mysqli = new mysqli($lHost, $lUser, $lPassword, $lDatabase, $lPort, $lSocket);
 
-if ( mysqli_connect_error() ) {
+if ( $mysqli->connect_error ) {
   $rc = 383;
   fprintf(STDERR, "ERROR: Connect failed: (%d) %s\n", mysqli_connect_errno(), mysqli_connect_error());
   exit($rc);
 }
 $mysqli->query('SET NAMES utf8');
 
-$sql = 'INSERT INTO test values (NULL, "Test data insert", NULL);';
+$sql = 'INSERT INTO test (id, data, ts) values (NULL, "Test data insert", CURRENT_TIMESTAMP());';
 
 while ( true ) {
 
@@ -34,7 +34,7 @@ while ( true ) {
 
       $mysqli = new mysqli($lHost, $lUser, $lPassword, $lDatabase, $lPort, $lSocket);
 
-      if ( mysqli_connect_error() ) {
+      if ( $mysqli->connect_error ) {
         fprintf(STDERR, "ERROR: Connect failed: (%d) %s\n", mysqli_connect_errno(), mysqli_connect_error());
       }
       else {

@@ -1,7 +1,7 @@
 #!/usr/bin/php -d variables_order=EGPCS
 <?php
 
-// todo: should not be hard coded but configurable!
+// TODO: should not be hard coded but configurable!
 ini_set('date.timezone', 'Europe/Zurich');
 
 // Caution $_ENV variables are not be known here yet when variables_order
@@ -51,7 +51,7 @@ if ( ! $handle ) {
 // When this log file is created as root we cannot write during start
 // as user mysql.
 
-// todo: user and group are hard coded here, just in case somebody wants to
+// TODO: user and group are hard coded here, just in case somebody wants to
 // run myenv under an other user than mysql this causes troubles...
 chown($LogFile, 'mysql');
 chgrp($LogFile, 'mysql');

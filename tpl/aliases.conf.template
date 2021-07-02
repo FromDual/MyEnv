@@ -18,7 +18,7 @@ alias cdb='cd %INSTANCEDIR%/binlog'
 alias cdm='cd %MYENV_BASEDIR%'
 # old: alias cdl='cd %MYENV_BASEDIR%/log'
 
-# todo: to remove again later
+# TODO: to remove again later
 alias mycg='echo "mycg is not supported yet."'
 
 alias ll='ls -l'

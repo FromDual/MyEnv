@@ -1,5 +1,5 @@
 # BEGIN MyEnv
-# Inserted by the 'myenv' package installation, release 2.0.2
+# Inserted by the 'myenv' package installation, release 2.0.3
 # 'BEGIN' and 'END' marker lines are needed for package management!
 source /etc/myenv/MYENV_BASE
 MYENV_PWD=$(pwd)

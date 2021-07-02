@@ -101,7 +101,7 @@ foreach ( $aDbNames as $db ) {
     continue;
   }
 
-	// Ignore passive databases in an active/passive fail-over Cluster
+	// Ignore passive instances in an active/passive fail-over Cluster
 	// Criteria is that datadir is missing!
 	if ( isset($aConfiguration[$db]['ignore-passive'])
 	  && ($aConfiguration[$db]['ignore-passive'] == 'yes')
@@ -109,10 +109,10 @@ foreach ( $aDbNames as $db ) {
 	  ) {
 		$aPassive[$db] = "$db (" . $aConfiguration[$db]['version'] . ")";
 	}
-	// Database is NOT passive so check if it is up or down.
+	// Instance is NOT passive so check if it is up or down.
 	else {
 
-		$ret = checkDatabase($aConfiguration[$db]);
+		$ret = checkInstance($aConfiguration[$db]);
 
 		if ( $ret != 0 ) {
 			$aDown[$db] = "$db (" . $aConfiguration[$db]['version'] . ")";
@@ -210,7 +210,7 @@ foreach ( $aDbNames as $db ) {
 	$aSchema = getSchemaNames($aConfiguration[$db]['datadir']);
 	debug(print_r($aSchema, true));
 
-	// hide schema, e.g mysql, ndbinfo, test, performance_schema, pbxt
+	// hide schema, e.g mysql, ndbinfo, test, performance_schema, pbxt, #innodb_temp
 	if ( array_key_exists('hideschema', $aConfiguration[$db]) ) {
 
 		foreach ( explode(',', $aConfiguration[$db]['hideschema']) as $tohide ) {

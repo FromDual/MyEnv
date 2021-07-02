@@ -79,15 +79,22 @@ function addInstance()
 
 	try {
 
-		// todo: check if default already exists!
-		$default = 'mysqld1';
-		// output("\n");
-		output("You have to enter a new instance name. An instance name can consist of 0-9, a-z, A-Z, - and _.\n");
+		for ( $i = 1; $i < 100; $i++ ) {
+
+			$default = 'mysqld' . $i;
+
+			if ( array_key_exists($default, $aConfiguration) ) {
+				continue;
+			}
+			break;
+		}
+
+		output('You have to enter a new instance name. An instance name can consist of 0-9, a-z, A-Z, - and _.' . "\n");
 		output("\n");
-		output("Examples: test, prod, dev, [$default] mysqld-3306\n");
+		output("Examples: test, prod, dev, [$default] mysqld-3306" . "\n");
 		output("\n");
 
-		$instance = readline("Enter a new instance name: ");
+		$instance = readline('Enter a new instance name: ');
 		if ( $instance == '' ) {
 			$instance = $default;
 		}
@@ -95,7 +102,7 @@ function addInstance()
 		// Check if instance name contains '.' character
 		if ( strstr($instance, '.') !== false ) {
 			$rc = 703;
-			$msg = "Instance name $instance cannot contain '.' caracter." . " (rc=$rc)";
+			$msg = "Instance name $instance cannot contain '.' character." . " (rc=$rc)";
 			throw new Exception($msg);
 		}
 
@@ -103,8 +110,8 @@ function addInstance()
 		$aBlackList = getInstanceBlackList();
 		if ( in_array($instance, $aBlackList) ) {
 			$rc = 718;
-			error("Instance name $instance is on blacklist (rc=$rc).");
-			readline("Press Enter to choose an other one...");
+			error("Instance name $instance is on blacklist." . " (rc=$rc)");
+			readline('Press Enter to choose an other one...');
 			$msg = '';
 			throw new Exception($msg);
 		}
@@ -119,7 +126,8 @@ function addInstance()
 		$aConfiguration[$instance]               = array();
 		$aConfiguration[$instance]['start']      = 'yes';
 		$aConfiguration[$instance]['stop']       = 'yes';
-		$aConfiguration[$instance]['hideschema'] = 'mysql,performance_schema,lost+found,sys';
+		// TODO: this is redundant with myenv.conf.template, make unique
+		$aConfiguration[$instance]['hideschema'] = 'mysql,performance_schema,lost+found,sys,#innodb_temp';
 		$aConfiguration[$instance]['type']       = 'mysqld';
 		$rc = changeInstance($instance);
 	}
@@ -138,7 +146,7 @@ function changeInstance($pInstance)
 {
 	$rc = OK;
 
-	// todo: Bug: This is wrong should not be $aConfiguration but only the raw section!?!
+	// TODO: Bug: This is wrong should not be $aConfiguration but only the raw section!?!
 	global $aConfiguration;
 	$lHomeDir = $_ENV['HOME'];
 
@@ -213,9 +221,9 @@ function changeInstance($pInstance)
 			else {
 				output("The version is: $lVersion\n");
 			}
-			// todo: compare download with platform
+			// TODO: compare download with platform
 
-			// todo: check if wget or curl is available
+			// TODO: check if wget or curl is available
 			// downloadChunkedFile($url, $outfile)
 
 			// download
@@ -239,10 +247,10 @@ function changeInstance($pInstance)
 			else {
 				$rc = 705;
 				error("Cannot extract filename from output. Please try manually (rc=$rc).");
-				error("tar xf $lTmpDir" . '/' . 'mysql-5.8.99.tar.gz' . " --directory $lProductDir");
+				error("tar xf $lTmpDir" . '/' . 'mariadb-10.9.99.tar.gz' . " --directory $lProductDir");
 			}
 
-			// todo: check checksum
+			// TODO: check checksum
 
 			// extract binary
 			if ( $rc == OK ) {
@@ -360,9 +368,9 @@ function changeInstance($pInstance)
 
 	// Do cleanup from raw config again because of the inheritence problem of the
 	// default section
-	// todo: this is just a workaround and should be fixed later!!!
+	// TODO: this is just a workaround and should be fixed later!!!
 
-	// todo: This is also pretty evil and should be removed by ONE config asap!
+	// TODO: This is also pretty evil and should be removed by ONE config asap!
 	$lConfFile         = '/etc/myenv/myenv.conf';
 	list($ret, $aRawConfiguration) = parseConfigFile($lConfFile, INI_SCANNER_RAW);
 
@@ -732,7 +740,7 @@ function askForMyCnf($aConfiguration)
 			}
 
 
-			// todo: would be better to get it from outside!
+			// TODO: would be better to get it from outside!
 			$basedir = dirname(dirname(__FILE__));
 
 
@@ -823,6 +831,10 @@ function askForSocket($aGlobalConfiguration, $aInstanceConfiguration, $tSocket =
 	elseif ( isset($aInstanceConfiguration['socket']) && ($aInstanceConfiguration['socket'] != '') ) {
 		$default =  $aInstanceConfiguration['socket'];
 		array_push($aSocketCandidates, $default);
+	}
+	elseif ( ! isset($aInstanceConfiguration['socket']) && ($aInstanceConfiguration['port'] != '3306') ) {
+		// /var/run/mysqld/mysql-3306.sock
+		$default =  "/var/run/mysqld/mysql-" . $aInstanceConfiguration['port'] . ".sock";
 	}
 	else {
 		$default = '/var/run/mysqld/mysql.sock';
@@ -1257,9 +1269,17 @@ function addMyEnvInitScript($tKey = '')
 		}
 		break;
 	case 'Debian':
-		$lInitScript = '/etc/init.d/myenv';
-		$cmd  = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/myenv.server " . $lInitScript;
-		$cmd1 = "sudo update-rc.d myenv defaults";
+		if ( $lDistributionVersion >= '8' ) {
+			$lInitScript = '/etc/systemd/system/myenv.service';
+			$ret = prepareUnitFile($_ENV['MYENV_BASE'] . '/tpl/systemd.myenv.unit.template', $_ENV['MYENV_BASE']);
+			$cmd = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/systemd.myenv.unit.template " . $lInitScript;
+			$cmd1 = "sudo systemctl daemon-reload ; sudo systemctl enable myenv";
+		}
+		else {
+			$lInitScript = '/etc/init.d/myenv';
+			$cmd  = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/myenv.server " . $lInitScript;
+			$cmd1 = "sudo update-rc.d myenv defaults";
+		}
 		break;
 	default:
 		$rc = 750;
@@ -1270,15 +1290,15 @@ function addMyEnvInitScript($tKey = '')
 
 	while ( ! file_exists($lInitScript) ) {
 
-		output("\nPlease copy yourself manually the MyEnv start/stop script/unit file to the following location\n");
-		output("and link it to your O/S runlevels:\n\n");
-		output("  shell> $cmd\n");
-		output("  shell> $cmd1\n\n");
+		output("\n" . "Please copy yourself manually the MyEnv start/stop script/unit file to the following location" . "\n");
+		output("and link it to your O/S runlevels:" . "\n\n");
+		output("  shell> $cmd" . "\n");
+		output("  shell> $cmd1" . "\n\n");
 
 		// For testing purposes only:
 		if ( $tKey == '' ) {
 			output("\n");
-			$key = answerQuestion('Done yourself already, Abort installation or Installer shall do it [D/a/i]? ', array('d', 'a', 'i'), 'd');
+			$key = answerQuestion('Done yourself already, Skip this step, Abort installation or Installer shall do it [D/s/a/i]? ', array('d', 's', 'a', 'i'), 'd');
 		}
 		else {
 			$key = $tKey;
@@ -1287,11 +1307,14 @@ function addMyEnvInitScript($tKey = '')
 		// Do NOT use switch here because of break!
 		if ( $key == 'a' ) {
 			$rc = 742;
-			output("Aborting... (rc=$rc)\n");
+			output("Aborting..." . " (rc=$rc)" . "\n");
 			exit($rc);
 		}
 		elseif ( $key == 'd' ) {
 			null;
+		}
+		elseif ( $key == 's' ) {
+			break;
 		}
 		elseif ( $key == 'i' ) {
 
@@ -1346,7 +1369,7 @@ function addMyEnvProfile($pHomeDir, $tKey = '')
 	// We have to add the hook
 	if ( $ret == 1 ) {
 
-		// todo: This is redundant with profile.template!!!
+		// TODO: This is redundant with profile.template!!!
 		$lSourceSequence  = "source /etc/myenv/MYENV_BASE\n";
 		$lSourceSequence .= 'MYENV_PWD=$(pwd)' . "\n";
 		$lSourceSequence .= 'cd $MYENV_BASE/bin' . "\n";
@@ -1444,14 +1467,14 @@ function writeConfigurationFile($aConfiguration, $pConfFile)
 // ---------------------------------------------------------------------
 {
 	// Writing the configuration file
-	output("\nWriting the configuration file...\n");
+	output("\n" . 'Writing the configuration file ' . $pConfFile . '...' . "\n");
 
 	$lConfFileBak      = $pConfFile . '.' . date("Y-m-d-H-i-s");
 
 	if ( file_exists($lConfFileBak) ) {
 		unlink($lConfFileBak);
 	}
-	output("Rename $pConfFile to $lConfFileBak\n");
+	output("Rename $pConfFile to $lConfFileBak" . "\n");
 	if ( rename($pConfFile, $lConfFileBak) ) {
 
 		output("Write $pConfFile\n");
@@ -1459,7 +1482,7 @@ function writeConfigurationFile($aConfiguration, $pConfFile)
 
 			foreach ( $aConfiguration as $instance => $record ) {
 
-				fwrite($fh, "[$instance]\n\n");
+				fwrite($fh, '[' . $instance . ']' . "\n\n");
 				foreach ( $record as $key => $value ) {
 					if ( $key == 'name' ) {
 						continue;
@@ -1477,7 +1500,7 @@ function writeConfigurationFile($aConfiguration, $pConfFile)
 	}
 	else {
 		$rc = 714;
-		output("Renaming the configuration file $pConfFile to $lConfFileBak failed.\n");
+		output("Renaming the configuration file $pConfFile to $lConfFileBak failed." . " (rc=$rc)" . "\n");
 		exit($rc);
 	}
 }
@@ -1525,7 +1548,7 @@ function deleteInstance($pInstance)
 		return $rc;
 	}
 
-	$ret = checkDatabase($aConfiguration[$pInstance]);
+	$ret = checkInstance($aConfiguration[$pInstance]);
 
 	if ( $ret != OK ) {
 
@@ -1782,9 +1805,6 @@ function checkForRootUser($pCurrentUser)
 					output("$cmd2\n");
 					list($ret, $output, $stdout, $stderr) = my_exec($cmd2);
 				}
-
-
-
 			}
 		}
 		else if ( $key == 'a' ) {
@@ -1874,6 +1894,8 @@ Options:
                   - delete: Delete an existing instance.
   instance        Name of the instance to manage.
   purge-data      Purges data in case of deletion.
+  port            Port to use.
+  socket          Socket to use.
   help            Print this help.
 
 Examples:
@@ -1894,7 +1916,7 @@ function checkOptions($aArgv, $aOptions, $pConfFile)
 	// Some Options or Arguments were not properly detected
 	if ( count($aArgv) > (count($aOptions) + 1) ) {
 		$rc = 730;
-		$msg = "Invalid arguments or options. (rc=$rc)";
+		$msg = "Invalid arguments or options." . " (rc=$rc)";
 		error($msg);
 		return $rc;
 	}
@@ -1902,7 +1924,7 @@ function checkOptions($aArgv, $aOptions, $pConfFile)
 	// Allowed operations
 	if ( ! in_array($aOptions['operation'], array('add', 'change', 'delete')) ) {
 		$rc = 731;
-		$msg = "Invalid operation " . $aOptions['operation'] . ". Valid operations are add, change, delete. (rc=$rc)";
+		$msg = "Invalid operation " . $aOptions['operation'] . ". Valid operations are add, change, delete." . " (rc=$rc)";
 		error($msg);
 		return $rc;
 	}
@@ -1910,14 +1932,14 @@ function checkOptions($aArgv, $aOptions, $pConfFile)
 	// Operations are not allowed yet
 	if ( in_array($aOptions['operation'], array('add', 'change')) ) {
 		$rc = 732;
-		$msg = "Operation add and change are not supported yet. (rc=$rc)";
+		$msg = "Operation add and change are not supported yet." . " (rc=$rc)";
 		error($msg);
 		return $rc;
 	}
 
   if ( ! isset($aOptions['instance']) ) {
 		$rc = 751;
-		$msg = "Instance name was not defined. (rc=$rc)";
+		$msg = "Instance name was not defined." . " (rc=$rc)";
 		error($msg);
 		return $rc;
   }
@@ -1930,7 +1952,7 @@ function checkOptions($aArgv, $aOptions, $pConfFile)
 
 		if ( ! isset($aConfiguration[$aOptions['instance']]) ) {
 			$rc = 733;
-			$msg = "Instance " . $aOptions['instance'] . " does NOT exist. Please choose an existing instance name (rc=$rc).";
+			$msg = "Instance " . $aOptions['instance'] . " does NOT exist. Please choose an existing instance name." . " (rc=$rc)";
 			error($msg);
 			return $rc;
 		}
@@ -1941,7 +1963,7 @@ function checkOptions($aArgv, $aOptions, $pConfFile)
 
 		if ( isset($aConfiguration[$aOptions['instance']]) ) {
 			$rc = 702;
-			$msg = "Instance " . $aOptions['instance'] . " DOES exist. Please choose a new instance name (rc=$rc).";
+			$msg = 'Instance ' . $aOptions['instance'] . ' DOES exist. Please choose a new instance name.' . " (rc=$rc)";
 			error($msg);
 			return $rc;
 		}
@@ -1950,7 +1972,7 @@ function checkOptions($aArgv, $aOptions, $pConfFile)
 	// purge-data only in combination with delete
 	if ( isset($aOptions['purge-data']) && ('delete' != $aOptions['operation']) ) {
 		$rc = 752;
-		$msg = "Option --purge-data can only be use with --operation=delete (rc=$rc).";
+		$msg = "Option --purge-data can only be use with --operation=delete." . " (rc=$rc)";
 		error($msg);
 		return $rc;
 	}
@@ -1966,13 +1988,13 @@ function deleteInstanceAutomatized($aOptions, $pMyEnvConfFile)
 
 	list($ret, $aConfiguration) = getConfiguration($pMyEnvConfFile);
 
-	// Check if database is still running
-	$ret = checkDatabase($aConfiguration[$aOptions['instance']]);
+	// Check if instance is still running
+	$ret = checkInstance($aConfiguration[$aOptions['instance']]);
 
 	$lInstanceConfigBackup = $aConfiguration[$aOptions['instance']];
 	if ( $ret == OK ) {
 		$rc = 734;
-		$msg = "Please stop instence first before deleting it (rc=$rc).";
+		$msg = "Please stop instence first before deleting it." . " (rc=$rc)";
 		error($msg);
 		return $rc;
 	}
@@ -2002,7 +2024,7 @@ function prepareUnitFile($pUnitFile, $pMyenvBase)
 	if ( ! file_exists($lUnitOrigFile) ) {
 		if ( ! copy($pUnitFile, $lUnitOrigFile) ) {
 			$rc = 738;
-			$msg = "Cannot copy $pUnitFile to $lUnitOrigFile";
+			$msg = "Cannot copy $pUnitFile to $lUnitOrigFile" . " (rc=$rc)";
 			error($msg);
 			// do not exit here
 		}
@@ -2224,8 +2246,8 @@ function addInstanceAutomatized($aOptions, $pMyEnvConfFile)
 	/*
 	list($ret, $aConfiguration) = getConfiguration($pConfFile);
 
-	// Check if database is still running
-	$ret = checkDatabase($aConfiguration[$aOptions['instance']]);
+	// Check if instance is still running
+	$ret = checkInstance($aConfiguration[$aOptions['instance']]);
 
 	if ( $ret == OK ) {
 		$rc = 756;
