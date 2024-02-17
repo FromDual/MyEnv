@@ -1,9 +1,16 @@
 #!/bin/bash
 
-USER=root
+USER=monitor
 PASSWORD=''
-HOST='localhost'
+HOST='127.0.0.1'
 PORT='3306'
+
+type -p mariadb >/dev/null
+if [ 0 -eq ${?} ] ; then
+  CLIENT=mariadb
+else
+  CLIENT=mysql
+fi
 
 function inject_password()
 {
@@ -15,6 +22,6 @@ _EOF
 }
 
 
-sql="SHOW GLOBAL STATUS WHERE Variable_name IN( 'wsrep_cluster_size', 'wsrep_cluster_status', 'wsrep_local_state_comment', 'wsrep_ready', 'wsrep_connected')"
+sql="SHOW GLOBAL STATUS WHERE Variable_name IN( 'wsrep_cluster_size', 'wsrep_cluster_status', 'wsrep_local_state_comment', 'wsrep_ready', 'wsrep_connected', 'wsrep_last_committed')"
 
-mysql --defaults-extra-file=<(inject_password) --host=${HOST} --port=${PORT} --execute="${sql}" | column -t
+${CLIENT} --defaults-extra-file=<(inject_password) --host=${HOST} --port=${PORT} --execute="${sql}" | column -t

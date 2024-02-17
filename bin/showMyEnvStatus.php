@@ -1,7 +1,7 @@
 #!/usr/bin/php -d variables_order=EGPCS
 <?php
 
-/* 
+/*
 // Caution $_ENV variables are not be known here yet when variables_order
 // does NOT contain E!!!
 if ( isset($_ENV['MYENV_BASE']) ) {
@@ -36,7 +36,7 @@ $basedir = $_ENV['MYENV_BASE'];
 $lConfigurationFile = '/etc/myenv/myenv.conf';
 if ( ! is_file($lConfigurationFile) ) {
 	$rc = 534;
-	output("Warning: Configuration file $lConfigurationFile does not exist!\n");
+	warn("Configuration file $lConfigurationFile does not exist!\n");
 	output("         Please create or copy from $lConfigurationFile.template (rc=$rc).\n");
 	exit($rc);
 }
@@ -57,7 +57,7 @@ foreach ( $aConfiguration as $db => $value ) {
 	if ( $db != 'default' ) {
 		$v = extractVersion($aConfiguration[$db]['basedir']);
 		if ( $v == 'unknown' ) {
-			$v = getVersionFromMysqld('/usr');
+			list($v, $b) = getVersionAndBranchFromDaemon('/usr');
 		}
 		$aConfiguration[$db]['version'] = $v;
 	}
@@ -195,7 +195,7 @@ foreach ( $aDbNames as $db ) {
 		foreach ( array('bind_address', 'bind-address', 'bind_addr', 'bind-addr') as $key ) {
 			if ( array_key_exists($key, $aMyCnf['mysqld']) ) {
 				if ( $aMyCnf['mysqld'][$key] != '0.0.0.0' ) {
-					$lIpLength = max($lIpLength, strlen($aMyCnf['mysqld'][$key])); 
+					$lIpLength = max($lIpLength, strlen($aMyCnf['mysqld'][$key]));
 				}
 			}
 		}
@@ -210,11 +210,11 @@ foreach ( $aDbNames as $db ) {
 	$aSchema = getSchemaNames($aConfiguration[$db]['datadir']);
 	debug(print_r($aSchema, true));
 
-	// hide schema, e.g mysql, ndbinfo, test, performance_schema, pbxt, #innodb_temp
+	// hide schema, e.g mysql, ndbinfo, test, performance_schema, pbxt, #innodb_temp, #innodb_redo, mysql_innodb_cluster_metadata
 	if ( array_key_exists('hideschema', $aConfiguration[$db]) ) {
 
 		foreach ( explode(',', $aConfiguration[$db]['hideschema']) as $tohide ) {
-		
+
 			if ( ($key = array_search($tohide, $aSchema)) !== false ) {
 				unset($aSchema[$key]);
 			}

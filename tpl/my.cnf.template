@@ -25,17 +25,11 @@ default_character_set          = utf8                                # Possibly 
 max_allowed_packet             = 16M
 
 
-[mysqld_safe]                                                        # Becomes sooner or later obsolete with systemd
-
-open_files_limit               = 8192                                # You possibly have to adapt your O/S settings as well
-user                           = mysql
-log-error                      = %INSTANCEDIR%/log/%UNAME%_%INSTANCE%_error.log   # Adjust AppArmor configuration: /etc/apparmor.d/local/usr.sbin.mysqld
-
-
 [mysqld]
 
 # Connection and Thread variables
 
+# mysqlx                         = 0                                     # Disable Protocol X
 port                           = %PORT%                                # default 3306
 socket                         = %SOCKET%                              # Use mysqld.sock on Ubuntu, conflicts with AppArmor otherwise
 basedir                        = %BASEDIR%
@@ -119,9 +113,9 @@ log_bin                        = %INSTANCEDIR%/binlog/%UNAME%_%INSTANCE%_binlog 
 # binlog_stmt_cache_size         = 1M                                    # For each connection!
 max_binlog_size                = 128M                                # Make bigger for high traffic to reduce number of files
 sync_binlog                    = 1                                   # Set to 0 or higher to get better write performance, default since MySQL 5.7
-expire_logs_days               = 5                                   # We will survive Easter holidays
+expire_logs_days               = 5                                   # We will survive Easter holidays, NOT in MySQL 8.0 any more!
 # binlog_expire_logs_seconds     = 432000                              # MySQL 8.0, 5 days * 86400 seconds
-binlog_format                  = ROW                                 # Use MIXED if you want to experience some troubles, default since MySQL 5.7, MariaDB default is MIXED
+binlog_format                  = row                                 # Use MIXED if you want to experience some troubles, default since MySQL 5.7, MariaDB default is MIXED
 # binlog_row_image               = MINIMAL                             # Since 5.6, MariaDB 10.1
 # auto_increment_increment       = 2                                   # For Master/Master set-ups use 2 for both nodes
 # auto_increment_offset          = 1                                   # For Master/Master set-ups use 1 and 2
@@ -158,18 +152,18 @@ read_only                      = 0                                   # Set to 1 
 
 # GTID replication
 
-# gtid_mode                        = ON                                  # MySQL only, Master and Slave
-# enforce_gtid_consistency         = 1                                   # MySQL only, Master and Slave
+# gtid_mode                      = ON                                  # MySQL only, Master and Slave
+# enforce_gtid_consistency       = 1                                   # MySQL only, Master and Slave
 
-# log_bin                          = %INSTANCEDIR%/binlog/%UNAME%_%INSTANCE%_binlog   # In 5.6 also on Slave
-# log_slave_updates                = 1                                   # In 5.6 also on Slave
+# log_bin                        = %INSTANCEDIR%/binlog/%UNAME%_%INSTANCE%_binlog   # In 5.6 also on Slave
+# log_slave_updates              = 1                                   # In 5.6 also on Slave
 
 
 # Security variables
 
 # local_infile                   = 0                                   # If you are security aware
 # secure_auth                    = 1                                   # If you are security aware
-# sql_mode                       = TRADITIONAL,ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER   # Be careful changing this afterwards
+# sql_mode                       = TRADITIONAL,ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO   # Be careful changing this afterwards, NO_AUTO_CREATE_USER does NOT exist any more in MySQL 8.0
 # skip_name_resolve              = 0                                   # Set to 1 if you do not trust your DNS or experience problems
 # secure_file_priv               = '%INSTANCEDIR%/tmp'                   # chmod 750, adjust AppArmor configuration: /etc/apparmor.d/local/usr.sbin.mysqld
 
@@ -201,6 +195,7 @@ innodb_file_per_table          = 1                                   # Is the re
 innodb_flush_log_at_trx_commit = 2                                   # 1 for durability, 0 or 2 for performance
 innodb_log_buffer_size         = 16M                                 # Bigger if innodb_flush_log_at_trx_commit = 0
 innodb_log_file_size           = 256M                                # Bigger means more write throughput but longer recovery time
+# innodb_redo_log_capacity       = 512M                                # Bigger means more write throughput but longer recovery time
 
                                                                      # Since MariaDB 10.0 and MySQL 5.6
 innodb_monitor_enable = all                                          # Overhead < 1% according to PeterZ/Percona
@@ -214,7 +209,7 @@ innodb_monitor_enable = all                                          # Overhead 
 # binlog_format                  = row                               # Galera only works with RBR
 # query_cache_type               = 0                                 # Use QC with Galera only in a Master/Slave set-up, removed in MySQL 8.0
 # query_cache_size               = 0                                 # removed in MySQL 8.0
-# log_slave_updates              = ON                                # Must be enabled on ALL Galera nodes if binary log is enabled!
+# log_slave_updates              = 1                                 # Must be enabled on ALL Galera nodes if binary log is enabled!
 # server_id                      = ...                               # Should be equal on all Galera nodes according to Codership CTO if binary log is enabled.
 
 
@@ -246,13 +241,13 @@ innodb_monitor_enable = all                                          # Overhead 
 # default_storage_engine         = InnoDB                              # Group Replication only works with InnoDB
 # server_id                      = %SERVERID%                          # Should be different on all 3 nodes
 # log_bin                        = %INSTANCEDIR%/binlog/%UNAME%_%INSTANCE%_binlog   # Locate outside of datadir, adjust AppArmor configuration: /etc/apparmor.d/local/usr.sbin.mysqld
-# binlog_format                  = ROW
+# binlog_format                  = row
 # binlog_checksum                = NONE                                # not default!
 # gtid_mode                      = ON
 # enforce_gtid_consistency       = ON
 # master_info_repository         = TABLE
 # relay_log_info_repository      = TABLE
-# log_slave_updates              = ON
+# log_slave_updates              = 1
 
 # slave_parallel_workers         = <n>                                 # 1-2/core, max. 10
 # slave_preserve_commit_order    = ON

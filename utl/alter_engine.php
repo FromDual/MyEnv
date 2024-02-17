@@ -15,7 +15,7 @@ $aDefaults = array(
 , 'convert'     => 'simple'
 , 'schema-to'   => 'new'
 , 'engine-to'   => 'InnoDB'
-, 'socket'      => '/var/run/mysqld/mysql.sock'
+, 'socket'      => '/run/mysqld/mysql.sock'
 );
 
 $aOptions = array();

@@ -6,7 +6,7 @@ $lUser     = 'app';
 $lPassword = 'secret';
 $lDatabase = 'test';
 $lPort     = '3306';
-$lSocket   = '/var/run/mysqld/mysql.sock';
+$lSocket   = '/run/mysqld/mysql.sock';
 
 $sql       = 'SELECT USER()';
 $sql       = "SELECT SQL_NO_CACHE * FROM customers IGNORE INDEX (name) WHERE name = 'No Clue of MySQL LLC'";

@@ -8,7 +8,7 @@ our $user     = 'root';
 our $password = '';
 our $host     = 'localhost';
 our $port     = 3306;
-our $socket   = '/var/run/mysqld/mysql.sock';
+our $socket   = '/run/mysqld/mysql.sock';
 # PID file is needed for determine if database is up and running
 # When having corrupt blocks the database could crash from time to time
 our $pid_file = '/var/lib/mysql/' . gethostname() . '.pid';

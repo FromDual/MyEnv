@@ -50,66 +50,67 @@ list($ret, $aConfiguration) = getConfiguration($lConfFile);
 
 if ( count($aConfiguration) == 0 ) {
 	$rc = 529;
-	$msg = "Configuration $lConfFile does not exist or is not readable (rc=$rc).";
-  error($msg);
-  exit($rc);
+	$msg = "Configuration file $lConfFile does not exist or is not readable." . " (rc=$rc)";
+	error($msg);
+	exit($rc);
 }
 
 if ( ! array_key_exists($lInstance, $aConfiguration) ) {
-  $rc = 544;
-  error("Instance $lInstance does NOT exist in your conf (rc=$rc).");
-  exit($rc);
+	$rc = 544;
+	error("Instance $lInstance does NOT exist in your configuration file $lConfFile." . " (rc=$rc)");
+	exit($rc);
 }
 
 switch ( $lCommand ) {
 case 'start':
-  $ret = startInstance($aConfiguration[$lInstance], $lOptions);
-  if ( $ret != 0 ) {
-    $rc = 545;
-    error("Starting instance $lInstance failed (ret=$ret/rc=$rc).");
-    error("Please have a look in the Error Log or");
-    error("try again with export MYENV_DEBUG=1 if you cannot find any reason...");
-  }
-  break;
+	$ret = startInstance($aConfiguration[$lInstance], $lOptions);
+	if ( $ret != 0 ) {
+		$rc = 545;
+		$msg = 'Starting instance ' . $lInstance . ' failed.' . " (ret=$ret/rc=$rc)";
+		error($msg);
+		error('Please have a look in the database Error Log or');
+		error('try again with export MYENV_DEBUG=1 if you cannot find any reason...');
+	}
+	break;
 case 'bootstrap':
-  $lOptions .= ' --wsrep-new-cluster';
-  $ret = startInstance($aConfiguration[$lInstance], $lOptions);
-  if ( $ret != 0 ) {
-    $rc = 506;
-    error("Bootstrapping galera node $lInstance failed (ret=$ret/rc=$rc).");
-    error("Please have a look in the Error Log or");
-    error("try again with export MYENV_DEBUG=1 if you cannot find any reason...");
-  }
-  break;
+	$lOptions .= ' --wsrep-new-cluster';
+	$ret = startInstance($aConfiguration[$lInstance], $lOptions);
+	if ( $ret != 0 ) {
+		$rc = 506;
+		error("Bootstrapping galera node $lInstance failed." . " (ret=$ret/rc=$rc)");
+		error("Please have a look in the Error Log or");
+		error("try again with export MYENV_DEBUG=1 if you cannot find any reason...");
+	}
+	break;
 case 'stop':
-  $ret = stopInstance($aConfiguration[$lInstance]);
-  if ( $ret != 0 ) {
-    $rc = 546;
-    error("Stopping instance $lInstance failed (rc=$rc).");
-  }
-  break;
+	$ret = stopInstance($aConfiguration[$lInstance]);
+	if ( $ret != 0 ) {
+		$rc = 546;
+		error("Stopping instance $lInstance failed." . " (rc=$rc/ret=$ret)");
+	}
+	break;
 case 'status':
   $ret = checkInstance($aConfiguration[$lInstance]);
   if ( $ret != 0 ) {
     $rc = 547;
-    error("Check on instance $lInstance failed (rc=$rc).");
+    error("Check on instance $lInstance failed." . " (rc=$rc/ret=$ret)");
   }
   break;
 case 'restart':
   $ret = stopInstance($aConfiguration[$lInstance]);
   if ( $ret != 0 ) {
     $rc = 548;
-    error("Stopping instance $lInstance failed (rc=$rc).");
+    error("Stopping instance $lInstance failed." . " (rc=$rc/ret=$ret)");
   }
   $ret = startInstance($aConfiguration[$lInstance]);
   if ( $ret != 0 ) {
     $rc = 549;
-    error("Starting instance $lInstance failed (rc=$rc).");
+    error("Starting instance $lInstance failed." . " (rc=$rc/ret=$ret)");
   }
   break;
 default:
   $rc = 550;
-  error("Unknown command $lCommand (rc=$rc).");
+  error("Unknown command $lCommand." . " (rc=$rc)");
 }
 
 exit($rc);

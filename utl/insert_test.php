@@ -6,7 +6,7 @@ $lUser     = 'app';
 $lPassword = 'secret';
 $lDatabase = 'test';
 $lPort     = '3306';
-$lSocket   = '/var/run/mysqld/mysql.sock';
+$lSocket   = '/run/mysqld/mysql.sock';
 
 $rc = 0;
 
@@ -24,7 +24,7 @@ $sql = 'INSERT INTO test (id, data, ts) values (NULL, "Test data insert", CURREN
 while ( true ) {
 
   if ( ! $mysqli->query($sql) ) {
-  
+
     fprintf(STDERR, "\nERROR %d: %s\n", $mysqli->errno, $mysqli->error);
     do {
 

@@ -86,5 +86,5 @@ foreach my $address (keys %{$map})
 
 foreach my $key (sort keys %{$sums})
 {
-  printf "%-10s: %12i (%6.2f GB)\n", $key, $sums->{$key}, $sums->{$key}/262144;
+  printf "%-18s: %12i (%6.2f GB)\n", $key, $sums->{$key}, $sums->{$key}/262144;
 }

@@ -1,12 +1,12 @@
 MyEnv
 =====
 
-MyEnv is a tool to operate several MySQL and MariaDB instances on one host. We
-call this multi-instance set-ups.
+MyEnv is a tool to operate several MariaDB and MySQL instances on one machine.
+We call this multi-instance set-ups.
 
 With MyEnv a multi-instance set-up is more comfortable to handle than with
 mysqld_multi (old) or systemd services (new).
-Using MyEnv does not need the use of the root user to operate MySQL and MariaDB
+Using MyEnv does not need the use of the root user to operate MariaDB and MySQL
 databases. Thus it is appropriate for classical enterprise DBA organizations.
 Further multi-instance set-ups is a much more efficient way of consolidating
 MySQL and MariaDB databases an has less overhead than virtualization solutions.
@@ -26,7 +26,7 @@ Bugs and feature request can be reported here: https://support.fromdual.com/bugs
 Requirements
 ------------
 
-You can find the MyEnv requirments under the following link:
+You can find the MyEnv requirements under the following link:
 
 https://www.fromdual.com/myenv-mysql-mariadb-basenv#requirements
 
@@ -34,6 +34,7 @@ https://www.fromdual.com/myenv-mysql-mariadb-basenv#requirements
 Upgrade 1.x -> 2.y and higher
 ------------------------------
 
+https://www.fromdual.com/mysql-mariadb-environment-myenv-2.1.0-has-been-released
 https://www.fromdual.com/mysql-mariadb-environment-myenv-2.0.3-has-been-released
 https://www.fromdual.com/mysql-mariadb-environment-myenv-2.0.2-has-been-released
 https://www.fromdual.com/mysql-mariadb-environment-myenv-2.0.1-has-been-released

@@ -12,7 +12,7 @@ $lConfigurationFile = '/etc/myenv/myenv.conf';
 
 if ( ! is_file($lConfigurationFile) ) {
 	$rc = 513;
-	error("Warning: Configuration file $lConfigurationFile does not exist!\n");
+	warn("Configuration file $lConfigurationFile does not exist!\n");
 	exit($rc);
 }
 

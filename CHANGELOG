@@ -4,6 +4,202 @@
 #
 
 
+Version 2.1.0
+-------------
+
+Commit: 98d7f5a
+* Testing: All supported distros passed.
+
+Commit: 759754c
+* Installer: Debian 10 and 11 do not support PHP 8.0 yet, fixed.
+
+Commit: 37ed362
+* Packaging: Tarball insttest script added.
+
+Commit: 75c7b5e
+* General: Error messages and handling improved, all tests passed.
+
+Commit: 2397f0c
+* General: rc made unique, tests fixed, package should not overwrite config file
+  any more.
+
+Commit: c41d236
+* MyEnv: Removed hard coded part.
+
+Commit: 506e86b
+* MyEnv: Substitute path was extracted into its own function, test made for this
+  function.
+
+Commit: 4f1083b
+* General: Error handling and error messages improved.
+
+Commit: 4d34008
+* MyEnv: Improved branch guessing.
+
+Commit: d12cf63
+* MyEnv: Made warnings and error in color.
+
+Commit: 00da3e0
+* MyEnv: Some more checks added, log file is now touched to avoid problems with
+  root.
+
+Commit: d3e3413
+* Installer: Unit file is copied now correctly.
+
+Commit: b3de58f
+* MyEnv: mysql user removed in start/stop script.
+
+Commit: bb6683f
+* MyEnv: Checks for db start improved.
+
+Commit: 570646b
+* MyEnv: Some bugs fixed running myenv under user mariadb on RockyLinux 9.
+
+Commit: 2dedac9
+* Testing: Testautomation added for automated install.
+
+Commit: 5ce4710
+* Installer: MyEnv instance installation is automatizable now.
+
+Commit: a94b4e8
+* Installer: Instance creation automation added.
+
+Commit: ba74a01
+* MyEnv: /var/run replaced by the more modern location /run.
+
+Commit: dfc1534
+* MyEnv: Should now be completely mariadb compatible mariadbd vs mysqld.
+
+Commit: 77dafc9
+* MyEnv: mysqld_safe was extended to mariadbd-safe.
+
+Commit: fcfa14e
+* MyEnv: Replaced getVersionFromMysqld by getVersionAndBranchFromDaemon and
+  extended functionality of this function.
+
+Commit: d5f2bee
+* MyEnv: LD_LIBRARY_PATH was set to the wrong structure, fixed. Some problems
+  with mkdir in 10.3 fixed.
+
+Commit: 3dd88f2
+* Installer: my.cnf template together with installMyenv should now work without
+  errors or warnings for MariaDB 10.5 - 11.2 and MySQL 8.0 - 8.3.
+
+Commit: 0cb3909
+* MyEnv: Reverting Commit: fcc93c5 from v2.0.3 related to CDPATH, was not so
+  good idea, break commands like cd log or cd etc.
+
+Commit: 8f51ddd
+* MyEnv: Also database mysql_innodb_cluster_metadata is hidden now.
+
+Commit: 1f0cb35
+* MyEnv: Schema #innodb_redo is suppressed now as well for mysql 8.0, and
+  hideschema is not added to every new instance any more to not overwrite the
+  default.
+
+Commit: b9d7495
+* MyEnv: Bug while stopping instance with missing my.cnf fixed.
+
+Commit: 0e2d7f9
+* Utilities: Client utility adapted in *monitor scripts.
+
+Commit: 4d8408a
+* MyEnv: my_exec improved, tests for my_exec improved.
+
+Commit: ef5229c
+* MyENv: getDistribution function cleaned-up.
+
+Commit: 930dcd7
+* General: Bug in db branch guessing fixed, implicit float conversion
+  deprecation message fixed.
+
+Commit: 49c172e
+* General: Which replaced by type -p php, os-release tests added.
+
+Commit: 90be150
+* General: lsb_release removed because it is no longer supported.
+
+Commit: 107075a
+* Packaging: DEB sign stuff added.
+
+Commit: ec94f5d
+* Packaging: FromDual repo key added.
+
+Commit: 311955a
+* Packaging: Build infrastructure improved.
+
+Commit: ac5d8d0
+* Packaging: Repo create works now from scratch.
+
+Commit: eea249e
+* Packaging: create_test_repo.php added.
+
+Commit: bf5743b
+* Utilities: InnoDB cluster monitor added.
+
+Commit: bd44ebd
+* Utilities: galera_monitor wsrep_last_committed added.
+
+Commit: 4c7649f
+* Installer: Command yum replaced by dnf.
+
+Commit: d6c5437
+* Installer: Command apt-get comments replaced by apt.
+
+Commit: 978b6b9
+* MyEnv: MySQL should now also be detected correctly from ubuntu repository.
+
+Commit: fa45327
+* MyEnv: Function my_exec rewritten.
+
+Commit: 8dddf57
+* Packaging: Packing notes improved.
+
+Commit: 828bd5e
+* General: Debian GNU/Linux tag added for distros.
+
+Commit: 784c33c
+* General: Function extractBranch made better to work on Debian and Ubuntu with
+  distribution packages.
+
+Commit: 3836d33
+* General: Oracle Linux is considered as well now.
+
+Commit: 62ef090
+* General: Some more header information fixed.
+
+Commit: 288adbd
+* Utilities: AWR added, sharding stuff added, lock and trx analysis scripts
+  added.
+
+Commit: a2145f9
+* Utilities: Memory analysis added, NUMA maps output made read for new
+  variables.
+
+Commit: 00da2fa
+* General: Made scripts ready for new MariaDB behaviour.
+
+Commit: 7db1929
+* General: my.cnf adapted to newest knowledge.
+
+Commit: 17993cf
+* General: Directory changed from /tmp to /var/tmp, code cleaned-up and renewal,
+  PID file code and message improved in stopInstance.
+
+Commit: 350d8f7
+* General: Distributions cleaned-up and cloudlinux, rocky linux and almalinux
+  added as centos compatible distros.
+
+Commit: ed8f932
+* General: Copyright year updated from 2020 to 2021.
+
+Commit: deb9191
+* Utilities: connect_maxout utility added.
+
+Commit: 2decca8
+* General: TODO and CHANGELOG updated.
+
+
 Version 2.0.3
 -------------
 
@@ -62,7 +258,7 @@ Commit: 751a4a2
 * MyEnv: Function print replaced by output in function checkMyEnvRequirements.
 
 Commit: 810f352
-* Packaging: php5 dependencies removed for debian.
+* Packaging: php5 dependencies removed for Debian.
 
 Commit: b81337c
 * MyEnv: log_warnings commented out in my.cnf.template to make it work with My-
@@ -88,7 +284,7 @@ Commit: 1817a7d
 * MyEnv: Variable gcache.recover added to template.
 
 Commit: d2ea0cf
-* Packaging: Build instructions move from other projects here to unifiy infor-
+* Packaging: Build instructions move from other projects here to unify infor-
   mation.
 
 Commit: 41d1526
@@ -122,7 +318,7 @@ Commit: 04f3981
 
 Commit: cb1bd75
 * Utilities: netstat.php added.
-* MyEnv: Constants made more humand readable.
+* MyEnv: Constants made more human readable.
 
 Commit: 327d234
 * MyEnv: Variable sync_binlog in my.cnf template adjusted to reasonable value.
@@ -137,7 +333,7 @@ Commit: 8e731d8
 * MyEnv: New MySQL 5.7 Ubuntu repo hash for my.cnf added.
 
 Commit: dd69f40
-* MyEnv: Package php-posix replaced by php-process on Redgat/CentOS.
+* MyEnv: Package php-posix replaced by php-process on Redhat/CentOS.
 
 Commit: c9e93d0
 * Utilities: insert_test.bat added and is working now like on Linux.
@@ -894,7 +1090,7 @@ Change #741
 
 Change #740
 * MyEnv: Preparation work for * for IP replacement done.
-  
+
 
 Version 1.2.1
 -------------

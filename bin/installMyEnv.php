@@ -46,6 +46,14 @@ $longopts  = array(
 , 'purge-data'
 , 'port:'
 , 'socket:'
+, 'basedir:'
+, 'datadir:'
+, 'instancedir:'
+, 'user:'
+, 'my.cnf:'
+, 'angel:'
+, 'cgroups:'
+, 'stage:'
 );
 
 $aOptions = getopt($shortopts, $longopts);
@@ -92,10 +100,6 @@ debug("ConfFile: $lConfFile\n");
 $lCurrentUser = getCurrentUser();
 $lMyenvUser = checkForRootUser($lCurrentUser);
 
-// this becomes obsolete and can be eliminated.
-// checkForNonMySQLUser($lCurrentUser);
-
-
 // Check if MyEnv user exists
 checkOsUser($lMyenvUser);
 
@@ -139,7 +143,7 @@ do {
 		output("\nNo instance exists yet.\n");
 	}
 
-	output("\nAn instance is the same as a mysqld process.\n\n");
+	output("\n" . 'An instance is the same as a mariadbd/mysqld process.' . "\n\n");
 
 	$question = "What do you want to do next?
 o Add a new instance,
@@ -238,18 +242,44 @@ addMyEnvHook($MYENV_HOOK);
 
 
 // Add MyEnv init script
-addMyEnvInitScript();
+// TODO: PHP 8 is not supported yet in Debian 10 and 11
+// addMyEnvInitScript(pKey: '', pMyenvUser: $lMyenvUser);
+addMyEnvInitScript('', $lMyenvUser);
+
+// Make sure log file belongs to user otherwise it will belong to root
+// after first restart and then we cannot log any more...
+
+$lLogFile = $basedir . '/log/myenv_start_stop.log';
+touch($lLogFile);
 
 
 // Make sure /etc/init.d/{mysql|mysqld|mysqld_multi} is replaced
+
 replaceInitScripts();
 
 
+// Check if systemd services are enabled which would cause conflicts
+
+require_once($basedir . '/lib/myEnv.inc');
+
+
+$cmd = 'systemctl is-enabled mariadb mysql mysqld';
+list($rc, $output, $aStdout, $aStderr) = my_exec($cmd);
+
+if ( in_array('enabled', $aStdout) ) {
+	$rc = 784;
+	$msg = 'One of the SystemD services mariadb, mysql or mysqld is enabled. This can cause conflicts with myenv.' . " (rc=$rc)";
+	warn($msg);
+}
+
+
+// Final comment
+
 output("\n");
-output("Now source your profile as follows:\n");
-output("shell> source ~/.bash_profile\n");
+output("Now source your profile as follows:" . "\n");
+output("shell> source ~/.bash_profile" . "\n");
 output("\n");
-output("The README gives some hints how to continue...\n");
+output("The README gives some hints how to continue..." . "\n");
 output("\n");
 
 exit($rc);

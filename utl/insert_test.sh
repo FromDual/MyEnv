@@ -44,9 +44,16 @@ do
 done
 client=$(hostname -s)
 
+type -p mariadb >/dev/null
+if [ 0 -eq ${?} ] ; then
+  CLI=mariadb
+else
+  CLI=mysql
+fi
+
 if [ ${create} ]
 then
-    mysql --user=$user --password=$password --host=$host --port=$port <<EOF
+    ${CLI} --user=$user --password=$password --host=$host --port=$port <<EOF
         create database if not exists ${database} ;
         create table if not exists ${database}.${table} (
                 \`id\` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -69,7 +76,7 @@ _EOF
 
 while [ 1 ]
 do
-    mysql --defaults-extra-file=<(inject_password) --host=$host --port=$port ${database} \
+    ${CLI} --defaults-extra-file=<(inject_password) --host=$host --port=$port ${database} \
           -e "INSERT INTO ${table} (id, data, ts) VALUES (NULL, CONCAT('Test data insert from ${client} on ', @@hostname), CURRENT_TIMESTAMP());"
     echo -n '.'
     if [ -n "$sleep" ]
@@ -77,4 +84,3 @@ do
         sleep $sleep
     fi
 done
-

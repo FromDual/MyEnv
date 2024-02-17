@@ -6,7 +6,7 @@ $lUser     = 'app';
 $lPassword = 'secret';
 $lDatabase = 'test';
 $lPort     = '3306';
-$lSocket   = '/var/run/mysqld/mysql.sock';
+$lSocket   = '/run/mysqld/mysql.sock';
 $lRange    = 100;
 
 $rc = 0;
@@ -25,7 +25,7 @@ $sql = 'UPDATE test SET ts = CURRENT_TIMESTAMP() WHERE id = %d';
 while ( true ) {
 
   if ( ! $mysqli->query(sprintf($sql, rand(1, $lRange))) ) {
-  
+
     fprintf(STDERR, "\nERROR %d: %s\n", $mysqli->errno, $mysqli->error);
     do {
 

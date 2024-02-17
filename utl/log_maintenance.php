@@ -14,14 +14,14 @@ $gDefaults = array(
 , 'password' => ''
 , 'host'     => 'localhost'
 , 'port'     => '3306'
-, 'socket'   => '/var/run/mysql/mysqld.sock'
+, 'socket'   => '/run/mysqld/mysqld.sock'
 );
 
 // ---------------------------------------------------------------------
 function printUsage($pMyNameBase, $pDefaults)
 // ---------------------------------------------------------------------
 {
-	print "
+	echo "
 Do log (and other files) maintenance. User needs database RELOAD privilege and
 O/S read and write access to the file and destination.
 
@@ -306,19 +306,26 @@ if ( isset($aOptions['debug']) ) {
 $aMyCnf = array();
 foreach ( $aMyCnfFiles as $filename ) {
 
-	if ( is_readable($filename) ) {
+	if ( is_readable($filename) && (filesize($filename) > 0) ) {
+
 		if ( isset($aOptions['debug']) ) {
-			print "\nReading configuation from $filename\n";
+			echo "\n" . "Reading configuration from " . $filename . "\n";
 		}
 		list($ret, $aConfig) = parseConfigFile($filename);
+
 		// An error on parsing!
-		if ( $aConfig === false ) {
+		if ( (OK != $ret) || ($aConfig === false) ) {
 			$rc = 425;
-			$err = error_get_last(); 
-			print trim($err['message']) . " (rc=$rc).\n";
+			$err = error_get_last();
+			$msg = 'ERROR: Parsing config file: ' . $aConfig;
+			if ( ! is_null($err) ) {
+				$msg = trim($err['message']);
+			}
+			$msg .= " (rc=$rc)";
+			echo $msg . "\n";
 			exit($rc);
 		}
-		
+
 		// sections [client]
 		if ( array_key_exists('client', $aConfig) ) {
 			if ( array_key_exists('user', $aConfig['client']) ) {
@@ -331,7 +338,7 @@ foreach ( $aMyCnfFiles as $filename ) {
 	}
 	else {
 		if ( isset($aOptions['debug']) ) {
-			print "No config file $filename found.\n";
+			echo "No config file $filename found.\n";
 		}
 	}
 }
@@ -342,7 +349,7 @@ foreach ( $aMyCnf as $key => $value ) {
 
 
 if ( isset($aOptions['debug']) ) {
-  print "Resulting options:\n";
+  echo "Resulting options:\n";
 	print_r($aOptions);
 }
 
@@ -446,11 +453,11 @@ foreach ( $aLines as $line ) {
 		continue;
 	}
 	if ( isset($aOptions['debug']) ) {
-		print $mysqli->host_info . "\n";
+		echo $mysqli->host_info . "\n";
 	}
 	$sql = 'SET NAMES utf8';
 	if ( isset($aOptions['debug']) ) {
-		print "$sql\n";
+		echo "$sql\n";
 	}
 	$mysqli->query($sql);
 
@@ -465,7 +472,7 @@ foreach ( $aLines as $line ) {
 	$sql = sprintf("SHOW GLOBAL VARIABLES WHERE Variable_name IN ('general_log_file', 'slow_query_log_file', 'log_error', 'datadir')");
 
 	if ( isset($aOptions['debug']) ) {
-		print $sql . "\n";
+		echo $sql . "\n";
 	}
 
 	if ( ! $result = $mysqli->query($sql) ) {
@@ -539,7 +546,7 @@ foreach ( $aLines as $line ) {
 	}
 
 	if ( isset($aOptions['debug']) ) {
-		print $lFile . "\n";
+		echo $lFile . "\n";
 	}
 
 	// Do operation
@@ -547,7 +554,7 @@ foreach ( $aLines as $line ) {
 	switch ( $aOptions['operation'] ) {
 	case 'delete':
 		if ( isset($aOptions['debug']) ) {
-			print "Unlink $lFile\n";
+			echo "Unlink $lFile\n";
 		}
 		if ( @unlink($lFile) === false ) {
 			$rc = 417;
@@ -559,7 +566,7 @@ foreach ( $aLines as $line ) {
 		$sql = sprintf("FLUSH %s LOGS", $aOptions['type']);
 
 		if ( isset($aOptions['debug']) ) {
-			print $sql . "\n";
+			echo $sql . "\n";
 		}
 
 		if ( ! $result = $mysqli->query($sql) ) {
@@ -572,7 +579,7 @@ foreach ( $aLines as $line ) {
 		$name = basename($lFile);
 		$dst  = $aOptions['destination'] . '/' . $name . '.' . date('Y-m-d_H-i-s');
 		if ( isset($aOptions['debug']) ) {
-			print "Move $lFile to $dst\n";
+			echo "Move $lFile to $dst\n";
 		}
 		if ( @rename($lFile, $dst) === false ) {
 			$rc = 419;
@@ -584,7 +591,7 @@ foreach ( $aLines as $line ) {
 		$sql = sprintf("FLUSH %s LOGS", $aOptions['type']);
 
 		if ( isset($aOptions['debug']) ) {
-			print $sql . "\n";
+			echo $sql . "\n";
 		}
 
 		if ( ! $result = $mysqli->query($sql) ) {
@@ -599,7 +606,7 @@ foreach ( $aLines as $line ) {
 
 		$tmp = $lFile . '.tmp';
 		if ( isset($aOptions['debug']) ) {
-			print "Rename $lFile to $tmp\n";
+			echo "Rename $lFile to $tmp\n";
 		}
 		// move
 		if ( @rename($lFile, $tmp) === false ) {
@@ -610,7 +617,7 @@ foreach ( $aLines as $line ) {
 		}
 
 		if ( isset($aOptions['debug']) ) {
-			print "truncateFile($tmp, $lFile, " .  $aOptions['lines'] . ").\n";  
+			echo "truncateFile($tmp, $lFile, " .  $aOptions['lines'] . ").\n";
 		}
 		$ret = truncateFile($tmp, $lFile, $aOptions['lines']);
 		if ( $ret != OK ) {
@@ -618,7 +625,7 @@ foreach ( $aLines as $line ) {
 		}
 
 		if ( isset($aOptions['debug']) ) {
-			print "Delete $tmp\n";
+			echo "Delete $tmp\n";
 		}
 		// unlink old file
 		if ( @unlink($tmp) === false ) {
@@ -632,7 +639,7 @@ foreach ( $aLines as $line ) {
 		$sql = sprintf("FLUSH %s LOGS", $aOptions['type']);
 
 		if ( isset($aOptions['debug']) ) {
-			print $sql . "\n";
+			echo $sql . "\n";
 		}
 
 		if ( ! $result = $mysqli->query($sql) ) {

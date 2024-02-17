@@ -5,7 +5,7 @@
 [default]
 
 user                 = mysql
-hideschema           = mysql,performance_schema,lost+found,sys,#innodb_temp
+hideschema           = mysql,performance_schema,lost+found,sys,#innodb_temp,#innodb_redo,mysql_innodb_cluster_metadata
 ; default              = production
 
 ; [production]
@@ -17,7 +17,7 @@ hideschema           = mysql,performance_schema,lost+found,sys,#innodb_temp
 ; instancedir          = /home/mysql/database/production
 ; datadir              = /home/mysql/database/production/data
 ; port                 = 3306
-; socket               = /var/run/mysqld/mysql-3306.sock
+; socket               = /run/mysqld/mysql-3306.sock
 ; my.cnf               = /home/mysql/database/production/etc/my.cnf
 ; readonly             = no
 ; angel                = no

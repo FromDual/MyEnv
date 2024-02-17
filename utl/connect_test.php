@@ -8,7 +8,7 @@ $lUser     = 'app';
 $lPassword = 'secret';
 $lDatabase = 'test';
 $lPort     = '3306';
-$lSocket   = '/var/run/mysqld/mysql.sock';
+$lSocket   = '/run/mysqld/mysql.sock';
 
 $rc  = 0;
 

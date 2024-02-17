@@ -41,8 +41,8 @@ fi
 
 # http://askubuntu.com/questions/322364/how-to-let-mysql-mysqld-to-create-and-write-to-var-run-mysqld-directory
 # -p suppresses output in case directory already exists...
-mkdir -p /var/run/mysqld
-chown $user: /var/run/mysqld
+mkdir -p /run/mysqld /run/mariadb
+chown $user: /run/mysqld /run/mariadb
 
 ulimit -n 65535
 

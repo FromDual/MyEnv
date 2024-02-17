@@ -1,4 +1,4 @@
-# Copyright (c) 2017 - 2020, FromDual GmbH. All rights reserved.
+# Copyright (c) 2017 - 2024, FromDual GmbH. All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -58,11 +58,11 @@
   %else
     %if %(test -f /etc/redhat-release && echo 1 || echo 0)
       %define rhelver %(rpm -qf --qf '%%{version}\\n' /etc/redhat-release | sed -e 's/^\\([0-9]*\\).*/\\1/g')
-      %if "%rhelver" == "6"
-        %define distro_releasetag     el6
+      %if "%rhelver" == "8"
+        %define distro_releasetag     el8
       %else
-        %if "%rhelver" == "7"
-          %define distro_releasetag     el7
+        %if "%rhelver" == "9"
+          %define distro_releasetag     el9
         %else
           %{error:Red Hat Enterprise Linux %{rhelver} is unsupported}
         %endif
@@ -70,11 +70,11 @@
     %else
       %if %(test -f /etc/SuSE-release && echo 1 || echo 0)
         %define susever %(rpm -qf --qf '%%{version}\\n' /etc/SuSE-release | cut -d. -f1)
-        %if "%susever" == "11"
-          %define distro_releasetag   suse11
+        %if "%susever" == "12"
+          %define distro_releasetag   suse12
         %else
-          %if "%susever" == "12"
-            %define distro_releasetag   suse12
+          %if "%susever" == "15"
+            %define distro_releasetag   suse15
           %else
             %{error:SuSE %{susever} is unsupported}
           %endif
@@ -98,27 +98,27 @@
 
 %if "%{distro_releasetag}" == "fc"
   %define distro_description    Fedora Linux
-  %define distro_requires       php-cli php-mysql php-posix redhat-lsb-core systemd
+  %define distro_requires       php-cli php-mysql php-posix systemd
   %global systemd 1
 %else
-  %if "%{distro_releasetag}" == "el6"
-    %define distro_description    Red Hat / Oracle / CentOS / Scientific Linux 6
-    %define distro_requires       php-cli php-mysql php-posix redhat-lsb-core /sbin/chkconfig /sbin/service
+  %if "%{distro_releasetag}" == "el8"
+    %define distro_description    Red Hat / Oracle / Rocky Linux / AlmaLinux 8
+    %define distro_requires       php-cli php-mysql php-posix /sbin/chkconfig /sbin/service
     %global systemd 0
   %else
-    %if "%{distro_releasetag}" == "el7"
-      %define distro_description   Red Hat / Oracle / CentOS / Scientific Linux 7
-      %define distro_requires      php-cli php-mysql php-posix redhat-lsb-core systemd
+    %if "%{distro_releasetag}" == "el9"
+      %define distro_description   Red Hat / Oracle / Rocky Linux / AlmaLinux 9
+      %define distro_requires      php-cli php-mysql php-posix systemd
       %global systemd 1
     %else
-      %if "%{distro_releasetag}" == "suse11"
-        %define distro_description   SuSE Linux 11
-        %define distro_requires      php5-posix php5-pcntl php5-mysql lsb-release
+      %if "%{distro_releasetag}" == "suse12"
+        %define distro_description   SuSE Linux 12
+        %define distro_requires      php-posix php-pcntl php-mysql
         %global systemd 0
       %else
-        %if "%{distro_releasetag}" == "suse12"
-          %define distro_description  SuSE Linux 12
-          %define distro_requires     php5-posix php5-pcntl php5-mysql lsb-release systemd
+        %if "%{distro_releasetag}" == "suse15"
+          %define distro_description  SuSE Linux 15
+          %define distro_requires     php-posix php-pcntl php-mysql systemd
           %global systemd 1
         %else
           %{error:Unknown distro_releasetag %{distro_releasetag}}
@@ -131,7 +131,7 @@
 
 # Confusion:
 # 'release' = '%%{release}'   is a RPM feature, the spec file version, set manually
-# 'Version' = '%%{version}' = '%2.0.3%'  is the software version, set during export
+# 'Version' = '%%{version}' = '%2.1.0%'  is the software version, set during export
 
 %global release         1
 
@@ -142,7 +142,7 @@ BuildArchitectures: noarch
 Requires:       %{distro_requires}
 
 Name:           myenv
-Version:        2.0.3
+Version:        2.1.0
 Release:        %{release}.%{distro_releasetag}
 Distribution:   %{distro_description} (or compatible)
 
@@ -210,14 +210,14 @@ cp -R ${SRC} ${RPM_BUILD_ROOT}${ABS}
 install -d ${RPM_BUILD_ROOT}${ABS}/%{name}-%{version}/log
 
 install -d ${RPM_BUILD_ROOT}/etc/%{name}
-install -D ${SRC}/tpl/aliases.conf.template   ${RPM_BUILD_ROOT}/etc/%{name}/aliases.conf
-install -D ${SRC}/tpl/variables.conf.template ${RPM_BUILD_ROOT}/etc/%{name}/variables.conf
-install -D ${SRC}/etc/MYENV_BASE              ${RPM_BUILD_ROOT}/etc/%{name}/MYENV_BASE
-install -d -m 0755 ${RPM_BUILD_ROOT}/var/run/myenv
+install -D -b ${SRC}/tpl/aliases.conf.template   ${RPM_BUILD_ROOT}/etc/%{name}/aliases.conf
+install -D -b ${SRC}/tpl/variables.conf.template ${RPM_BUILD_ROOT}/etc/%{name}/variables.conf
+install -D -b ${SRC}/etc/MYENV_BASE              ${RPM_BUILD_ROOT}/etc/%{name}/MYENV_BASE
+install -d -m 0755 ${RPM_BUILD_ROOT}/run/myenv
 
 
 %if 0%{?systemd}
-install -D -m 0644 ${SRC}/tpl/systemd.myenv.unit.template ${RPM_BUILD_ROOT}/%{_unitdir}/%{name}.service
+install -D -m 0644 ${SRC}/tpl/systemd.myenv.mysql.unit.template ${RPM_BUILD_ROOT}/%{_unitdir}/%{name}.service
 %else
 install -D -m 0755 ${SRC}/tpl/myenv.server ${RPM_BUILD_ROOT}/etc/init.d/%{name}
 %endif
@@ -388,7 +388,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 # Currently, we have no license or doc file in the package.
 # Just some directories must be handled explicitly ...
 
-%dir %attr(755, mysql, mysql) /var/run/myenv
+%dir %attr(755, mysql, mysql) /run/myenv
 %dir %attr(755, mysql, mysql) /etc/%{name}
 %dir %attr(755, mysql, mysql) %{mysql_home_dir}/product/%{name}-%{version}
 %dir %attr(755, mysql, mysql) %{mysql_home_dir}/product/%{name}-%{version}/log
@@ -428,4 +428,3 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 
 * Thu Jun 22 2017 Jörg Brühe <joerg.bruehe@fromdual.com>
 - Initial version.
-

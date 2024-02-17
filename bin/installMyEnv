@@ -19,7 +19,7 @@ else
 fi
 export MYENV_BASE=$(dirname $(dirname $PHPINSTALLER))
 
-PHP=$(which php)
+PHP=$(type -p php)
 ret=$?
 
 if [ $ret -ne 0 ] ; then
@@ -27,9 +27,9 @@ if [ $ret -ne 0 ] ; then
 	echo "ERROR: Cannot find PHP."
 	echo "Please install PHP as follows:"
 	echo
-	echo "RedHat/CentOS: shell> sudo yum install php-cli php-posix php-pcntl php-mysqli redhat-lsb-core";
-	echo "SLES/OpenSuSE: shell> sudo zypper install php php-posix php-pcntl php-mysql lsb-release";
-	echo "Ubuntu/Debian: shell> sudo apt-get install php-cli php php-mysql lsb-release";
+	echo "RedHat/CentOS: shell> sudo yum install php-cli php-posix php-pcntl php-mysqli";
+	echo "SLES/OpenSuSE: shell> sudo zypper install php php-posix php-pcntl php-mysql";
+	echo "Ubuntu/Debian: shell> sudo apt-get install php-cli php php-mysql";
 	exit $rc
 fi
 

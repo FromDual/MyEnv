@@ -39,7 +39,7 @@ if ( (count($argv) - 1) != count($aOptions) ) {
 	$rc = 443;
 
 	fwrite(STDERR, "ERROR: Options were not entered correctly. Please fix it (rc=$rc).\n");
-	
+
 	// Check and show which variables are not correct
 
 	// Remove 1st option which is the filename
@@ -77,15 +77,15 @@ if ( ! isset($aOptions['port']) ) {
   $aOptions['port'] = 3306;
 }
 if ( ! isset($aOptions['socket']) ) {
-  $aOptions['socket'] = '/var/run/mysqld/mysql.sock';
+  $aOptions['socket'] = '/run/mysqld/mysql.sock';
 }
 
 // If password is a file extrac password from file
 if ( file_exists($aOptions['password']) ) {
-  
+
 	$handle = @fopen($aOptions['password'], 'r');
 	if ( $handle ) {
-	
+
 		while ( ($buffer = fgets($handle, 4096)) !== false ) {
 
       if ( preg_match('/password\s*=\s*(.*)$/', $buffer, $matches) ) {
@@ -138,7 +138,7 @@ Options:
               = localhost).
   port        Port where database is listening (default = 3306).
   socket      Socket where database is listening (defaul =
-              /var/run/mysqld/mysql.sock).
+              /run/mysqld/mysql.sock).
   schema      Schema where partitoned table is located.
   table       Table to split the newest partiton.
   number      Number of partitions to remain.

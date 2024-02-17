@@ -23,7 +23,7 @@ $productdir = dirname($basedir);
 output("\n");
 output('The following FromDual Toolbox Packages are installed:' . "\n");
 output('------------------------------------------------------------------------' . "\n");
-output('MyEnv:           2.0.3 (2decca847d904dce9363fe68869897ab5a39dadb) ' . "\n");
+output('MyEnv:           2.1.0 (9aa13523aeb54c24f03cf0984452f8dff8c367f0) ' . "\n");
 
 // TODO: Check in releases what names and versions are available
 $aLocations = array('brman', 'fromdual_bman', 'fromdual_brman', 'fromdual_brman');
@@ -33,7 +33,7 @@ $version = 'not found';
 foreach ( $aLocations as $location ) {
 
 	foreach ( $aExecutables as $executable ) {
-	
+
 		$exe = $productdir . '/' . $location . '/bin/' . $executable;
 		if ( is_executable($exe) ) {
 
@@ -64,7 +64,7 @@ $version = 'not found';
 foreach ( $aLocations as $location ) {
 
 	foreach ( $aExecutables as $executable ) {
-	
+
 		$exe = $location . '/bin/' . $executable;
 		if ( is_executable($exe) ) {
 
@@ -108,11 +108,12 @@ output('Nagios plug-ins: ' . $version . "\n");
 
 
 $lOs = getOs();
-$lDistribution = getDistribution();
-output('O/S:             ' . $lOs . ' / ' . $lDistribution . "\n");
+$aDistributionInfo = array();
+$ret = getDistribution($aDistributionInfo);
+output('O/S:             ' . $lOs . ' / ' . $aDistributionInfo['distribution'] . "\n");
 
 /*
-lsb_release -a
+lsb_release -a --> desupported!!!
 No LSB modules are available.
 Distributor ID: Ubuntu
 Description:    Ubuntu 16.04.3 LTS
@@ -125,7 +126,7 @@ Codename:       xenial
 $lConfigurationFile = '/etc/myenv/myenv.conf';
 if ( ! is_file($lConfigurationFile) ) {
 	$rc = 554;
-	$msg = 'Warning: Configuration file ' . $lConfigurationFile . ' does not exist!' . " (rc=$rc)";
+	$msg = 'Configuration file ' . $lConfigurationFile . ' does not exist!' . " (rc=$rc)";
 	error($msg . "\n");
 	exit($rc);
 }

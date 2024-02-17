@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 #
-# Copyright (c) 2011 - 2020 FromDual GmbH
+# Copyright (c) 2011 - 2024 FromDual GmbH
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -386,7 +386,7 @@ sub getSlaveStatus
   # +-------------------+-------+
   # | log_slave_updates | OFF   |
   # +-------------------+-------+
-  # 
+  #
   # show global variables like 'read_only';
   # +----------------------+--------+
   # | Variable_name        | Value  |
@@ -414,7 +414,7 @@ sub getDefaultParameterXXX
   $hDefaults{'MysqlPort'}     = '3306';
   $hDefaults{'Password'}      = '';
   $hDefaults{'PidFile'}       = '';
-  $hDefaults{'Socket'}        = '/var/run/mysqld/mysql.sock';
+  $hDefaults{'Socket'}        = '/run/mysqld/mysql.sock';
   $hDefaults{'Type'}          = 'mysqld';
   $hDefaults{'Username'}      = 'root';
   $hDefaults{'ZabbixServer'}  = '';
@@ -748,7 +748,7 @@ elsif ( $command eq 'failover' ) {
 
   if ( ($channel_from eq '') || ($channel_to eq '') ) {
     print "ERROR: You have to specify 2 channels.\n";
-    exit(11); 
+    exit(11);
   }
 
   print "DEBUG: Failover channel $channel_from to $channel_to\n";

@@ -14,7 +14,7 @@ $gDefaults = array(
 , 'password' => ''
 , 'host'     => 'localhost'
 , 'port'     => '3306'
-, 'socket'   => '/var/run/mysql/mysqld.sock'
+, 'socket'   => '/run/mysqld/mysqld.sock'
 , 'type'     => 'innodb-bp'
 );
 

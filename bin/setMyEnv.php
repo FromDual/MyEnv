@@ -35,19 +35,21 @@ else {
   $lOldDatabase = '';
 }
 
-$tmp           = strval($argv[1]);
-$pDatabaseName = isset($argv[2]) ? strval($argv[2]) : '';
+$tmp           = array_key_exists(1, $argv) ? strval($argv[1]) : '';
+$pDatabaseName = array_key_exists(2, $argv) ? strval($argv[2]) : '';
 
-debug("tmp file: $tmp");
-debug("database: $pDatabaseName");
+debug("tmp file: " . $tmp);
+debug("database: " . $pDatabaseName);
 
 $aDefaultMyCnfHashes = array(
   'd41d8cd98f00b204e9800998ecf8427e'
 , 'ef3a3e2aba5f02734846bfaa08ae14f4'
-, '46a0151b3b022b225cabb97e6d1ad947'   # MariaDB 5.5 from CentOS 7 repo
-, 'ae873e9306d052531b9b75e9559deccf'   # MariaDB 10.1 from MariaDB repo
-, 'cfe2bc1819d5e200eca8ca6912f714af'   # MySQL 5.7 from Ubuntu repo
-, '723727cb0572654bc5143e28115e3ed3'   # MariaDB 10.6 from MariaDB repo
+, '46a0151b3b022b225cabb97e6d1ad947'   // MariaDB 5.5 from CentOS 7 repo
+, 'ae873e9306d052531b9b75e9559deccf'   // MariaDB 10.1 from MariaDB repo
+, 'cfe2bc1819d5e200eca8ca6912f714af'   // MySQL 5.7 from Ubuntu repo
+, '723727cb0572654bc5143e28115e3ed3'   // MariaDB 10.6 from MariaDB repo
+, '055f3915367dc35fd292d11985d80b36'   // MariaDB 10.11 from MariaDB repo on RockyLinux 9
+, 'f78499dd07dccc3238cc15dd937b87bb'   // MariaDB 10.11 from Ubuntu repo on Ubuntu 2204 and 10.6 from Debian repo on Debian 12
 );
 foreach ( array('/etc/my.cnf', '/etc/mysql/my.cnf', '/usr/local/mysql/etc/my.cnf', "~/.my.cnf") as $file ) {
 
@@ -56,7 +58,7 @@ foreach ( array('/etc/my.cnf', '/etc/mysql/my.cnf', '/usr/local/mysql/etc/my.cnf
 		list($ret, $md5) = getMd5sum2($file, array());
 		// empty file, Oracle default on Ubuntu
 		if ( ! in_array($md5, $aDefaultMyCnfHashes) ) {
-			output("Warning: $file exists. This can screw up myenv. Please remove the file.\n");
+			warn($file . " exists. This can screw up myenv. Please remove the file.");
 		}
 	}
 }
@@ -65,7 +67,7 @@ $lConfigurationFile = '/etc/myenv/myenv.conf';
 
 if ( ! is_file($lConfigurationFile) ) {
   $rc = 537;
-  output("Warning: Configuration file $lConfigurationFile does not exist!\n");
+  warn("Configuration file $lConfigurationFile does not exist!");
   output("         Please create or copy from $lConfigurationFile.template (rc=$rc).\n");
   exit($rc);
 }
@@ -130,13 +132,13 @@ else {
 }
 
 if ( ! array_key_exists("instancedir", $aDatabaseParameter) ) {
-	output("Warning: instancedir is not configured in " . $lConfigurationFile . ". Please fix configuration.\n");
+	warn("Variable instancedir is not configured in " . $lConfigurationFile . ". Please fix configuration.");
 	$aDatabaseParameter['instancedir'] = $aDatabaseParameter['basedir'];
 }
 
 $file = $aDatabaseParameter['basedir'] . '/my.cnf';
 if ( file_exists($file) ) {
-	output("Warning: $file exists. This can screw up myenv. Please remove the file.\n");
+	warn($file . " exists. This can screw up myenv. Please remove the file.");
 }
 
 // Check if my.cnf file is readable for group or others for security reasons
@@ -144,57 +146,35 @@ if ( file_exists($file) ) {
 $lConfFile = $aDatabaseParameter['my.cnf'];
 
 if ( file_exists($lConfFile) && ((fileperms($lConfFile) & 0x001c) > 0) ) {
-	output("Warning: File $lConfFile is writeable for group or readable for others. Please fix with: chmod g-w,o-rw $lConfFile\n");
+	warn("File $lConfFile is writeable for group or readable for others. Please fix with: chmod g-w,o-rw " . $lConfFile);
 }
 
 // Check if link to datadir/my.cnf exits.
 $lLink = $aDatabaseParameter['datadir'] . '/my.cnf';
 // Omit check if we are not allowed to read directory to avoid false positive warnings
-if ( is_dir("/home/mysql/database/mariadb-103/data") === true ) {
+if ( is_dir($aDatabaseParameter['datadir']) === true ) {
 	if ( ! (is_link($lLink) || is_file($lLink)) ) {
-		output("Warning: Link $lLink does not exist. Please create link with: ln -s " . $aDatabaseParameter['my.cnf'] . " $lLink" . "\n");
+		// We CANNOT do something like: cdd; ln -s ../etc/my.cnf because this is our special behaviour and is not true for everybody!
+		warn('Link ' . $lLink . ' does not exist. Please create link with: ln -s ' . $aDatabaseParameter['my.cnf'] . ' ' . $lLink);
 	}
 }
+
+
+// Substitute basedir/* in PATH
 
 // to avoid a complete mess:
 $path = $_ENV['PATH'];
-$old = '';
-if ( $aDatabaseParameter['basedir'] != '' ) {
+$path = substituteDirectoryInPath($path, $basedir, $aOldDatabaseParameter['basedir'], $aDatabaseParameter['basedir']);
 
-	foreach ( array('scripts', 'libexec', 'bin') as $dir ) {
 
-		if ( $aOldDatabaseParameter['basedir'] != '' ) {
-			$old = $aOldDatabaseParameter['basedir'] . '/' . $dir;
-			$path = deleteDirectoryFromPath($path, $old);
-		}
-
-		$new = $aDatabaseParameter['basedir'] . '/'. $dir;
-		if ( is_dir($new) ) {
-			debug("substitute PATH $old by $new");
-			// Clean-up to be sure
-			$path = deleteDirectoryFromPath($path, $new);
-			$path = addDirectoryToPath($path, $new, '', 'left');
-		}
-	}
-}
-
-foreach ( array('scripts', 'libexec', 'bin') as $dir ) {
-
-	$new = $basedir . '/' . $dir;
-	if ( is_dir($new) ) {
-		debug("substitute PATH $old by $new");
-		$path = addDirectoryToPath($path, $new, '', 'left');
-	}
-}
-
-// and last myenv/utl path
-$path = addDirectoryToPath($path, "$basedir/utl", '', 'right');
+// Write tmp file to source later
 
 $fh = fopen($tmp, 'w');
 if ( $fh === false ) {
-  $rc = 538;
-  error("Cannot open file $tmp");
-  exit($rc);
+	$rc = 538;
+	$msg = 'Cannot open file ' . $tmp . " (rc=$rc)";
+	error($msg);
+	exit($rc);
 }
 
 // Add generic variables here
@@ -204,14 +184,13 @@ fwrite($fh, "export PATH=$path\n");
 fwrite($fh, "export INFODIR=" . addDirectoryToPath($_ENV['INFODIR'], $aDatabaseParameter['basedir'] . "/docs", $aDatabaseParameter['basedir'] . "/docs") . "\n");
 fwrite($fh, "export INFOPATH=" . addDirectoryToPath($_ENV['INFOPATH'], $aDatabaseParameter['basedir'] . "/docs", $aDatabaseParameter['basedir'] . "/docs") . "\n");
 fwrite($fh, "export LD_LIBRARY_PATH=" . addDirectoryToPath($_ENV['LD_LIBRARY_PATH'], $aDatabaseParameter['basedir'] . "/lib", $aDatabaseParameter['basedir'] . "/lib") . "\n");
-fwrite($fh, "export LD_LIBRARY_PATH=" . addDirectoryToPath($_ENV['LD_LIBRARY_PATH'], $aDatabaseParameter['basedir'] . "/lib/mysql", $aDatabaseParameter['basedir'] . "/lib/mysql") . "\n");
 fwrite($fh, "export MYSQL_HOME=" . $aDatabaseParameter['datadir'] . "\n");
 fwrite($fh, "export MYSQL_TCP_PORT=" . $aDatabaseParameter['port'] . "\n");
 fwrite($fh, "export MYSQL_UNIX_PORT=" . $aDatabaseParameter['socket'] . "\n");
 fwrite($fh, "export MYSQL_PS1='\u@" . $lDbName . " [\d] SQL> '\n");
 fwrite($fh, "export MYENV_DATABASE=" . $lDbName . "\n");
 fwrite($fh, "export MYENV_DATADIR=" . $aDatabaseParameter['datadir'] . "\n");
-fwrite($fh, "export MYENV_VERSION=" . '2.0.3' . "\n");
+fwrite($fh, "export MYENV_VERSION=" . '2.1.0' . "\n");
 fwrite($fh, "export MYENV_STAGE=" . (isset($aDatabaseParameter['stage']) ? $aDatabaseParameter['stage'] : 'none') . "\n");
 fwrite($fh, "time_off\n");
 

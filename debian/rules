@@ -14,7 +14,7 @@ BUILDROOT = $(CURDIR)/debian/$(PACKAGE)
 include /usr/share/dpkg/pkg-info.mk
 
 %:
-	dh $@ 
+	dh $@
 
 # https://www.debian.org/doc/manuals/maint-guide/dother.de.html -> 5.10 Paket.init
 override_dh_installinit:
@@ -27,9 +27,8 @@ override_dh_auto_install:
 	rsync -a [a-ce-zCR]* $(BUILDROOT)/$(MYSQL_HOME)/product/$(PACKAGE)-$(DEB_VERSION_UPSTREAM)
 	rm -fr $(BUILDROOT)/$(MYSQL_HOME)/product/$(PACKAGE)-$(DEB_VERSION_UPSTREAM)/packaging
 	install -v -d $(BUILDROOT)/etc/$(PACKAGE)
-	install -D tpl/aliases.conf.template   $(BUILDROOT)/etc/$(PACKAGE)/aliases.conf
-	install -D tpl/myenv.conf.template     $(BUILDROOT)/etc/$(PACKAGE)/myenv.conf
-	install -D tpl/variables.conf.template $(BUILDROOT)/etc/$(PACKAGE)/variables.conf
-	install -D etc/MYENV_BASE              $(BUILDROOT)/etc/$(PACKAGE)/MYENV_BASE
-	install -d -m 0755 $(BUILDROOT)/var/run/myenv
-
+	install -D -b tpl/aliases.conf.template   $(BUILDROOT)/etc/$(PACKAGE)/aliases.conf
+	install -D -b tpl/myenv.conf.template     $(BUILDROOT)/etc/$(PACKAGE)/myenv.conf
+	install -D -b tpl/variables.conf.template $(BUILDROOT)/etc/$(PACKAGE)/variables.conf
+	install -D -b etc/MYENV_BASE              $(BUILDROOT)/etc/$(PACKAGE)/MYENV_BASE
+	install -d -m 0755 $(BUILDROOT)/run/myenv

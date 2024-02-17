@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013 - 2020 FromDual GmbH
+// Copyright (c) 2013 - 2024 FromDual GmbH
 //
 // This software is licensed under GPL v2: http://www.gnu.org/licenses/gpl-2.0.html
 //

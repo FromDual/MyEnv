@@ -46,7 +46,7 @@
 function getInstanceBlackList()
 // ---------------------------------------------------------------------
 {
-	return array('mysql', 'mysqld', 'default');
+	return array('mysql', 'mysqld', 'default', 'mariadb', 'mariadbd');
 }
 
 // ---------------------------------------------------------------------
@@ -81,7 +81,7 @@ function addInstance()
 
 		for ( $i = 1; $i < 100; $i++ ) {
 
-			$default = 'mysqld' . $i;
+			$default = 'mariadbd' . $i;
 
 			if ( array_key_exists($default, $aConfiguration) ) {
 				continue;
@@ -91,7 +91,7 @@ function addInstance()
 
 		output('You have to enter a new instance name. An instance name can consist of 0-9, a-z, A-Z, - and _.' . "\n");
 		output("\n");
-		output("Examples: test, prod, dev, [$default] mysqld-3306" . "\n");
+		output("Examples: test, prod, dev, [$default] mariadbd-3306" . "\n");
 		output("\n");
 
 		$instance = readline('Enter a new instance name: ');
@@ -127,7 +127,8 @@ function addInstance()
 		$aConfiguration[$instance]['start']      = 'yes';
 		$aConfiguration[$instance]['stop']       = 'yes';
 		// TODO: this is redundant with myenv.conf.template, make unique
-		$aConfiguration[$instance]['hideschema'] = 'mysql,performance_schema,lost+found,sys,#innodb_temp';
+		// Do not add this here because it overwrited default section!
+		// $aConfiguration[$instance]['hideschema'] = 'mysql,performance_schema,lost+found,sys,#innodb_temp,#innodb_redo,mysql_innodb_cluster_metadata';
 		$aConfiguration[$instance]['type']       = 'mysqld';
 		$rc = changeInstance($instance);
 	}
@@ -336,7 +337,8 @@ function changeInstance($pInstance)
 
 	list($rc, $mycnf) = askForMyCnf($aConfiguration[$pInstance]);
 	if ( $rc != OK ) {
-		$aConfiguration[$pInstance]['my.cnf'] = '';
+		// This is a bad idea because $mycnf can return also useful results in case of failure!
+		// $aConfiguration[$pInstance]['my.cnf'] = '';
 		$msg = 'Creating instance configuration failed. Aborting...';
 		error($msg);
 		return $rc;
@@ -366,12 +368,12 @@ function changeInstance($pInstance)
 	$stage = askForStage($aConfiguration[$pInstance]);
 	$aConfiguration[$pInstance]['stage'] = $stage;
 
-	// Do cleanup from raw config again because of the inheritence problem of the
+	// Do cleanup from raw config again because of the inheritance problem of the
 	// default section
 	// TODO: this is just a workaround and should be fixed later!!!
 
 	// TODO: This is also pretty evil and should be removed by ONE config asap!
-	$lConfFile         = '/etc/myenv/myenv.conf';
+	$lConfFile = '/etc/myenv/myenv.conf';
 	list($ret, $aRawConfiguration) = parseConfigFile($lConfFile, INI_SCANNER_RAW);
 
 	if ( isset($aRawConfiguration[$pInstance]) ) {
@@ -424,31 +426,27 @@ function installInstance($aConfiguration)
 				$lOs = getOs();
 				$lDistribution = 'unknown';
 				if ( $lOs == 'Linux' ) {
-					$lDistribution = getDistribution();
+					$aDistributionInfo = array();
+					$ret = getDistribution($aDistributionInfo);
 				}
 
-				switch ($lDistribution) {
-				case 'CentOS':
-				case 'RedHat':
-				case 'Fedora':
-				case 'RedHatEnterpriseServer':
+				switch ($aDistributionInfo['distribution_family']) {
+				case 'Redhat':
 					$cmd = "sudo yum install libaio";
-					output("  shell> $cmd\n\n");
+					output("  shell> " . $cmd . "\n\n");
 					break;
 				case 'SUSE':
-				case 'SUSE LINUX':
-				case 'openSUSE project':
 					$cmd = "sudo zypper install libaio";
-					output("  shell> $cmd\n\n");
+					output("  shell> " . $cmd . "\n\n");
 					break;
 				case 'Ubuntu':
 				case 'Debian':
 					$cmd = "sudo apt-get install libaio1";
-					output("  shell> $cmd\n\n");
+					output("  shell> " . $cmd . "\n\n");
 					break;
 				default:
-					$cmd = 'echo "Unknown distribution: ' . $lDistribution . '"';
-					output("OS/Distribution $lOs/$lDistribution is not yet supported.\n");
+					$cmd = 'echo "Unknown distribution: ' . $aDistributionInfo['distribution_family'] . '"';
+					output("OS/Distribution $lOs/" . $aDistributionInfo['distribution_family'] . " is not yet supported.\n");
 				}
 
 				output("\n");
@@ -470,12 +468,38 @@ function installInstance($aConfiguration)
 					break;
 				default:
 				}
+			}   // libaio
+
+
+			// Get version of MySQL/MariaDB
+
+			list($version, $branch) = getVersionAndBranchFromDaemon($aConfiguration['basedir']);
+			if ( $version == 'unknown' ) {
+				$daemon = 'mysqld';
+				if ( 'MariaDB' == $branch ) {
+					$daemon = 'mariadbd';
+				}
+				$rc = 736;
+				$msg = 'Cannot get version from ' . $daemon . ' --version.' . " (rc=$rc)";
+				error($msg . "\n");
+				return $rc;
+			}
+
+			list($ret, $mr_version) = getMachineReadableVersion($version);
+			if ( ($ret != OK) || ($mr_version == '') ) {
+				$rc = 737;
+				$msg = "Cannot get machine readable version from $mr_version." . " (rc=$rc)";
+				error($msg . "\n");
+				return $rc;
 			}
 
 
-			// Check /var/run/mysqld
+			// Check /run/mysqld or /run/mariadb
 
-			$run = '/var/run/mysqld';
+			$run = '/run/mysqld';
+			if ( 'MariaDB' == $branch ) {
+				$run = '/run/mariadb';
+			}
 			if ( ! is_dir($run) ) {
 			  output("\n");
 				output("Directory $run does not exist. Please create it as follows:\n");
@@ -503,30 +527,20 @@ function installInstance($aConfiguration)
 			}
 
 			if ( $key != 's' ) {
-				$uid = fileowner($run);
-				$aUser = posix_getpwuid($uid);
-				if ( $aUser['name'] != $aConfiguration['user'] ) {
-					error("User " . $aUser['name'] . " of directory $run does not match database user " . $aConfiguration['user'] . " this will cause troubles later.");
+				if ( is_dir($run) ) {
+					$uid = fileowner($run);
+					$aUser = posix_getpwuid($uid);
+					if ( $aUser['name'] != $aConfiguration['user'] ) {
+						$rc = 785;
+						$msg = 'Owner ' . $aUser['name'] . ' of directory ' . $run . ' does not match database user ' . $aConfiguration['user'] . ' this will cause troubles later.' . " (rc=$rc)";
+						error($msg);
+					}
 				}
-			}
-
-
-			// Get version of MySQL/MariaDB
-
-			$version = getVersionFromMysqld($aConfiguration['basedir']);
-			if ( $version == 'unknown' ) {
-				$rc = 736;
-				$msg = 'Cannot get version from ' . "mysqld --version. (rc=$rc)";
-				error("$msg\n");
-				return $rc;
-			}
-
-			list($ret, $mr_version) = getMachineReadableVersion($version);
-			if ( ($ret != OK) || ($mr_version == '') ) {
-				$rc = 737;
-				$msg = "Cannot get machine readable version from $mr_version. (rc=$rc)";
-				error("$msg\n");
-				return $rc;
+				else {
+					$rc = 788;
+					$msg = 'Directory ' . $run . ' is missing. This will cause troubles later.' . " (rc=$rc)";
+					warn($msg);
+				}
 			}
 
 
@@ -538,6 +552,9 @@ function installInstance($aConfiguration)
 			// old style mysqld_install_db
 			if ( ($mr_version <= '050705') || ($mr_version >= '100000') ) {
 				$inst = 'mysql_install_db';
+				if ( 'MariaDB' == $branch ) {
+					$inst = 'mariadb-install-db';
+				}
 				$sec  = '';
 			}
 			// new style mysqld --initialize-insecure
@@ -586,20 +603,17 @@ function installInstance($aConfiguration)
 					$lOs = getOs();
 					if ( $lOs == 'Linux' ) {
 
-						$distribution = getDistribution();
-						if ( ($distribution == 'CentOS')
-							|| ($distribution == 'RedHat')
-							|| ($distribution == 'Fedora')
-							) {
+						$aDistributionInfo = array();
+						$ret = getDistribution($aDistributionInfo);
+						if ( 'Redhat' == $aDistributionInfo['distribution_family'] ) {
 							output("\nINFO: SELinux is in status (sudo sestatus):\n");
 							$cmd = "/usr/sbin/sestatus | egrep 'status|mode'";
 							list($ret, $output, $stdout, $stderr) = my_exec($cmd);
 							output("\n");
 						}
-						elseif ( ($distribution == 'Ubuntu')
-									|| ($distribution == 'Debian')
-									|| ($distribution == 'SUSE')
-									|| ($distribution == 'openSUSE project')
+						elseif ( ($aDistributionInfo['distribution_family'] == 'Ubuntu')
+									|| ($aDistributionInfo['distribution_family'] == 'Debian')
+									|| ($aDistributionInfo['distribution_family'] == 'SUSE')
 									) {
 							$cmd = '/usr/sbin/apparmor_status';
 							if ( is_executable($cmd) ) {
@@ -609,11 +623,11 @@ function installInstance($aConfiguration)
 							}
 						}
 						else {
-							output("I do not know and support distribution: $distribution\n");
+							output("I do not know and support distribution: " . $aDistributionInfo['distribution_family'] . "\n");
 						}
 					}
 
-					if ( $distribution == 'openSUSE project' ) {
+					if ( $aDistributionInfo['distribution'] == 'openSUSE' ) {
 						output("  INFO: There is a bug in some SuSE installers (FATAL ERROR: Could not find /fill_help_tables.sql).\n");
 					}
 				}
@@ -705,7 +719,7 @@ function askForMyCnf($aConfiguration)
 	try {
 
 		if ( $aConfiguration['my.cnf'] == '' ) {
-			output("WARNING: empty my.cnf!\n");
+			warn('Empty my.cnf!');
 			output("Please create manually.\n");
 		}
 		// Create my.cnf if not exits
@@ -739,7 +753,7 @@ function askForMyCnf($aConfiguration)
 				$lStrip = 'no';
 			}
 
-
+			// TODO: Unify with automated creation!
 			// TODO: would be better to get it from outside!
 			$basedir = dirname(dirname(__FILE__));
 
@@ -747,11 +761,67 @@ function askForMyCnf($aConfiguration)
 			// read our template and create my.cnf
 
 			// Substitue all %VARIABLES%
-
 			$aSearch = array('%MYCNF%', '%PORT%', '%SOCKET%', '%BASEDIR%', '%DATADIR%', '%SERVERID%', '%UNAME%', '%INSTANCEDIR%', '%INSTANCE%', '__');
-			$aReplace = array($aConfiguration['my.cnf'], $aConfiguration['port'], $aConfiguration['socket'], $aConfiguration['basedir'], $aConfiguration['datadir'], $aConfiguration['port'], php_uname('n'), $aConfiguration['instancedir'], $aConfiguration['name'], '_');
+			$aReplace = array($aConfiguration['my.cnf'], $aConfiguration['port'] . '  ', $aConfiguration['socket'], $aConfiguration['basedir'], $aConfiguration['datadir'], $aConfiguration['port'], php_uname('n'), $aConfiguration['instancedir'], $aConfiguration['name'], '_');
 
-			$aVarSearch  = array('/^# wsrep_/', '/^# WSREP parameter/');
+
+			// Branch and version specific stuff...
+
+			list($version, $branch) = getVersionAndBranchFromDaemon($aConfiguration['basedir']);
+
+			if ( $version == 'unknown' ) {
+				$rc = 786;
+				$msg = 'Cannot get version from ' . 'mariadbd/mysqld' . ' --version.' . " (rc=$rc)";
+				error($msg . "\n");
+				return array($rc, $aConfiguration['my.cnf']);
+			}
+
+			list($ret, $mr_version) = getMachineReadableVersion($version);
+			// var_dump($ret, $version, $branch, $mr_version);
+
+			$aBranchPattern  = array();
+			$aBranchReplace = array();
+			if ( 'MariaDB' == $branch ) {
+
+				array_push($aBranchPattern, '/^# performance_schema             = ON/');
+				array_push($aBranchReplace, 'performance_schema             = ON');
+
+				if ( '100500' < $mr_version ) {
+					array_push($aBranchPattern, '/^innodb_buffer_pool_instances.*$/');
+					array_push($aBranchReplace, '');
+				}
+			}
+			// MySQL and Percona
+			else {
+
+				if ( '050700' < $mr_version ) {
+					array_push($aBranchPattern, '/^# mysqlx/');
+					array_push($aBranchReplace, 'mysqlx');
+				}
+				if ( '080000' < $mr_version ) {
+					array_push($aBranchPattern, '/^expire_logs_days.*$/');
+					array_push($aBranchReplace, '');
+					array_push($aBranchPattern, '/^# binlog_expire_logs_seconds/');
+					array_push($aBranchReplace, 'binlog_expire_logs_seconds');
+				}
+				if ( '080026' <= $mr_version ) {
+					array_push($aBranchPattern, '/log_slave_updates              = 1/');
+					array_push($aBranchReplace, 'log_replica_updates            = 1');
+				}
+				if ( '080030' <= $mr_version ) {
+					array_push($aBranchPattern, '/^innodb_log_file_size           = 256M.*$/');
+					array_push($aBranchReplace, '');
+					array_push($aBranchPattern, '/^# innodb_redo_log_capacity       = 512M/');
+					array_push($aBranchReplace, 'innodb_redo_log_capacity       = 512M');
+				}
+				if ( '080034' <= $mr_version ) {
+					array_push($aBranchPattern, '/^binlog_format.*$/');
+					array_push($aBranchReplace, '');
+				}
+			}
+
+			// Strip patterns
+			$aVarPattern  = array('/^# wsrep_.*$/', '/^# WSREP parameter.*$/');
 			$aVarReplace = array('', '');
 
 			$lTemplateFile = $basedir . '/tpl/my.cnf.template';
@@ -768,10 +838,12 @@ function askForMyCnf($aConfiguration)
 			while( ($line = fgets($srcFh)) !== false ) {
 
 				$line = str_replace($aSearch, $aReplace, $line);
+				$line = preg_replace($aBranchPattern, $aBranchReplace, $line);
+
 				if ( 'yes' == $lStrip ) {
 					// Use preg_replace for array search. preg_match would also do the job
 					// but only for strings!
-					$lNewLine = preg_replace($aVarSearch, $aVarReplace, $line);
+					$lNewLine = preg_replace($aVarPattern, $aVarReplace, $line);
 					// We got a match, skip/strip the line
 					if ( $line != $lNewLine ) {
 						continue;
@@ -792,7 +864,7 @@ function askForMyCnf($aConfiguration)
 				output("Link my.cnf to datadir.");
 				if ( symlink($aConfiguration['my.cnf'], $md) === false ) {
 					$rc = 757;
-					$mst = 'Cannot create symlink ' . $md . '.' . " (rc=$rc)";
+					$msg = 'Cannot create symlink ' . $md . '.' . " (rc=$rc)";
 					throw new Exception($msg);
 				}
 			}
@@ -800,7 +872,7 @@ function askForMyCnf($aConfiguration)
 		// my.cnf already exists!
 		else {
 			$rc = 706;
-			$msg = 'File ' . $aConfiguration['my.cnf'] . ' already exists.' . " (rc=$rc)";
+			$msg = 'Configuration file ' . "'" . $aConfiguration['my.cnf'] . "'" . ' already exists.' . " (rc=$rc)";
 			throw new Exception($msg);
 		}
 	}
@@ -818,33 +890,36 @@ function askForSocket($aGlobalConfiguration, $aInstanceConfiguration, $tSocket =
 {
 
 	$aSocketCandidates = array(
-		'/var/run/mysqld/mysql-' . $aInstanceConfiguration['port'] . '.sock'
-	, '/var/run/mysqld/mysql-' . $aInstanceConfiguration['name'] . '.sock'
-	, '/var/run/mysqld/mysql.sock'
+	  '/run/mariadb/mariadb-' . $aInstanceConfiguration['port'] . '.sock'
+	, '/run/mariadb/mariadb-' . $aInstanceConfiguration['name'] . '.sock'
+	, '/run/mariadb/mariadb.sock'
+	, '/run/mysqld/mysql-' . $aInstanceConfiguration['port'] . '.sock'
+	, '/run/mysqld/mysql-' . $aInstanceConfiguration['name'] . '.sock'
+	, '/run/mysqld/mysql.sock'
 	);
 
 	// Default socket:
 	if ( isset($aInstanceConfiguration['socket']) && ($aInstanceConfiguration['socket'] == '') ) {
-		// /var/run/mysqld/mysql-3306.sock
-		$default =  "/var/run/mysqld/mysql-" . $aInstanceConfiguration['port'] . ".sock";
+		// /run/mariadb/mariadb-3306.sock
+		$default = '/run/mariadb/mariadb-' . $aInstanceConfiguration['port'] . '.sock';
 	}
 	elseif ( isset($aInstanceConfiguration['socket']) && ($aInstanceConfiguration['socket'] != '') ) {
 		$default =  $aInstanceConfiguration['socket'];
 		array_push($aSocketCandidates, $default);
 	}
 	elseif ( ! isset($aInstanceConfiguration['socket']) && ($aInstanceConfiguration['port'] != '3306') ) {
-		// /var/run/mysqld/mysql-3306.sock
-		$default =  "/var/run/mysqld/mysql-" . $aInstanceConfiguration['port'] . ".sock";
+		// /run/mariadb/mariadb-3306.sock
+		$default = '/run/mariadb/mariadb-' . $aInstanceConfiguration['port'] . '.sock';
 	}
 	else {
-		$default = '/var/run/mysqld/mysql.sock';
+		$default = '/run/mariadb/mariadb.sock';
 	}
 
 	$aSocketCandidates = array_unique($aSocketCandidates);
 
 	output("\n");
-	output("Set socket.\n");
-	output("Example: ");
+	output('Set socket.' . "\n");
+	output('Example: ');
 	foreach ( $aSocketCandidates as $socket ) {
 		if ( $socket == $default ) {
 			output('[' . $socket . ']');
@@ -883,7 +958,7 @@ function askForSocket($aGlobalConfiguration, $aInstanceConfiguration, $tSocket =
 	}
 	if ( count($aSocketConflicts) > 0 ) {
 		$insts = implode(', ', $aSocketConflicts);
-		output("WARNING: Socket " . $aInstanceConfiguration['socket'] . " already exists under instance(s) $insts.\n");
+		warn("Socket " . $aInstanceConfiguration['socket'] . " already exists under instance(s) $insts.");
 		output("         Please resolve conflict by renaming socket file. For example add instance name or port to socket\n");
 	}
 
@@ -924,8 +999,8 @@ function askForBasedir($aConfiguration)
 
 	foreach ( $aBasedirCandidates as $key => $basedir ) {
 
-		// No mysqld exists so no candiate
-		$aExecutables = array('sbin/mysqld', 'libexec/mysqld', 'bin/mysqld');
+		// No mysqld/mariadbd exists so no candiate
+		$aExecutables = array('bin/mariadbd', 'sbin/mariadbd', 'libexec/mariadbd', 'bin/mysqld', 'sbin/mysqld', 'libexec/mysqld');
 		$exe = searchExecutable($basedir, $aExecutables);
 		if ( $exe == '' ) {
 			unset($aBasedirCandidates[$key]);
@@ -1089,7 +1164,7 @@ function askForDatadir($aConfiguration)
 		$aConfiguration['datadir'] = $default;
 	}
 	if ( is_dir($aConfiguration['datadir']) ) {
-		output("WARNING: directory " . $aConfiguration['datadir'] ." already exist.\n");
+		warn("Directory " . $aConfiguration['datadir'] ." already exist.");
 	}
 	else {
 		output("Creating directory " . $aConfiguration['datadir'] . "\n");
@@ -1112,17 +1187,13 @@ function replaceInitScripts($tKey = '')
 	, '/etc/init.d/mysqld_multi'
 	, '/etc/systemd/system/mysqld.service'
 	, '/etc/systemd/system/mysql.service'
+	, '/etc/systemd/system/mariadb.service'
 	);
-	$lDistribution = 'unknown';
 
 	$lOs = getOs();
 	if ( $lOs == 'Linux' ) {
-		$lDistribution = getDistribution();
-		$lDistributionVersion = getDistributionVersion();
-		// 14.04
-		// 6.8
-		// 7
-		// 16.04
+		$aDistributionInfo = array();
+		$ret = getDistribution($aDistributionInfo);
 	}
 
 	foreach ( $aInitScritps as $script ) {
@@ -1133,47 +1204,42 @@ function replaceInitScripts($tKey = '')
 			output("You still have an old init script ($script) which can confuse\n");
 			output("MyEnv during server boot. Please remove and deactivate this init script.\n\n");
 
-			switch ($lDistribution) {
-			case 'CentOS':
-			case 'RedHat':
-			case 'RedHatEnterpriseServer':
+			switch ($aDistributionInfo['distribution_family']) {
+			case 'Redhat':
 				// CentOS 7 has systemd
-				if ( $lDistributionVersion >= '7' ) {
+				if ( $aDistributionInfo['major_version'] >= '7' ) {
 					$cmd = "sudo systemctl disable " . $s . "; sudo rm -f $script";
-					output("  shell> $cmd\n\n");
+					output("  shell> " . $cmd . "\n\n");
 				}
 				// CentOS 6 has still sysV
 				else {
 					$cmd = "sudo chkconfig --del " . $s . "; sudo rm -f $script";
-					output("  shell> $cmd\n\n");
+					output("  shell> " . $cmd . "\n\n");
 				}
 				break;
-			case 'Fedora':
 			case 'SUSE':
-			case 'SUSE LINUX':
-			case 'openSUSE project':
 				$cmd = "sudo chkconfig --del " . $s . "; sudo rm -f $script";
-				output("  shell> $cmd\n\n");
+				output("  shell> " . $cmd . "\n\n");
 				break;
 			case 'Ubuntu':
 				// Ubuntu 15.04 and newer has systemd
-				if ( $lDistributionVersion >= '15' ) {
+				if ( $aDistributionInfo['major_version'] >= '15' ) {
 					$cmd = "sudo systemctl disable " . $s . "; sudo rm -f $script";
-					output("  shell> $cmd\n\n");
+					output("  shell> " . $cmd . "\n\n");
 				}
 				// Older Ubuntu has sysV or upstart
 				else {
 					$cmd = "sudo rm -f $script; sudo update-rc.d " . $s . " remove";
-					output("  shell> $cmd\n\n");
+					output("  shell> " . $cmd . "\n\n");
 				}
 				break;
 			case 'Debian':
 				$cmd = "sudo rm -f $script; sudo update-rc.d " . $s . " remove";
-				output("  shell> $cmd\n\n");
+				output("  shell> " . $cmd . "\n\n");
 				break;
 			default:
-				$cmd = 'echo "Unknown distribution: ' . $lDistribution . '"';
-				output("OS/Distribution $lOs/$lDistribution is not yet supported.\n");
+				$cmd = 'echo "Unknown distribution: ' . $aDistributionInfo['distribution_family'] . '"';
+				output("OS/Distribution $lOs/" . $aDistributionInfo['distribution_family'] . " is not yet supported.\n");
 			}
 
 			// For testing purposes only:
@@ -1199,40 +1265,46 @@ function replaceInitScripts($tKey = '')
 			}
 			elseif ( $key == 'i' ) {
 				output("$cmd\n");
-				list($ret, $output, $stdout, $stderr) = my_exec($cmd);
+				list($ret, $output, $aStdout, $aStderr) = my_exec($cmd);
 			}
 		}
 	}
 }
 
 // ---------------------------------------------------------------------
-function addMyEnvInitScript($tKey = '')
+function addMyEnvInitScript($pKey = '', $pMyenvUser)
 // ---------------------------------------------------------------------
 {
 	$rc = OK;
-	$lDistribution = 'unknown';
 
 	$lOs = getOs();
-	if ( $lOs == 'Linux' ) {
-		$lDistribution = getDistribution();
-		$lDistributionVersion = getDistributionVersion();
+	if ( 'Linux' == $lOs ) {
+		$aDistributionInfo = array();
+		$ret = getDistribution($aDistributionInfo);
 	}
 	else {
 		$rc = 739;
-		output("O/S $lOs is not yet supported. (rc=$rc)\n");
+		$msg = 'O/S ' . $lOs . ' is not yet supported.' . " (rc=$rc)";
+		error($msg);
 		return $rc;
 	}
 
-	switch ($lDistribution) {
-	case 'CentOS':
-	case 'RedHat':
-	case 'RedHatEnterpriseServer':
+	$lUnitFileTemplate = $_ENV['MYENV_BASE'] . '/tpl/systemd.myenv.' . $pMyenvUser . '.unit.template';
+	if ( ! file_exists($lUnitFileTemplate) ) {
+		$rc = 787;
+		$msg = 'Unit file template ' . $lUnitFileTemplate . ' does not exist.' . " (rc=$rc)";
+		error($msg);
+		return $rc;
+	}
+
+	switch ($aDistributionInfo['distribution_family']) {
+	case 'Redhat':
 		// SystemD
 		// 7
-		if ( $lDistributionVersion >= '7' ) {
+		if ( $aDistributionInfo['major_version'] >= '7' ) {
 			$lInitScript = '/etc/systemd/system/myenv.service';
-			$ret = prepareUnitFile($_ENV['MYENV_BASE'] . '/tpl/systemd.myenv.unit.template', $_ENV['MYENV_BASE']);
-			$cmd  = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/systemd.myenv.unit.template " . $lInitScript;
+			$ret = prepareUnitFile($lUnitFileTemplate, $_ENV['MYENV_BASE']);
+			$cmd  = 'sudo cp ' . $lUnitFileTemplate . ' ' . $lInitScript;
 			$cmd1 = "sudo systemctl daemon-reload ; sudo systemctl enable myenv";
 		}
 		// sysV
@@ -1243,10 +1315,7 @@ function addMyEnvInitScript($tKey = '')
 			$cmd1 = "sudo chkconfig --add myenv; sudo chkconfig myenv on";
 		}
 		break;
-	case 'Fedora':
 	case 'SUSE':
-	case 'SUSE LINUX':
-	case 'openSUSE project':
 		$lInitScript = '/etc/init.d/myenv';
 		$cmd  = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/myenv.server " . $lInitScript;
 		$cmd1 = "sudo chkconfig --add myenv; sudo chkconfig myenv on";
@@ -1254,10 +1323,10 @@ function addMyEnvInitScript($tKey = '')
 	case 'Ubuntu':
 		// SystemD
 		// >= 15.04
-		if ( $lDistributionVersion >= '15' ) {
+		if ( $aDistributionInfo['major_version'] >= '15' ) {
 			$lInitScript = '/etc/systemd/system/myenv.service';
-			$ret = prepareUnitFile($_ENV['MYENV_BASE'] . '/tpl/systemd.myenv.unit.template', $_ENV['MYENV_BASE']);
-			$cmd = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/systemd.myenv.unit.template " . $lInitScript;
+			$ret = prepareUnitFile($lUnitFileTemplate, $_ENV['MYENV_BASE']);
+			$cmd  = 'sudo cp ' . $lUnitFileTemplate . ' ' . $lInitScript;
 			$cmd1 = "sudo systemctl daemon-reload ; sudo systemctl enable myenv";
 		}
 		// sysV/upstart
@@ -1269,10 +1338,10 @@ function addMyEnvInitScript($tKey = '')
 		}
 		break;
 	case 'Debian':
-		if ( $lDistributionVersion >= '8' ) {
+		if ( $aDistributionInfo['major_version'] >= '8' ) {
 			$lInitScript = '/etc/systemd/system/myenv.service';
-			$ret = prepareUnitFile($_ENV['MYENV_BASE'] . '/tpl/systemd.myenv.unit.template', $_ENV['MYENV_BASE']);
-			$cmd = "sudo cp " . $_ENV['MYENV_BASE'] . "/tpl/systemd.myenv.unit.template " . $lInitScript;
+			$ret = prepareUnitFile($lUnitFileTemplate, $_ENV['MYENV_BASE']);
+			$cmd  = 'sudo cp ' . $lUnitFileTemplate . ' ' . $lInitScript;
 			$cmd1 = "sudo systemctl daemon-reload ; sudo systemctl enable myenv";
 		}
 		else {
@@ -1283,8 +1352,8 @@ function addMyEnvInitScript($tKey = '')
 		break;
 	default:
 		$rc = 750;
-		output("Unknown distribution: $lDistribution ");
-		output("OS/Distribution $lOs/$lDistribution is not yet supported.\n");
+		output("Unknown distribution: " . $aDistributionInfo['distribution_family']);
+		output("OS/Distribution $lOs/" . $aDistributionInfo['distribution_family'] . " is not yet supported.\n");
 		return $rc;
 	}
 
@@ -1296,12 +1365,12 @@ function addMyEnvInitScript($tKey = '')
 		output("  shell> $cmd1" . "\n\n");
 
 		// For testing purposes only:
-		if ( $tKey == '' ) {
+		if ( $pKey == '' ) {
 			output("\n");
 			$key = answerQuestion('Done yourself already, Skip this step, Abort installation or Installer shall do it [D/s/a/i]? ', array('d', 's', 'a', 'i'), 'd');
 		}
 		else {
-			$key = $tKey;
+			$key = $pKey;
 		}
 
 		// Do NOT use switch here because of break!
@@ -1463,21 +1532,23 @@ function checkHomeDir(&$pHomeDir, $pUser, $tKey = '')
 }
 
 // ---------------------------------------------------------------------
-function writeConfigurationFile($aConfiguration, $pConfFile)
+function writeConfigurationFile($aConfiguration, $pConfFile, $pAutomated = false)
 // ---------------------------------------------------------------------
 {
+	$rc = OK;
+
 	// Writing the configuration file
-	output("\n" . 'Writing the configuration file ' . $pConfFile . '...' . "\n");
+	if ( $pAutomated === false ) { output("\n" . 'Writing the configuration file ' . $pConfFile . '...' . "\n"); }
 
 	$lConfFileBak      = $pConfFile . '.' . date("Y-m-d-H-i-s");
 
 	if ( file_exists($lConfFileBak) ) {
 		unlink($lConfFileBak);
 	}
-	output("Rename $pConfFile to $lConfFileBak" . "\n");
+	if ( $pAutomated === false ) { output("Rename $pConfFile to $lConfFileBak" . "\n"); }
 	if ( rename($pConfFile, $lConfFileBak) ) {
 
-		output("Write $pConfFile\n");
+		if ( $pAutomated === false ) { output("Write $pConfFile\n"); }
 		if ( $fh = fopen($pConfFile, 'w') ) {
 
 			foreach ( $aConfiguration as $instance => $record ) {
@@ -1500,9 +1571,12 @@ function writeConfigurationFile($aConfiguration, $pConfFile)
 	}
 	else {
 		$rc = 714;
-		output("Renaming the configuration file $pConfFile to $lConfFileBak failed." . " (rc=$rc)" . "\n");
+		$msg = 'Renaming the configuration file ' . $pConfFile . ' to ' . $lConfFileBak . ' failed.' . " (rc=$rc)";
+		error($msg);
 		exit($rc);
 	}
+
+	// return $rc;
 }
 
 // ---------------------------------------------------------------------
@@ -1896,13 +1970,21 @@ Options:
   purge-data      Purges data in case of deletion.
   port            Port to use.
   socket          Socket to use.
+  basedir         Typically /usr or /opt/mariadb-10.11
+  datadir         Something like /something/<instance>/data
+  instancedir     Something like /something/<instance>
+  user            Typically mariadb or mysql
+  my.cnf          Something like /something/<instance>/etc/my.cnf
+  angel           no or yes (use mariadb-safe or mysqld_safe)
+  cgroups         no or yes
+  stage           Typically one of production, quality, testing or developement
   help            Print this help.
 
 Examples:
 
   $script --operation=delete --instance=test
 
-  $script --operation=add --instance=test --port=3306 --socket=/var/run/mysqld/mysql.sock
+  $script --operation=add --instance=test --port=3306 --socket=/run/mariadb/mariadb.sock
 
 ";
 }
@@ -1916,7 +1998,7 @@ function checkOptions($aArgv, $aOptions, $pConfFile)
 	// Some Options or Arguments were not properly detected
 	if ( count($aArgv) > (count($aOptions) + 1) ) {
 		$rc = 730;
-		$msg = "Invalid arguments or options." . " (rc=$rc)";
+		$msg = 'Invalid arguments or options.' . " (rc=$rc)";
 		error($msg);
 		return $rc;
 	}
@@ -1930,9 +2012,9 @@ function checkOptions($aArgv, $aOptions, $pConfFile)
 	}
 
 	// Operations are not allowed yet
-	if ( in_array($aOptions['operation'], array('add', 'change')) ) {
+	if ( in_array($aOptions['operation'], array('change')) ) {
 		$rc = 732;
-		$msg = "Operation add and change are not supported yet." . " (rc=$rc)";
+		$msg = 'Operation add and change are not supported yet.' . " (rc=$rc)";
 		error($msg);
 		return $rc;
 	}
@@ -1963,7 +2045,7 @@ function checkOptions($aArgv, $aOptions, $pConfFile)
 
 		if ( isset($aConfiguration[$aOptions['instance']]) ) {
 			$rc = 702;
-			$msg = 'Instance ' . $aOptions['instance'] . ' DOES exist. Please choose a new instance name.' . " (rc=$rc)";
+			$msg = 'Instance ' . $aOptions['instance'] . ' DOES exist. Please choose an other instance name.' . " (rc=$rc)";
 			error($msg);
 			return $rc;
 		}
@@ -2000,12 +2082,14 @@ function deleteInstanceAutomatized($aOptions, $pMyEnvConfFile)
 	}
 	else {
 		unset($aConfiguration[$aOptions['instance']]);
-		writeConfigurationFile($aConfiguration, $pMyEnvConfFile);
+		// TODO: This is PHP 8.0 style, this is not supported yet by Debian 10 and 11
+		// writeConfigurationFile($aConfiguration, $pMyEnvConfFile, pAutomated: true);
+		writeConfigurationFile($aConfiguration, $pMyEnvConfFile, true);
 	}
 
 	// Purge database
 	if ( isset($aOptions['purge-data']) ) {
-		output('Purging data of instance ' . $aOptions['instance'] . ' from ' . $lInstanceConfigBackup['instancedir'] . "\n");
+		// output('Purging data of instance ' . $aOptions['instance'] . ' from ' . $lInstanceConfigBackup['instancedir'] . "\n");
 		$rc = recursivelyRemoveDirectory($lInstanceConfigBackup['instancedir']);
 	}
 
@@ -2094,7 +2178,7 @@ function askForInstancedir($aConfiguration)
 		$aConfiguration['instancedir'] = $default;
 	}
 	if ( is_dir($aConfiguration['instancedir']) ) {
-		output("WARNING: directory " . $aConfiguration['instancedir'] ." already exist.\n");
+		warn("Directory " . $aConfiguration['instancedir'] ." already exist.");
 	}
 	else {
 		output("Creating directory " . $aConfiguration['instancedir'] . "\n");
@@ -2117,7 +2201,7 @@ function askForAngel($aConfiguration)
 	// Ask if mysqld should be started with angel
 
 	output("\n");
-	$question = 'Shall mysqld be started with angel process (mysqld_safe) (y/N)? ';
+	$question = 'Shall mariadbd/mysqld be started with angel process (mariadbd-safe/mysqld_safe) (y/N)? ';
 	$key = answerQuestion($question, array('y', 'n'), 'n');
 	$aConfiguration['angel'] = 'no';
 	if ( strtolower($key) == 'y' ) {
@@ -2213,8 +2297,8 @@ function askForPort($aInstanceConfiguration, $tPort = '')
 	}
 	if ( count($aPortConflicts) > 0 ) {
 		$insts = implode(', ', $aPortConflicts);
-		output("WARNING: Port " . $aInstanceConfiguration['port'] . " already exists under instance(s) $insts.\n");
-		output("         Please resolve conflict for example by configuring different IP addresses\n");
+		warn("Port " . $aInstanceConfiguration['port'] . " already exists under instance(s) " . $insts);
+		output("         Please resolve conflict for example by configuring different IP addresses" . "\n");
 		output("         (bind_address=...) or ports (port=...).\n");
 	}
 
@@ -2226,40 +2310,456 @@ function addInstanceAutomatized($aOptions, $pMyEnvConfFile)
 // ---------------------------------------------------------------------
 {
 	$rc = OK;
+	$aConfiguration = array();
 
-	var_dump($aOptions, $pConfFile);
+	// var_dump($aOptions, $pMyEnvConfFile);
 
-	// Do some checks for creation
-	/*
-	basedir = /usr
-	instancedir = /home/mysql/database/mysqld1
-	datadir = /home/mysql/database/mysqld1/data
-	installation
-	port = 3306
-	socket /var/run/mysqld/mysql.sock
-	my.cnf = /home/mysql/database/mysqld1/etc/my.cnf
-	strip_comments y
-	angel = y/n 
-	cgroups = y/n
-	stage = production
-  */
-	/*
-	list($ret, $aConfiguration) = getConfiguration($pConfFile);
+	try {
 
-	// Check if instance is still running
-	$ret = checkInstance($aConfiguration[$aOptions['instance']]);
+		list($ret, $aGlobalConfiguration) = getConfiguration($pMyEnvConfFile);
+		if ( OK != $ret ) {
+			$rc = 735;
+			$msg = 'Error reading configuration file: ' . $pMyEnvConfFile . ' ' . $aGlobalConfiguration . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+		// print_r($aGlobalConfiguration);
 
-	if ( $ret == OK ) {
-		$rc = 756;
-		$msg = "Please stop instence first before deleting it (rc=$rc).";
-		error($msg);
-		return $rc;
+		// Do some checks for creation
+		// Same checks like addInstance and changeInstance
+
+		// Check if instance name contains '.' character
+		if ( strstr($aOptions['instance'], '.') !== false ) {
+			$rc = 758;
+			$msg = 'Instance name ' . $aOptions['instance'] . ' cannot contain ' . "'" . '.' . "'". ' character.' . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		// Check if instance name is on black list:
+		$aBlackList = getInstanceBlackList();
+		if ( in_array($aOptions['instance'], $aBlackList) ) {
+			$rc = 759;
+			$msg = 'Instance name ' . $aOptions['instance'] . ' is on blacklist.' . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		// Check for existing instance name here!
+		if ( array_key_exists($aOptions['instance'], $aGlobalConfiguration) ) {
+			$rc = 760;
+			$msg = 'Instance name ' . $aOptions['instance'] . ' already exists.' . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		$aConfiguration['start'] = 'yes';
+		$aConfiguration['stop']  = 'yes';
+		// TODO: this is redundant with myenv.conf.template, make unique
+		// Do not add this here because it overwrited default section!
+		// $aConfiguration['hideschema'] = 'mysql,performance_schema,lost+found,sys,#innodb_temp,#innodb_redo,mysql_innodb_cluster_metadata';
+		$aConfiguration['type']  = 'mysqld';
+		$aConfiguration['name']  = $aOptions['instance'];
+
+
+		// Check port
+
+		if ( ! array_key_exists('port', $aOptions) ) {
+			$rc = 761;
+			$msg = 'Port is not specified.' . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		if ( intval($aOptions['port']) != $aOptions['port'] ) {
+			$rc = 762;
+			$msg = 'Port does not contain a useful value: ' . $aOptions['port'] . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		foreach ( $aGlobalConfiguration as $instance ) {
+
+			if ( array_key_exists('port', $instance) && ($instance['port'] == $aOptions['port']) ) {
+				$ret = 763;
+				$msg = 'Port is already used in instance: ' . $instance['name'] . " (ret=$ret)";
+				// No exit here, 2 times the same port on different IPs is possible
+				warn($msg);
+			}
+		}
+
+		$aConfiguration['port']  = $aOptions['port'];
+
+
+		// Check socket
+
+		if ( ! array_key_exists('socket', $aOptions) ) {
+			$rc = 764;
+			$msg = 'Socket is not specified.' . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		foreach ( $aGlobalConfiguration as $instance ) {
+
+			if ( array_key_exists('socket', $instance) && ($instance['socket'] == $aOptions['socket']) ) {
+				$rc = 765;
+				$msg = 'Socket is already used in instance: ' . $instance['name'] . " (rc=$rc)";
+				// Exit here because there can be only one file with the same name!
+				throw new Exception($msg, $rc);
+			}
+		}
+
+		$aConfiguration['socket']  = $aOptions['socket'];
+
+
+		// Check basedir
+
+		if ( ! array_key_exists('basedir', $aOptions) ) {
+			$rc = 766;
+			$msg = 'Basedir is not specified.' . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		// TODO We could also check if basedir is a meaningful location
+
+		$aConfiguration['basedir']  = $aOptions['basedir'];
+
+		// TODO: In interactive installation binaries can be installed as well!
+
+
+		// Check datadir
+
+		if ( ! array_key_exists('datadir', $aOptions) ) {
+			$rc = 767;
+			$msg = 'Datadir is not specified.' . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		foreach ( $aGlobalConfiguration as $instance ) {
+
+			if ( array_key_exists('datadir', $instance) && ($instance['datadir'] == $aOptions['datadir']) ) {
+				$rc = 769;
+				$msg = 'Datadir is already used in instance: ' . $instance['name'] . " (rc=$rc)";
+				// Exit here because there can be only one file with the same name!
+				throw new Exception($msg, $rc);
+			}
+		}
+
+		$aConfiguration['datadir']  = $aOptions['datadir'];
+
+
+		// Check instancedir
+
+		if ( ! array_key_exists('instancedir', $aOptions) ) {
+			$rc = 770;
+			$msg = 'Instancedir is not specified.' . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		foreach ( $aGlobalConfiguration as $instance ) {
+
+			if ( array_key_exists('instancedir', $instance) && ($instance['instancedir'] == $aOptions['instancedir']) ) {
+				$rc = 771;
+				$msg = 'Instancedir is already used in instance: ' . $instance['name'] . " (rc=$rc)";
+				// Exit here because there can be only one file with the same name!
+				throw new Exception($msg, $rc);
+			}
+		}
+
+		$aConfiguration['instancedir']  = $aOptions['instancedir'];
+
+
+		// Check my.cnf
+
+		if ( ! array_key_exists('my.cnf', $aOptions) ) {
+			$rc = 772;
+			$msg = 'my.cnf is not specified.' . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		foreach ( $aGlobalConfiguration as $instance ) {
+
+			if ( array_key_exists('my.cnf', $instance) && ($instance['my.cnf'] == $aOptions['my.cnf']) ) {
+				$ret = 773;
+				$msg = 'my.cnf is already used in instance: ' . $instance['name'] . " (ret=$ret)";
+				// No exit here, 2 times the same my.cnf is possible???
+				warn($msg);
+			}
+		}
+
+		// TODO: We could check if file already exists and warn?
+
+		$aConfiguration['my.cnf']  = $aOptions['my.cnf'];
+
+
+		// Check user
+
+		if ( ! array_key_exists('user', $aOptions) ) {
+			$aOptions['user'] = getCurrentUser();
+		}
+
+		// TODO: We could check if user exists in /etc/hosts?
+
+		$aConfiguration['user']  = $aOptions['user'];
+
+
+		// Check angel
+
+		if ( ! array_key_exists('angel', $aOptions) ) {
+			$aOptions['angel'] = 'no';
+		}
+
+		if ( ! in_array($aOptions['angel'], array('no', 'yes')) ) {
+			$rc = 774;
+			$msg = 'Angel should be no or yes but is: ' . $aOptions['angel']. " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		$aConfiguration['angel']  = $aOptions['angel'];
+
+
+		// Check cgroups
+
+		if ( ! array_key_exists('cgroups', $aOptions) ) {
+			$aOptions['cgroups'] = 'no';
+		}
+
+		if ( ! in_array($aOptions['cgroups'], array('no', 'yes')) ) {
+			$rc = 775;
+			$msg = 'Cgroups should be no or yes but is: ' . $aOptions['cgroups']. " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		$aConfiguration['cgroups']  = $aOptions['cgroups'];
+
+
+		// Check stage
+
+		if ( ! array_key_exists('stage', $aOptions) ) {
+			$aOptions['stage'] = 'testing';
+		}
+
+		if ( ! in_array($aOptions['stage'], array('production', 'quality', 'testing', 'development')) ) {
+			$ret = 776;
+			$msg = 'Stage is recommended to be one of production, quality, testing or development but is: ' . $aOptions['stage']. " (ret=$ret)";
+			// No exit here, customer related stages is possible
+			warn($msg);
+		}
+
+		$aConfiguration['stage']  = $aOptions['stage'];
+
+		// print_r($aConfiguration);
+
+		// TODO: In interactive installation binaries can be installed as well!
+		// TODO: Unify all the stuff in here with interactive installation!!!
+
+
+		// Prepare directory structure
+
+		if ( is_dir($aConfiguration['instancedir']) ) {
+			$ret = 777;
+			$msg = 'Directory ' . $aConfiguration['instancedir'] . ' already exist.' . " (ret=$ret)";
+			warn($msg);
+		}
+		else {
+			mkdir($aConfiguration['instancedir'], 0750, true);
+			mkdir($aConfiguration['instancedir'] . '/binlog', 0750);
+			// datadir is created autonomously and can be located somewhere else!
+			mkdir($aConfiguration['instancedir'] . '/etc', 0750);
+			mkdir($aConfiguration['instancedir'] . '/log', 0750);
+			mkdir($aConfiguration['instancedir'] . '/tmp', 0750);
+		}
+
+
+		// Create my.cnf
+
+		$etcdir = dirname($aConfiguration['my.cnf']);
+		// directory does not exist yet
+		if ( file_exists($etcdir) === false ) {
+
+			if ( @mkdir($etcdir, 0750, true) === false ) {
+				$rc = 778;
+				$msg = 'Failed to create directory ' . $etcdir . " (rc=$rc)";
+				error($msg);
+				$a = error_get_last();
+				$msg = 'Reason: ' . $a['message'];
+				throw new Exception($msg, $rc);
+			}
+		}
+
+
+		// read our template and create my.cnf
+
+		// Substitue all %VARIABLES%
+		$aSearch = array('%MYCNF%', '%PORT%', '%SOCKET%', '%BASEDIR%', '%DATADIR%', '%SERVERID%', '%UNAME%', '%INSTANCEDIR%', '%INSTANCE%', '__');
+		$aReplace = array($aConfiguration['my.cnf'], $aConfiguration['port'] . '  ', $aConfiguration['socket'], $aConfiguration['basedir'], $aConfiguration['datadir'], $aConfiguration['port'], php_uname('n'), $aConfiguration['instancedir'], $aConfiguration['name'], '_');
+
+		// Branch and version specific stuff...
+
+		list($lVersion, $lBranch) = getVersionAndBranchFromDaemon($aConfiguration['basedir']);
+		list($ret, $mr_version) = getMachineReadableVersion($lVersion);
+		// var_dump($ret, $lVersion, $lBranch, $mr_version);
+
+		$aBranchPattern  = array();
+		$aBranchReplace = array();
+		if ( 'MariaDB' == $lBranch ) {
+
+			array_push($aBranchPattern, '/^# performance_schema             = ON/');
+			array_push($aBranchReplace, 'performance_schema             = ON');
+
+			if ( '100500' < $mr_version ) {
+				array_push($aBranchPattern, '/^innodb_buffer_pool_instances.*$/');
+				array_push($aBranchReplace, '');
+			}
+		}
+		// MySQL and Percona
+		else {
+
+			if ( '050700' < $mr_version ) {
+				array_push($aBranchPattern, '/^# mysqlx/');
+				array_push($aBranchReplace, 'mysqlx');
+			}
+			if ( '080000' < $mr_version ) {
+				array_push($aBranchPattern, '/^expire_logs_days.*$/');
+				array_push($aBranchReplace, '');
+				array_push($aBranchPattern, '/^# binlog_expire_logs_seconds/');
+				array_push($aBranchReplace, 'binlog_expire_logs_seconds');
+			}
+			if ( '080026' <= $mr_version ) {
+				array_push($aBranchPattern, '/log_slave_updates              = 1/');
+				array_push($aBranchReplace, 'log_replica_updates            = 1');
+			}
+			if ( '080030' <= $mr_version ) {
+				array_push($aBranchPattern, '/^innodb_log_file_size           = 256M.*$/');
+				array_push($aBranchReplace, '');
+				array_push($aBranchPattern, '/^# innodb_redo_log_capacity       = 512M/');
+				array_push($aBranchReplace, 'innodb_redo_log_capacity       = 512M');
+			}
+			if ( '080034' <= $mr_version ) {
+				array_push($aBranchPattern, '/^binlog_format.*$/');
+				array_push($aBranchReplace, '');
+			}
+		}
+
+		// Strip patterns
+		$aVarPattern  = array('/^# wsrep_.*$/', '/^# WSREP parameter.*$/');
+		$aVarReplace = array('', '');
+
+		// TODO: Would be better to get it from outside!
+		$basedir = dirname(dirname(__FILE__));
+		$lTemplateFile = $basedir . '/tpl/my.cnf.template';
+		$srcFh = fopen($lTemplateFile, 'r');
+		ini_set('track_errors', 1);
+		// touch file
+		// output("Creating file " . $aConfiguration['my.cnf'] . "\n");
+		$newFh = @fopen($aConfiguration['my.cnf'], 'w');
+		if ( $newFh === false ) {
+			$rc = 779;
+			$msg = 'Opening file ' . $aConfiguration['my.cnf'] . ' for writing failed. ' . "(rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+		// We just assume stripped is expected here!
+		$lStrip = 'yes';
+		while( ($line = fgets($srcFh)) !== false ) {
+
+			$line = str_replace($aSearch, $aReplace, $line);
+			$line = preg_replace($aBranchPattern, $aBranchReplace, $line);
+
+			if ( 'yes' == $lStrip ) {
+				// Use preg_replace for array search. preg_match would also do the job
+				// but only for strings!
+				$lNewLine = preg_replace($aVarPattern, $aVarReplace, $line);
+				// We got a match, skip/strip the line
+				if ( $line != $lNewLine ) {
+					continue;
+				}
+			}
+			fputs($newFh, $line);
+		}
+		fclose($newFh);
+		chmod($aConfiguration['my.cnf'], 0600);
+		fclose($srcFh);
+
+
+		// Install instance
+
+		// Get version of MySQL/MariaDB
+
+		list($version, $lBranch) = getVersionAndBranchFromDaemon($aConfiguration['basedir']);
+		if ( $lVersion == 'unknown' ) {
+			$daemon = 'mysqld';
+			if ( 'MariaDB' == $lBranch ) {
+				$daemon = 'mariadbd';
+			}
+			$rc = 780;
+			$msg = 'Cannot get version from ' . $daemon . ' --version.' . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		list($ret, $mr_version) = getMachineReadableVersion($lVersion);
+		if ( ($ret != OK) || ($mr_version == '') ) {
+			$rc = 781;
+			$msg = 'Cannot get machine readable version from ' . $mr_version . " (rc=$rc)";
+			throw new Exception($msg, $rc);
+		}
+
+		// Determine which binary to user
+		//        - 050705 -> MySQL + MariaDB 5.7.5
+		// 050706 - 099999 -> MySQL 5.7.6 - 9.99.99
+		// 100000 -        -> MariaDB 10.0.0
+
+		// old style mysqld_install_db
+		if ( ($mr_version <= '050705') || ($mr_version >= '100000') ) {
+			$inst = 'mysql_install_db';
+			$sec  = '';
+		}
+		// new style mysqld --initialize-insecure
+		else {
+			$inst = 'mysqld';
+			$sec  = '--initialize-insecure';
+		}
+
+		if ( file_exists($aConfiguration['basedir'] . '/scripts/' . $inst) ) {
+			$bin = $aConfiguration['basedir'] . '/scripts/' . $inst;
+		}
+		else {
+			$bin = $aConfiguration['basedir'] . '/bin/' . $inst;
+		}
+
+		if ( file_exists($bin) && is_executable($bin) ) {
+
+			$cmd = $bin . ' --no-defaults ' . $sec . ' --user=' . $aConfiguration['user'] . ' --datadir=' . $aConfiguration['datadir'] . ' --basedir=' . $aConfiguration['basedir'];
+			// output($cmd . "\n");
+			// Here it seems like mysql_install_db does not return return code correctly!!!
+      list($ret, $output, $stdout, $stderr) = my_exec($cmd);
+		}
+		else {
+			$rc = 782;
+			error('File ' . $bin . ' does not exists or is not executable.' . " (rc=$rc)");
+			error('Omitting installation of mysql database.');
+			throw new Exception($msg, $rc);
+		}
+
+
+		// Create link in $datadir/my.cnf if no file is there
+
+		$md = $aConfiguration['datadir'] . '/' . 'my.cnf';
+		// Symlink pointing to non existing file will return false!
+		if ( file_exists($md) === false ) {
+
+			if ( symlink($aConfiguration['my.cnf'], $md) === false ) {
+				$rc = 783;
+				$msg = 'Cannot create symlink ' . $md . '.' . " (rc=$rc)";
+				throw new Exception($msg, $rc);
+			}
+		}
+
+
+		// Put configuration to global configuration file and safe
+
+		$aGlobalConfiguration[$aConfiguration['name']] = $aConfiguration;
+		// TODO: writeConfigurationFile should not generate output in automated case
+		// TODO: This is PHP 8 style. Not supported in Debian 10 and 11
+		// $void = writeConfigurationFile($aGlobalConfiguration, $pMyEnvConfFile, pAutomated: true);
+		$void = writeConfigurationFile($aGlobalConfiguration, $pMyEnvConfFile, true);
 	}
-	else {
-		unset($aConfiguration[$aOptions['instance']]);
-		writeConfigurationFile($aConfiguration, $pConfFile);
+	catch ( Exception $e ) {
+		error($e->getMessage());
 	}
-  */
 
 	return $rc;
 }
